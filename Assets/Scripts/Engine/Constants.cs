@@ -1,0 +1,133 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace LCS.Engine
+{
+    public class Constants
+    {
+        //These constants don't have to be used but they're useful shortcuts
+        public const string ATTRIBUTE_HEART = "HEART";
+        public const string ATTRIBUTE_WISDOM = "WISDOM";
+        public const string ATTRIBUTE_HEALTH = "HEALTH";
+        public const string ATTRIBUTE_STRENGTH = "STRENGTH";
+        public const string ATTRIBUTE_AGILITY = "AGILITY";
+        public const string ATTRIBUTE_INTELLIGENCE = "INTELLIGENCE";
+        public const string ATTRIBUTE_CHARISMA = "CHARISMA";
+
+        public const string SKILL_ART = "ART";
+        public const string SKILL_AXE = "AXE";
+        public const string SKILL_BUSINESS = "BUSINESS";
+        public const string SKILL_CLUB = "CLUB";
+        public const string SKILL_COMPUTERS = "COMPUTERS";
+        public const string SKILL_DISGUISE = "DISGUISE";
+        public const string SKILL_DODGE = "DODGE";
+        public const string SKILL_DRIVING = "DRIVING";
+        public const string SKILL_FIRST_AID = "FIRST_AID";
+        public const string SKILL_HEAVY_WEAPONS = "HEAVY_WEAPONS";
+        public const string SKILL_KNIFE = "KNIFE";
+        public const string SKILL_LAW = "LAW";
+        public const string SKILL_MARTIAL_ARTS = "MARTIAL_ARTS";
+        public const string SKILL_MUSIC = "MUSIC";
+        public const string SKILL_PERSUASION = "PERSUASION";
+        public const string SKILL_PISTOL = "PISTOL";
+        public const string SKILL_PSYCHOLOGY = "PSYCHOLOGY";
+        public const string SKILL_RELIGION = "RELIGION";
+        public const string SKILL_RIFLE = "RIFLE";
+        public const string SKILL_SCIENCE = "SCIENCE";
+        public const string SKILL_SECURITY = "SECURITY";
+        public const string SKILL_SEDUCTION = "SEDUCTION";
+        public const string SKILL_SHOTGUN = "SHOTGUN";
+        public const string SKILL_SMG = "SMG";
+        public const string SKILL_STEALTH = "STEALTH";
+        public const string SKILL_STREET_SENSE = "STREET_SENSE";
+        public const string SKILL_SWORD = "SWORD";
+        public const string SKILL_TAILORING = "TAILORING";
+        public const string SKILL_TEACHING = "TEACHING";
+        public const string SKILL_THROWING = "THROWING";
+        public const string SKILL_WRITING = "WRITING";
+
+        public const string LAW_ABORTION = "ABORTION";
+        public const string LAW_ANIMAL_RESEARCH = "ANIMAL_RESEARCH";
+        public const string LAW_POLICE = "POLICE";
+        public const string LAW_PRIVACY = "PRIVACY";
+        public const string LAW_DEATH_PENALTY = "DEATH_PENALTY";
+        public const string LAW_NUCLEAR_POWER = "NUCLEAR_POWER";
+        public const string LAW_POLLUTION = "POLLUTION";
+        public const string LAW_LABOR = "LABOR";
+        public const string LAW_GAY = "GAY";
+        public const string LAW_CORPORATE = "CORPORATE";
+        public const string LAW_FREE_SPEECH = "FREE_SPEECH";
+        public const string LAW_FLAG_BURNING = "FLAG_BURNING";
+        public const string LAW_GUN_CONTROL = "GUN_CONTROL";
+        public const string LAW_TAX = "TAX";
+        public const string LAW_WOMEN = "WOMEN";
+        public const string LAW_CIVIL_RIGHTS = "CIVIL_RIGHTS";
+        public const string LAW_DRUGS = "DRUGS";
+        public const string LAW_IMMIGRATION = "IMMIGRATION";
+        public const string LAW_ELECTION = "ELECTION";
+        public const string LAW_MILITARY = "MILITARY";
+        public const string LAW_PRISON = "PRISON";
+        public const string LAW_TORTURE = "TORTURE";
+
+        public const string VIEW_GAY = "GAY";
+        public const string VIEW_DEATH_PENALTY = "DEATH_PENALTY";
+        public const string VIEW_TAXES = "TAXES";
+        public const string VIEW_NUCLEAR_POWER = "NUCLEAR_POWER";
+        public const string VIEW_ANIMAL_RESEARCH = "ANIMAL_RESEARCH";
+        public const string VIEW_POLICE = "POLICE";
+        public const string VIEW_TORTURE = "TORTURE";
+        public const string VIEW_INTELLIGENCE = "INTELLIGENCE";
+        public const string VIEW_FREE_SPEECH = "FREE_SPEECH";
+        public const string VIEW_GENETICS = "GENETICS";
+        public const string VIEW_JUSTICES = "JUSTICES";
+        public const string VIEW_GUN_CONTROL = "GUN_CONTROL";
+        public const string VIEW_SWEATSHOPS = "SWEATSHOPS";
+        public const string VIEW_POLLUTION = "POLLUTION";
+        public const string VIEW_CORPORATE_CULTURE = "CORPORATE_CULTURE";
+        public const string VIEW_CEO_SALARY = "CEO_SALARY";
+        public const string VIEW_WOMEN = "WOMEN";
+        public const string VIEW_CIVIL_RIGHTS = "CIVIL_RIGHTS";
+        public const string VIEW_DRUGS = "DRUGS";
+        public const string VIEW_IMMIGRATION = "IMMIGRATION";
+        public const string VIEW_MILITARY = "MILITARY";
+        public const string VIEW_PRISONS = "PRISONS";
+        public const string VIEW_AM_RADIO = "AM_RADIO";
+        public const string VIEW_CABLE_NEWS = "CABLE_NEWS";
+        public const string VIEW_LIBERALCRIMESQUAD = "LIBERALCRIMESQUAD";
+        public const string VIEW_LIBERALCRIMESQUADPOS = "LIBERALCRIMESQUADPOS";
+        public const string VIEW_CONSERVATIVECRIMESQUAD = "CONSERVATIVECRIMESQUAD";
+
+        public const string CRIME_TREASON = "TREASON";
+        public const string CRIME_TERRORISM = "TERRORISM";
+        public const string CRIME_MURDER = "MURDER";
+        public const string CRIME_KIDNAPPING = "KIDNAPPING";
+        public const string CRIME_BANK_ROBBERY = "BANK_ROBBERY";
+        public const string CRIME_ARSON = "ARSON";
+        public const string CRIME_SPEECH = "SPEECH";
+        public const string CRIME_BROWNIES = "BROWNIES";
+        public const string CRIME_ESCAPE = "ESCAPE";
+        public const string CRIME_HELP_ESCAPE = "HELP_ESCAPE";
+        public const string CRIME_JURY = "JURY";
+        public const string CRIME_RACKETEERING = "RACKETEERING";
+        public const string CRIME_EXTORTION = "EXTORTION";
+        public const string CRIME_ARMED_ASSAULT = "ARMED_ASSAULT";
+        public const string CRIME_CAR_THEFT = "CAR_THEFT";
+        public const string CRIME_CCFRAUD = "CCFRAUD";
+        public const string CRIME_ASSAULT = "ASSAULT";
+        public const string CRIME_THEFT = "THEFT";
+        public const string CRIME_PROSTITUTION = "PROSTITUTION";
+        public const string CRIME_HIRE_ILLEGAL = "HIRE_ILLEGAL";
+        public const string CRIME_COMMERCE = "COMMERCE";
+        public const string CRIME_INFORMATION = "INFORMATION";
+        public const string CRIME_BURIAL = "BURIAL";
+        public const string CRIME_BREAKING = "BREAKING";
+        public const string CRIME_FLAG_BURNING = "FLAG_BURNING";
+        public const string CRIME_VANDALISM = "VANDALISM";
+        public const string CRIME_RESIST = "RESIST";
+        public const string CRIME_DISTURBANCE = "DISTURBANCE";
+        public const string CRIME_NUDITY = "NUDITY";
+        public const string CRIME_LOITERING = "LOITERING";
+    }
+}

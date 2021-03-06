@@ -1,0 +1,588 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+Several different types of things are defined in this file, so they will be broken up into sections.
+
+Organ definitions:
+<organ idname="STRING"> idname must be unique
+  name: Name of the organ as displayed on the UI
+  pluralname: Name to use when referring to multiples of the organ
+  damagedadjective: adjective to describe the organ when it is damaged (default: Damaged)
+  bleed: the amount of blood loss each turn when this organ is damaged (default: 0)
+  maxhealth: the health amount the creature will immediately drop down to when this organ is damaged (default: 100)
+  fightpenalty: penalty applied to attack rolls when this organ is damaged (default: 0)
+  clinictime: amount of time (in months) required for this organ to be repaired in the hospital, in addition to normal recovery time (default: 0)
+  healdiff: the difficulty level for repairing this organ with first aid skill (default: 14)
+  damagerequired: the type of damage required to cause injuries to this organ (default: NONE)
+    valid damage types:
+    NONE - no special requirements to damage this organ
+    POKE - damage caused must be greater than 10 and damage type must be SHOOT, TEAR, or CUT
+    HEAVY - damage caused must be greater than 12 and damage type must be SHOOT, BURN, TEAR, or CUT
+    BREAK - damage caused must be greater than 50 and damage type must be SHOOT, BRUISE, TEAR or CUT
+  <attributes value="INT">
+    attribute: Attribute that is penalized when this organ is damaged. The value parameter specifies the amount that is lost (repeatable)
+  </attributes>
+  <damageverbs>
+    <DAMAGETYPE>: verb to describe how this organ is damaged based on the damage type in the tag. See AttackDefs.xml for a list of valid damage types. DEFAULT is also considered a valid damage type.
+  <damageverbs>
+  <flags>
+    flag: flag to set on the organ type
+      valid flags:
+      VITAL - when this organ is damaged, it can potentially cause permenant HEALTH loss
+      SMALL - when more than one of this organ is set in a part definition, it will be tracked as a single entity rather than discrete organs which can be damaged separately
+      VISION - this organ is used to see
+      SMELL - this organ is used to smell (currently has no in-game effect)
+      TASTE - this organ is used to taste (currently has no in-game effect)
+      BREATH - this organ is used to breathe (currently has no in-game effect)
+      PARALYZE_QUAD - damage to this organ will paralyze the creature's arms and legs
+      PARALYZE_PARA - damage to this organ will paralyze the creature's legs
+      NO_DESTROY - this organ cannot be permanently destroyed
+  </flags>
+</organ>
+
+Body Part Defs:
+<bodyPart idname="STRING"> idname must be unique
+  name: name that appears in-game
+  sneakname: name that appears when this part is hit by a sneak attack (default: same as name)
+  size: size of this part. This value is used in a weighted random roll against all parts on a creature when they are attacked, so it is proportional to other parts.
+  severamount: minimum damage required to sever this body part (default: 100)
+  armorname: alternate name to check when testing whether worn armor is covering this part (i.e. a DOG_TORSO can have an armorname HUMAN_TORSO, and thus anything that protects the latter will also protect the former) (optional)
+  <organs>
+    organ (attributes: count="INT" prefix="STRING" names="STRING): organ definition that will be inside this body part.
+      count will add multiple copies of an organ if it is defined, or if the organ is small it will set the maximum "health" of that organ.
+      prefix is a comma-separated list of prefixes to apply to the names of each organ to differentiate them. If there are fewer prefixes than the value of count, it will append "Second, Third, etc." each time it loops through the list
+      names is a comma-separated list much like prefixes, which will replace the base name with each name in sequence as each multiple of the organ is added. This works in combination with prefixes, so "Second, Third, etc." will only be applied once each combination of prefix and name has been exhausted.
+  </organs>
+  <flags>
+    flag: flag to set on this body part
+    valid flags are:      
+      GRASP - this body part is required to hold things. If a creature runs out of grasping organs they can no longer attack
+      WALK - this body part is required to walk. Losing some WALK parts reduces the creature's speed significantly in chase sequences. Losing all of them means they will require a wheelchair.
+      LIMB, CORE, HEAD - one of these three flags must be set if this body part is to be hit by attacks. CORE refers to the torso. Only one should be set on any part.
+  </flags>
+</bodyPart>
+
+Species Defs:
+<body idname="STRING"> idname must be unique
+  name: Name used when describing this creature's species in text
+  oldage: the age at which this creature becomes "old" (used in calculations determining stat bonuses/penalites due to age, and the age at which they will start losing maximum HEALTH and thus eventually die) (default: 60)
+  image: filename of an image to use in the Portraits folder instead of generating a portrait. If multiple image tags are defined, one will be picked randomly each time a creature is created. Graphics need to be placed in the StreamingAssets/Graphics/Portraits folder. (repeatable)
+  naturalweapon: the natural weapon this species uses. If more than one is defined, one is picked randomly by each creature (repeatable)
+  naturalarmor: the natural armour this species uses. If more than one is defined, one is picked randomly by each creature (repeatable)
+  <parts>
+    part: (attributes location="LOCATION" count="RANGE" prefix="STRING" names="STRING") part that will be on this body type. (repeatable)
+      location can be HIGH, MID, or LOW (default: MID) and refers to where on the body the part is located. This is used to determine vehicle HIGH/LOW armour during car chases.
+      count determines if more than one of these parts exists on the body. This can be given as a range if the number of parts varies between individual creatures (it will be set randomly each time one is created)
+      prefix and names work like the prefix and names attributes of organ definitions in body parts, where they will be used in sequence before "Second, Third, etc" will be appended to the part name
+  </parts>
+</body>
+-->
+<BodyDefs>
+  <organs>
+    <organ idname="TOOTH">
+      <name>Tooth</name>
+      <pluralname>Teeth</pluralname>
+      <damagedadjective>Missing</damagedadjective>
+      <attributes>
+        <attribute>CHARISMA</attribute>
+      </attributes>
+      <damageverbs>
+        <DEFAULT>knocked out</DEFAULT>
+        <SHOOT>shot out</SHOOT>
+        <BURN>burned away</BURN>
+        <TEAR>gouged out</TEAR>
+        <CUT>cut out</CUT>
+      </damageverbs>
+      <flags>
+        <flag>SMALL</flag>
+      </flags>
+    </organ>
+    <organ idname="EYE">
+      <name>Eye</name>
+      <pluralname>Eyes</pluralname>
+      <damagedadjective>Missing</damagedadjective>
+      <maxhealth>50</maxhealth>
+      <fightpenalty>2</fightpenalty>
+      <damagerequired>HEAVY</damagerequired>
+      <damageverbs>
+        <DEFAULT>removed</DEFAULT>
+        <SHOOT>blasted out</SHOOT>
+        <BURN>burned away</BURN>
+        <TEAR>torn out</TEAR>
+        <CUT>poked out</CUT>
+      </damageverbs>
+      <attributes>
+        <attribute value="2">CHARISMA</attribute>
+      </attributes>
+      <flags>
+        <flag>VISION</flag>
+      </flags>
+    </organ>
+    <organ idname="NOSE">
+      <name>Nose</name>
+      <pluralname>Noses</pluralname>
+      <damagedadjective>No</damagedadjective>
+      <maxhealth>50</maxhealth>
+      <damagerequired>HEAVY</damagerequired>
+      <damageverbs>
+        <DEFAULT>removed</DEFAULT>
+        <SHOOT>blasted off</SHOOT>
+        <BURN>burned away</BURN>
+        <TEAR>torn off</TEAR>
+        <CUT>cut off</CUT>
+      </damageverbs>
+      <attributes>
+        <attribute value="3">CHARISMA</attribute>
+      </attributes>
+      <flags>
+        <flag>SMELL</flag>
+      </flags>
+    </organ>
+    <organ idname="TONGUE">
+      <name>Tongue</name>
+      <pluralname>Tongues</pluralname>
+      <damagedadjective>No</damagedadjective>
+      <maxhealth>50</maxhealth>
+      <damagerequired>HEAVY</damagerequired>
+      <damageverbs>
+        <DEFAULT>removed</DEFAULT>
+        <SHOOT>blasted off</SHOOT>
+        <BURN>burned away</BURN>
+        <TEAR>torn out</TEAR>
+        <CUT>cut off</CUT>
+      </damageverbs>
+      <attributes>
+        <attribute value="3">CHARISMA</attribute>
+      </attributes>
+      <flags>
+        <flag>TASTE</flag>
+      </flags>
+    </organ>
+    <organ idname="LUNG">
+      <name>Lung</name>
+      <pluralname>Lungs</pluralname>
+      <damagedadjective>Collapsed</damagedadjective>
+      <bleed>1</bleed>
+      <maxhealth>20</maxhealth>
+      <fightpenalty>8</fightpenalty>
+      <clinictime>1</clinictime>
+      <damagerequired>POKE</damagerequired>
+      <damageverbs>
+        <DEFAULT>punctured</DEFAULT>
+        <SHOOT>blasted</SHOOT>
+        <TEAR>torn</TEAR>
+      </damageverbs>
+      <flags>
+        <flag>BREATH</flag>
+        <flag>VITAL</flag>
+      </flags>
+    </organ>
+    <organ idname="HEART">
+      <name>Heart</name>
+      <pluralname>Hearts</pluralname>
+      <damagedadjective>Punctured</damagedadjective>
+      <bleed>9</bleed>
+      <maxhealth>15</maxhealth>
+      <fightpenalty>10</fightpenalty>
+      <clinictime>2</clinictime>
+      <healdiff>16</healdiff>
+      <damagerequired>POKE</damagerequired>
+      <damageverbs>
+        <DEFAULT>punctured</DEFAULT>
+        <SHOOT>blasted</SHOOT>
+        <TEAR>torn</TEAR>
+      </damageverbs>
+      <attributes>
+        <attribute value="3">HEART</attribute>
+      </attributes>
+      <flags>
+        <flag>VITAL</flag>
+      </flags>
+    </organ>
+    <organ idname="LIVER">
+      <name>Liver</name>
+      <pluralname>Livers</pluralname>
+      <damagedadjective>Damaged</damagedadjective>
+      <bleed>1</bleed>
+      <maxhealth>50</maxhealth>
+      <fightpenalty>5</fightpenalty>
+      <clinictime>1</clinictime>
+      <damagerequired>POKE</damagerequired>
+      <damageverbs>
+        <DEFAULT>punctured</DEFAULT>
+        <SHOOT>blasted</SHOOT>
+        <TEAR>torn</TEAR>
+      </damageverbs>
+    </organ>
+    <organ idname="STOMACH">
+      <name>Stomach</name>
+      <pluralname>Stomachs</pluralname>
+      <damagedadjective>Injured</damagedadjective>
+      <bleed>1</bleed>
+      <maxhealth>50</maxhealth>
+      <fightpenalty>5</fightpenalty>
+      <clinictime>1</clinictime>
+      <damagerequired>POKE</damagerequired>
+      <damageverbs>
+        <DEFAULT>punctured</DEFAULT>
+        <SHOOT>blasted</SHOOT>
+        <TEAR>torn</TEAR>
+      </damageverbs>
+    </organ>
+    <organ idname="KIDNEY">
+      <name>Kidney</name>
+      <pluralname>Kidneys</pluralname>
+      <damagedadjective>Damaged</damagedadjective>
+      <bleed>1</bleed>
+      <maxhealth>50</maxhealth>
+      <fightpenalty>5</fightpenalty>
+      <clinictime>1</clinictime>
+      <damagerequired>POKE</damagerequired>
+      <damageverbs>
+        <DEFAULT>punctured</DEFAULT>
+        <SHOOT>blasted</SHOOT>
+        <TEAR>torn</TEAR>
+      </damageverbs>
+    </organ>
+    <organ idname="SPLEEN">
+      <name>Spleen</name>
+      <pluralname>Spleens</pluralname>
+      <damagedadjective>Ruptured</damagedadjective>
+      <bleed>1</bleed>
+      <maxhealth>50</maxhealth>
+      <fightpenalty>4</fightpenalty>
+      <clinictime>1</clinictime>
+      <damagerequired>POKE</damagerequired>
+      <damageverbs>
+        <DEFAULT>punctured</DEFAULT>
+        <SHOOT>blasted</SHOOT>
+        <TEAR>torn</TEAR>
+      </damageverbs>
+    </organ>
+    <organ idname="RIB">
+      <name>Rib</name>
+      <pluralname>Ribs</pluralname>
+      <damagedadjective>Broken</damagedadjective>
+      <fightpenalty>5</fightpenalty>
+      <clinictime>1</clinictime>
+      <damagerequired>BREAK</damagerequired>
+      <damageverbs>
+        <DEFAULT>broken</DEFAULT>
+        <SHOOT>shot apart</SHOOT>
+      </damageverbs>
+      <flags>
+        <flag>SMALL</flag>
+        <flag>NO_DESTROY</flag>
+      </flags>
+    </organ>
+    <organ idname="NECK">
+      <name>Neck</name>
+      <pluralname>Necks</pluralname>
+      <damagedadjective>Broken</damagedadjective>
+      <maxhealth>20</maxhealth>
+      <fightpenalty>300</fightpenalty>
+      <clinictime>1</clinictime>
+      <damagerequired>BREAK</damagerequired>
+      <damageverbs>
+        <DEFAULT>broken</DEFAULT>
+        <SHOOT>bones are shattered</SHOOT>
+      </damageverbs>
+      <flags>
+        <flag>PARALYZE_QUAD</flag>
+      </flags>
+    </organ>
+    <organ idname="SPINE_UPPER">
+      <name>Upper Spine</name>
+      <pluralname>Upper Spines</pluralname>
+      <damagedadjective>Broken</damagedadjective>
+      <maxhealth>20</maxhealth>
+      <fightpenalty>200</fightpenalty>
+      <clinictime>1</clinictime>
+      <damagerequired>BREAK</damagerequired>
+      <damageverbs>
+        <DEFAULT>broken</DEFAULT>
+        <SHOOT>shattered</SHOOT>
+      </damageverbs>
+      <flags>
+        <flag>PARALYZE_QUAD</flag>
+      </flags>
+    </organ>
+    <organ idname="SPINE_LOWER">
+      <name>Lower Spine</name>
+      <pluralname>Lower Spines</pluralname>
+      <damagedadjective>Broken</damagedadjective>
+      <maxhealth>20</maxhealth>
+      <fightpenalty>100</fightpenalty>
+      <clinictime>1</clinictime>
+      <damagerequired>BREAK</damagerequired>
+      <damageverbs>
+        <DEFAULT>broken</DEFAULT>
+        <SHOOT>shattered</SHOOT>
+      </damageverbs>
+      <flags>
+        <flag>PARALYZE_PARA</flag>
+      </flags>
+    </organ>
+    <organ idname="BRAIN">
+      <name>Brain</name>
+      <pluralname>Brains</pluralname>
+      <damagedadjective>Damaged</damagedadjective>
+      <bleed>5</bleed>
+      <maxhealth>15</maxhealth>
+      <fightpenalty>10</fightpenalty>
+      <clinictime>2</clinictime>
+      <damagerequired>POKE</damagerequired>
+      <attributes>
+        <attribute value ="3">INTELLIGENCE</attribute>
+        <attribute value ="3">WISDOM</attribute>
+      </attributes>
+      <flags>
+        <flag>VITAL</flag>
+      </flags>
+    </organ>
+    <organ idname="BONE">
+      <name>Bone</name>
+      <pluralname>Bones</pluralname>
+      <damagedadjective>Broken</damagedadjective>
+      <fightpenalty>3</fightpenalty>
+      <clinictime>1</clinictime>
+      <damagerequired>BREAK</damagerequired>
+      <damageverbs>
+        <DEFAULT>broken</DEFAULT>
+        <SHOOT>shattered</SHOOT>
+        <TEAR>cracked</TEAR>
+      </damageverbs>
+    </organ>
+    <organ idname="TANK_OPTICS">
+      <name>Optic</name>
+      <pluralname>Optics</pluralname>
+      <damagedadjective>Destroyed</damagedadjective>
+      <fightpenalty>2</fightpenalty>
+      <damagerequired>HEAVY</damagerequired>
+      <damageverbs>
+        <DEFAULT>destroyed</DEFAULT>
+        <SHOOT>shot</SHOOT>
+        <BURN>cooked</BURN>
+        <TEAR>torn out</TEAR>
+      </damageverbs>
+      <flags>
+        <flag>VISION</flag>
+      </flags>
+    </organ>
+  </organs>
+  <bodyParts>
+    <bodyPart idname="HUMAN_HEAD">
+      <name>Head</name>
+      <size>1</size>
+      <severamount>100</severamount>
+      <organs>
+        <organ count="32">TOOTH</organ>
+        <organ count="2" prefix="Left,Right">EYE</organ>
+        <organ>NOSE</organ>
+        <organ>TONGUE</organ>
+        <organ>NECK</organ>
+        <organ>BRAIN</organ>
+      </organs>
+      <flags>
+        <flag>HEAD</flag>
+      </flags>
+    </bodyPart>
+    <bodyPart idname="HUMAN_TORSO">
+      <name>Torso</name>
+      <sneakname>Back</sneakname>
+      <size>4</size>
+      <severamount>1000</severamount>
+      <organs>
+        <organ count="2" prefix="Left,Right">LUNG</organ>
+        <organ>HEART</organ>
+        <organ>LIVER</organ>
+        <organ>STOMACH</organ>
+        <organ count="2" prefix="Left,Right">KIDNEY</organ>
+        <organ>SPLEEN</organ>
+        <organ count="10">RIB</organ>
+        <organ>SPINE_UPPER</organ>
+        <organ>SPINE_LOWER</organ>
+      </organs>
+      <flags>
+        <flag>CORE</flag>
+      </flags>
+    </bodyPart>
+    <bodyPart idname="HUMAN_ARM">
+      <name>Arm</name>
+      <size>2</size>
+      <severamount>200</severamount>
+      <organs>
+        <organ count="3" names="Radius,Ulna,Humerus">BONE</organ>
+      </organs>
+      <flags>
+        <flag>GRASP</flag>
+        <flag>LIMB</flag>
+      </flags>
+    </bodyPart>
+    <bodyPart idname="HUMAN_LEG">
+      <name>Leg</name>
+      <size>2</size>
+      <severamount>400</severamount>
+      <organs>
+        <organ count="3" names="Tibia,Fibula,Femur">BONE</organ>
+      </organs>
+      <flags>
+        <flag>WALK</flag>
+        <flag>LIMB</flag>
+      </flags>
+    </bodyPart>
+    <bodyPart idname="DOG_LEG">
+      <name>Leg</name>
+      <armorname>HUMAN_LEG</armorname>
+      <size>1</size>
+      <severamount>400</severamount>
+      <organs>
+        <organ count="3" names="Tibia,Fibula,Femur">BONE</organ>
+      </organs>
+      <flags>
+        <flag>WALK</flag>
+        <flag>LIMB</flag>
+      </flags>
+    </bodyPart>
+    <bodyPart idname="DOG_TORSO">
+      <name>Torso</name>
+      <armorname>HUMAN_TORSO</armorname>
+      <size>4</size>
+      <severamount>1000</severamount>
+      <organs>
+        <organ count="2" prefix="Left,Right">LUNG</organ>
+        <organ>HEART</organ>
+        <organ>LIVER</organ>
+        <organ>STOMACH</organ>
+        <organ count="2" prefix="Left,Right">KIDNEY</organ>
+        <organ>SPLEEN</organ>
+        <organ count="10">RIB</organ>
+        <organ>SPINE_UPPER</organ>
+        <organ>SPINE_LOWER</organ>
+      </organs>
+      <flags>
+        <flag>CORE</flag>
+      </flags>
+    </bodyPart>
+    <bodyPart idname="DOG_HEAD">
+      <name>Head</name>
+      <armorname>HUMAN_HEAD</armorname>
+      <size>1</size>
+      <severamount>100</severamount>
+      <organs>
+        <organ count="42">TOOTH</organ>
+        <organ count="2" prefix="Left,Right">EYE</organ>
+        <organ>NOSE</organ>
+        <organ>TONGUE</organ>
+        <organ>NECK</organ>
+        <organ>BRAIN</organ>
+      </organs>
+      <flags>
+        <flag>HEAD</flag>
+        <flag>GRASP</flag>
+      </flags>
+    </bodyPart>
+    <bodyPart idname="TANK_TURRET">
+      <name>Turret</name>
+      <size>2</size>
+      <severamount>100</severamount>
+      <organs>
+        <organ>TANK_OPTICS</organ>
+      </organs>
+      <flags>
+        <flag>HEAD</flag>
+        <flag>GRASP</flag>
+      </flags>
+    </bodyPart>
+    <bodyPart idname="TANK_CHASSIS">
+      <name>Chassis</name>
+      <size>6</size>
+      <severamount>1000</severamount>
+      <flags>
+        <flag>CORE</flag>
+      </flags>
+    </bodyPart>
+    <bodyPart idname="TANK_TREAD">
+      <name>Tread</name>
+      <size>3</size>
+      <severamount>400</severamount>
+      <flags>
+        <flag>LIMB</flag>
+        <flag>WALK</flag>
+      </flags>
+    </bodyPart>
+    <bodyPart idname="MONSTER_TENTACLE">
+      <name>Tentacle</name>
+      <size>2</size>
+      <severamount>200</severamount>
+      <flags>
+        <flag>GRASP</flag>
+        <flag>WALK</flag>
+        <flag>LIMB</flag>
+      </flags>
+    </bodyPart>
+  </bodyParts>
+  <species>
+    <body idname="HUMAN">
+      <name>Human</name>
+      <parts>
+        <part location="HIGH">HUMAN_HEAD</part>
+        <part location="MID">HUMAN_TORSO</part>
+        <part count="2" prefix="Left,Right" location="MID">HUMAN_ARM</part>
+        <part count="2" prefix="Left,Right" location="LOW">HUMAN_LEG</part>
+      </parts>
+      <naturalweapon>WEAPON_NONE</naturalweapon>
+      <naturalarmor>ARMOR_NONE</naturalarmor>
+    </body>
+    <body idname="HUMAN_MUTANT">
+      <name>Human</name>
+      <parts>
+        <part location="HIGH">HUMAN_HEAD</part>
+        <part location="MID">HUMAN_TORSO</part>
+        <part count="2-4" prefix="Left,Right" location="MID">HUMAN_ARM</part>
+        <part count="2-3" prefix="Left,Right" location="LOW">HUMAN_LEG</part>
+      </parts>
+      <naturalweapon>WEAPON_NONE</naturalweapon>
+      <naturalarmor>ARMOR_NONE</naturalarmor>
+    </body>
+    <body idname="DOG">
+      <name>Dog</name>
+      <oldage>9</oldage>
+      <image>DOG.png</image>
+      <parts>
+        <part location="HIGH">DOG_HEAD</part>
+        <part location="MID">DOG_TORSO</part>
+        <part count="4" prefix="Left Front,Right Front,Left Hind,Right Hind" location="LOW">DOG_LEG</part>
+      </parts>
+      <naturalweapon>WEAPON_DOG</naturalweapon>
+      <naturalarmor>ARMOR_DOG</naturalarmor>
+    </body>
+    <body idname="TANK">
+      <name>Tank</name>
+      <image>TANK.png</image>
+      <parts>
+        <part>TANK_TURRET</part>
+        <part>TANK_CHASSIS</part>
+        <part count="2" prefix="Left,Right">TANK_TREAD</part>
+      </parts>
+      <naturalweapon>WEAPON_TANK</naturalweapon>
+      <naturalarmor>ARMOR_TANK</naturalarmor>
+    </body>  
+    <body idname="MONSTER">
+      <name>Monster</name>
+      <image>MONSTER_1.png</image>
+      <oldage>9</oldage>
+      <parts>
+        <part count="0-6" prefix="Left,Right" location="LOW">DOG_LEG</part>
+        <part count="0-3" prefix="Left,Right,Middle" location="MID">DOG_HEAD</part>
+        <part count="0-4" prefix="Left,Right" location="HIGH">HUMAN_ARM</part>
+        <part count="0-4" prefix="Left,Right" location="HIGH">HUMAN_LEG</part>
+        <part count="0-8" location="LOW">MONSTER_TENTACLE</part>
+        <part location="MID">DOG_TORSO</part>
+      </parts>
+      <naturalweapon>WEAPON_DOG</naturalweapon>
+      <naturalweapon>WEAPON_MONSTER_SUCK</naturalweapon>
+      <naturalweapon>WEAPON_MONSTER_FLAME</naturalweapon>
+      <naturalarmor>ARMOR_MONSTER</naturalarmor>
+    </body>
+  </species>
+</BodyDefs>

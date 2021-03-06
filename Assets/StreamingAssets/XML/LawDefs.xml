@@ -1,0 +1,1024 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<lawDefs>
+  <crimes>
+    <crime idname="TREASON">
+      <name>Treason</name>
+      <severity>100</severity>
+      <degree>TREASON</degree>
+      <deathsentence>true</deathsentence>
+      <lifesentence>1</lifesentence>
+      <sentence>120-360</sentence>
+    </crime>
+    <crime idname="TERRORISM">
+      <name>Terrorism</name>
+      <severity>100</severity>
+      <degree>TREASON</degree>
+      <sentence>60-240</sentence>
+    </crime>
+    <crime idname="MURDER">
+      <name>Murder</name>
+      <severity>20</severity>
+      <degree>FELONY</degree>
+      <deathsentence>true</deathsentence>
+      <lifesentence>4</lifesentence>
+      <sentence>120-360</sentence>
+    </crime>
+    <crime idname="KIDNAPPING">
+      <name>Kidnapping</name>
+      <severity>20</severity>
+      <degree>FELONY</degree>
+      <sentence>36-54</sentence>
+    </crime>
+    <crime idname="BANK_ROBBERY">
+      <name>Bank Robbery</name>
+      <severity>20</severity>
+      <degree>FELONY</degree>
+      <sentence>30-90</sentence>
+    </crime>
+    <crime idname="ARSON">
+      <name>Arson</name>
+      <severity>50</severity>
+      <degree>FELONY</degree>
+      <sentence>12-24</sentence>
+    </crime>
+    <crime idname="SPEECH" condition="LAW:FREE_SPEECH:=:-2">
+      <name>Harmful Speech</name>
+      <courtname>Sedition</courtname>
+      <severity>0</severity>
+      <degree>TREASON</degree>
+      <sentence>4-6</sentence>
+    </crime>
+    <crime idname="BROWNIES">
+      <variant condition="LAW:DRUGS:=:-2">
+        <name>Drug Dealing</name>
+        <severity>50</severity>
+        <degree>FELONY</degree>
+        <sentence>3-360</sentence>
+      </variant>
+      <variant condition="LAW:DRUGS:=:-1">
+        <name>Drug Dealing</name>
+        <severity>20</severity>
+        <degree>FELONY</degree>
+        <sentence>3-120</sentence>
+      </variant>
+      <variant condition="LAW:DRUGS:=:0">
+        <name>Drug Dealing</name>
+        <severity>10</severity>
+        <degree>FELONY</degree>
+        <sentence>3-14</sentence>
+      </variant>
+      <variant condition="LAW:DRUGS:&gt;:0">
+        <name>Drug Dealing</name>
+        <courtname>Selling Drugs Without a Permit</courtname>
+        <severity>0</severity>
+        <degree>MISDEMEANOR</degree>
+        <sentence>0</sentence>
+      </variant>
+    </crime>
+    <crime idname="ESCAPE">
+      <name>Escaping Prison</name>
+      <severity>50</severity>
+      <degree>FELONY</degree>
+      <sentence>3-18</sentence>
+    </crime>
+    <crime idname="HELP_ESCAPE">
+      <name>Releasing Prisoners</name>
+      <courtname>Aiding a Prison Escape</courtname>
+      <severity>50</severity>
+      <degree>FELONY</degree>
+      <sentence>30-90</sentence>
+    </crime>
+    <crime idname="JURY">
+      <name>Jury Tampering</name>
+      <severity>0</severity>
+      <degree>FELONY</degree>
+      <sentence>30-90</sentence>
+    </crime>
+    <crime idname="RACKETEERING">
+      <name>Racketeering</name>
+      <severity>50</severity>
+      <degree>FELONY</degree>
+      <sentence>12-112</sentence>
+    </crime>
+    <crime idname="EXTORTION">
+      <name>Extortion</name>
+      <severity>20</severity>
+      <degree>FELONY</degree>
+      <sentence>6</sentence>
+    </crime>
+    <crime idname="ARMED_ASSAULT">
+      <name>Armed Assault</name>
+      <courtname>Felony Assault</courtname>
+      <severity>0</severity>
+      <degree>FELONY</degree>
+      <sentence>12</sentence>
+    </crime>    
+    <crime idname="CAR_THEFT">
+      <name>Grand Theft Auto</name>
+      <severity>0</severity>
+      <degree>FELONY</degree>
+      <sentence>6-12</sentence>
+    </crime>
+    <crime idname="CCFRAUD">
+      <name>Credit Card Fraud</name>
+      <severity>20</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>6-30</sentence>
+    </crime>
+    <crime idname="ASSAULT">
+      <name>Assault</name>
+      <courtname>Misdemeanor Assault</courtname>
+      <severity>0</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>3</sentence>
+    </crime>
+    <crime idname="THEFT">
+      <name>Theft</name>
+      <courtname>Petty Larceny</courtname>
+      <severity>0</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>1-4</sentence>
+    </crime>    
+    <crime idname="PROSTITUTION">
+      <name>Prostitution</name>
+      <severity>0</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>1-6</sentence>
+    </crime>
+    <crime idname="HIRE_ILLEGAL" condition="LAW:IMMIGRATION:&lt;:2">
+      <variant condition="LAW:IMMIGRATION:&lt;:1">
+        <name>Hiring Illegal Aliens</name>        
+        <severity>10</severity>
+        <degree>MISDEMEANOR</degree>
+        <sentence>1</sentence>
+      </variant>
+      <variant condition="LAW:IMMIGRATION:=:1">
+        <name>Hiring Undocumented Immigrants</name>
+        <severity>10</severity>
+        <degree>MISDEMEANOR</degree>
+        <sentence>1</sentence>
+      </variant>
+    </crime>
+    <crime idname="COMMERCE">
+      <name>Electronic Sabotage</name>
+      <courtname>Interference with Interstate Commerce</courtname>
+      <severity>20</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>1-13</sentence>
+    </crime>
+    <crime idname="INFORMATION">
+      <name>Hacking</name>
+      <courtname>Unlawful Access of an Information System</courtname>
+      <severity>50</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>1-13</sentence>
+    </crime>
+    <crime idname="BURIAL">
+      <name>Unlawful Burial</name>
+      <severity>0</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>3-14</sentence>
+    </crime>
+    <crime idname="BREAKING">
+      <name>Breaking and Entering</name>
+      <severity>0</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>1</sentence>
+    </crime>
+    <crime idname="FLAG_BURNING" condition="LAW:FLAG_BURNING:&lt;=:0">
+      <variant condition="LAW:FLAG_BURNING:=:0">
+        <name>Flag Burning</name>
+        <severity>0</severity>
+        <degree>MISDEMEANOR</degree>
+        <sentence>1</sentence>
+      </variant>
+      <variant condition="LAW:FLAG_BURNING:=:-1">
+        <name>Flag Burning</name>
+        <severity>0</severity>
+        <degree>MISDEMEANOR</degree>
+        <sentence>36</sentence>
+      </variant>
+      <variant condition="LAW:FLAG_BURNING:=:-2">
+        <name>Flag Murder</name>
+        <severity>20</severity>
+        <degree>FELONY</degree>
+        <deathsentence>true</deathsentence>
+        <lifesentence>2</lifesentence>
+        <sentence>120-360</sentence>
+      </variant>
+    </crime>
+    <crime idname="VANDALISM">
+      <name>Vandalism</name>
+      <severity>0</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>0-1</sentence>
+    </crime>
+    <crime idname="RESIST">
+      <name>Resisting Arrest</name>
+      <severity>0</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>1</sentence>
+    </crime>
+    <crime idname="DISTURBANCE">
+      <name>Disturbing the Peace</name>
+      <severity>0</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>0-1</sentence>
+    </crime>
+    <crime idname="NUDITY">
+      <name>Public Nudity</name>
+      <courtname>Indecent Exposure</courtname>
+      <severity>0</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>0-1</sentence>
+    </crime>
+    <crime idname="LOITERING">
+      <name>Loitering</name>
+      <severity>0</severity>
+      <degree>MISDEMEANOR</degree>
+      <sentence>0</sentence>
+    </crime>
+  </crimes>
+  <laws>
+    <law idname="ABORTION">
+      <name>Abortion Rights</name>
+      <view>WOMEN</view>
+      <descriptions>
+        <archconservative>Abortion is a felony equal to murder, not allowed under any circumstance.</archconservative>
+        <conservative>Abortion is prohibited except in cases of rape, incest, or health of the mother.</conservative>
+        <moderate>Abortion is limited to the first trimester, and is very expensive.</moderate>
+        <liberal>Abortion is legal, but taxpayer funding of abortion is prohibited.</liberal>
+        <eliteliberal>The right to an abortion is strongly protected, and subsidized for poor women.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Strengthen Reproductive Freedom</liberal>
+        <conservative>Protect the Unborn Child</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>The government is systematically trying to rob women of the right to control their own destinies.</normal>
+        <stupid>Conservatives make women turn to coat hangers.</stupid>
+        <liberal>Conservatives don't like abortion.</liberal>
+        <rejection>Abortion is murder.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="ANIMAL_RESEARCH">
+      <name>Animal Rights</name>
+      <view>ANIMAL_RESEARCH</view>
+      <view>GENETICS</view>
+      <descriptions>
+        <archconservative>Animals are property that can be experimented upon freely.</archconservative>
+        <conservative>Animal testing is self-regulated by the scientific community.</conservative>
+        <moderate>Animal research is regulated with a system of licenses and certificates.</moderate>
+        <liberal>Animal research is strictly regulated by purpose and suffering caused.</liberal>
+        <eliteliberal>Animals are people, too, and have full citizenship rights.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Limit Animal Cruelty</liberal>
+        <conservative>Expand Animal Research</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Animals are routinely subjected to inhumane treatment in labs in this country.</normal>
+        <stupid>Richard Gere put a gerbil in his butt!</stupid>
+        <liberal>Animals are denied the right to vote.</liberal>
+        <rejection>Don't pretend animals are human.</rejection>
+      </issuestalk>
+      <flags>
+        <flag>CORPORATE</flag>
+      </flags>
+    </law>
+    <law idname="POLICE">
+      <name>Police Regulation</name>
+      <view>POLICE</view>
+      <descriptions>
+        <archconservative>Law enforcement is given free reign.</archconservative>
+        <conservative>Even the worst police misconduct only earns slap-on-the-wrist punishments.</conservative>
+        <moderate>Law enforcement is regulated to prevent extreme misconduct.</moderate>
+        <liberal>Law enforcement has heavy oversight and freedom-of-information requirements.</liberal>
+        <eliteliberal>All law enforcement positions are subject to election and recall.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Curtail Police Misconduct</liberal>
+        <conservative>Eliminate Red Tape in Law Enforcement</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>The police regularly torture minority suspects during interrogations.</normal>
+        <stupid>The cops suck!</stupid>
+        <liberal>The police are still out there.</liberal>
+        <rejection>Only criminals have reason to fear police.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="PRIVACY">
+      <name>Privacy Rights</name>
+      <view>INTELLIGENCE</view>
+      <descriptions>
+        <archconservative>Any corporation requesting private information is granted unrestricted access.</archconservative>
+        <conservative>Privacy laws are full of loopholes and security backdoors are in everything.</conservative>
+        <moderate>Basic safeguards for medical and financial privacy are in place but ineffective.</moderate>
+        <liberal>All areas of privacy are protected with strong, effective safeguards.</liberal>
+        <eliteliberal>Individual privacy is sacred, and state-of-the-art safeguards are mandatory.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Enhance Privacy Protection</liberal>
+        <conservative>Allow Corporations Access to Information</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Files are being kept on innocent citizens whose only crime is to speak out against a system that is trying to farm them like beasts.</normal>
+        <stupid>The government, like, knows things about you.</stupid>
+        <liberal>The government runs intelligence agencies.</liberal>
+        <rejection>National security is important.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="DEATH_PENALTY">
+      <name>Capital Punishment</name>
+      <view>DEATH_PENALTY</view>
+      <descriptions>
+        <archconservative>People can be put to death for minor offenses.</archconservative>
+        <conservative>The death penalty is actively enforced in many states.</conservative>
+        <moderate>The death penalty is in effect but under scrutiny.</moderate>
+        <liberal>The death penalty is only permitted in extreme cases.</liberal>
+        <eliteliberal>The death penalty is considered barbaric and never practiced.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Limit the Death Penalty</liberal>
+        <conservative>Expand Capital Punishment</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Over thirty innocent people have been executed over the past decade.</normal>
+        <stupid>They executed this one dude, and like, his head caught on fire.</stupid>
+        <liberal>You can go to prison for life for serious crimes.</liberal>
+        <rejection>Some people deserve to die.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="NUCLEAR_POWER">
+      <name>Nuclear Power</name>
+      <view>NUCLEAR_POWER</view>
+      <descriptions>
+        <archconservative>Nuclear power is wildly proliferating with no controls or regulation at all.</archconservative>
+        <conservative>Nuclear power is a preferred energy source and the industry self-regulates.</conservative>
+        <moderate>Nuclear power is often an energy source and only moderately regulated.</moderate>
+        <liberal>Nuclear power is intensely regulated and rarely used anymore.</liberal>
+        <eliteliberal>Nuclear power is illegal and the leftover nuclear waste is being cleaned up.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Limit Nuclear Power</liberal>
+        <conservative>Expand Nuclear Power</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Radioactive waste is being stored all over the country, and it poses a serious threat to many families, even in this neighborhood.</normal>
+        <stupid>Have you seen Godzilla?  Nuclear power is bad, yo.</stupid>
+        <liberal>Some people support legalizing nuclear power.</liberal>
+        <rejection>Nuclear power is clean.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="POLLUTION">
+      <name>Pollution</name>
+      <view>POLLUTION</view>
+      <descriptions>
+        <archconservative>Industry may pollute as much as they like.</archconservative>
+        <conservative>Industry voluntarily regulates pollution.</conservative>
+        <moderate>Industry is subject to moderate pollution regulations.</moderate>
+        <liberal>Industry is subject to strict pollution regulations.</liberal>
+        <eliteliberal>Industry is subject to zero-tolerance pollution regulations.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Protect the Environment</liberal>
+        <conservative>Remove Job-Killing Environmental Laws</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Industries that stop at nothing to become more profitable are polluting the environment in ways that hurt not only animals, but people too.</normal>
+        <stupid>You wanna look like the Toxic Avenger?  Oppose pollution!</stupid>
+        <liberal>We're still polluting a little bit.</liberal>
+        <rejection>It's not that bad.</rejection>
+      </issuestalk>
+      <flags>
+        <flag>CORPORATE</flag>
+      </flags>
+    </law>
+    <law idname="LABOR">
+      <name>Labor Laws</name>
+      <view>SWEATSHOPS</view>
+      <descriptions>
+        <archconservative>There is no weekend, children are forced to work, and workers can't afford food.</archconservative>
+        <conservative>Working conditions are deplorable and there is no minimum wage.</conservative>
+        <moderate>Workers are underpaid, have lousy benefits, and get fired if they complain.</moderate>
+        <liberal>Workers are fairly compensated, have good benefits, and are difficult to fire.</liberal>
+        <eliteliberal>There are universal workers' rights and a high guaranteed minimum income.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Protect Workers' Rights</liberal>
+        <conservative>Fight Corrupt Union Thugs</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Have you noticed how people are working more and more hours for less and less money? It's all part of a plan to keep you enslaved, man.</normal>
+        <stupid>Bad people wanna make babies work and stuff.</stupid>
+        <liberal>Corporate bosses don't always give in to unions.</liberal>
+        <rejection>Trust the free market, it hasn't failed us yet.</rejection>
+      </issuestalk>
+      <flags>
+        <flag>CORPORATE</flag>
+      </flags>
+    </law>
+    <law idname="GAY">
+      <name>LGBT Rights</name>
+      <view>GAY</view>
+      <descriptions>
+        <archconservative>Homosexuals are routinely persecuted with no recourse.</archconservative>
+        <conservative>Homosexuals are not tolerated.</conservative>
+        <moderate>Homosexuals are grudgingly tolerated but have few equal rights.</moderate>
+        <liberal>Homosexuals have many rights shared by heterosexuals.</liberal>
+        <eliteliberal>Homosexuals have equal rights that are vigorously protected.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Fight Homophobic Bigotry in our Laws</liberal>
+        <conservative>Support the Sanctity of Marriage</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Homosexuals are people like anyone else, and yet they are treated in this country as if they are deviants fit only for cheap entertainment.</normal>
+        <stupid>Lots of people don't like homosexuals.</stupid>
+        <liberal>Not everybody likes gay people.</liberal>
+        <rejection>Homosexuality is a sin.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="CORPORATE">
+      <name>Corporate Law</name>
+      <view>CORPORATE_CULTURE</view>
+      <view>CEO_SALARY</view>
+      <descriptions>
+        <archconservative>Corporations essentially run the country in a feudal system.</archconservative>
+        <conservative>Corporate culture is corrupt and there is a great disparity in wages.</conservative>
+        <moderate>Corporations are moderately regulated, although wages are still unfair.</moderate>
+        <liberal>Corporations are stiffly regulated, and executive compensation is reasonable.</liberal>
+        <eliteliberal>Corporations are subject to intense regulation, and there is a maximum wage law.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Stop Corporate Criminals</liberal>
+        <conservative>Reward Job Creators</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Corporate executives use giant corporations as a means to become parasites that suck wealth out of this country and put it into their pockets.</normal>
+        <stupid>The corporations are putting you down, dude.</stupid>
+        <liberal>There are corporations.</liberal>
+        <rejection>Corporations are part of capitalism.</rejection>
+      </issuestalk>
+      <flags>
+        <flag>CORPORATE</flag>
+      </flags>
+    </law>
+    <law idname="FREE_SPEECH">
+      <name>Freedom of Speech</name>
+      <view>FREE_SPEECH</view>
+      <descriptions>
+        <archconservative>Armored squads are tasked with suppressing unacceptable speech.</archconservative>
+        <conservative>People who express unpopular opinions are often harassed and mistreated.</conservative>
+        <moderate>Free speech is legal, with minor exceptions, and is usually tolerated.</moderate>
+        <liberal>Free speech is legally protected and publicly encouraged.</liberal>
+        <eliteliberal>Free speech is strongly protected and universally supported.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Protect Free Speech</liberal>
+        <conservative>Limit Un-American Speech</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Protests and demonstrations are regularly and often brutally suppressed in this country. People have to watch what they write -- even what they read.</normal>
+        <stupid>Better watch what you say. They've got ears everywhere.</stupid>
+        <liberal>People get mad if you swear a lot in public.</liberal>
+        <rejection>Don't be offensive and you'll be fine.</rejection>
+      </issuestalk>
+      <supremecourtbias>LIBERAL</supremecourtbias>
+    </law>
+    <law idname="FLAG_BURNING">
+      <name>Flag Burning</name>
+      <view>FREE_SPEECH</view>
+      <descriptions>
+        <archconservative>Burning the flag is a serious crime on par with murder.</archconservative>
+        <conservative>Burning the flag is a felony and vigorously prosecuted.</conservative>
+        <moderate>Flag-burning is a misdemeanor, but not a serious crime.</moderate>
+        <liberal>Flag-burning is technically legal but stigmatized as unpatriotic.</liberal>
+        <eliteliberal>The right of flag-burning is upheld even by its critics.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Limit Prohibitions on Flag Burning</liberal>
+        <conservative>Protect the Symbol of Our Nation</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Burning a piece of cloth is actually stigmatized in this country. You can love freedom and still hate what our government stands for.</normal>
+        <stupid>The flag is stupid.</stupid>
+        <liberal>The flag code says you shouldn't make it into clothing.</liberal>
+        <rejection>That flag is the sacred symbol of our country.</rejection>
+      </issuestalk>
+      <supremecourtbias>LIBERAL</supremecourtbias>
+    </law>
+    <law idname="GUN_CONTROL">
+      <name>Gun Control</name>
+      <view>GUN_CONTROL</view>
+      <descriptions>
+        <archconservative>Machine guns, tanks, and missiles can be bought and sold freely.</archconservative>
+        <conservative>Military weapons are banned, but similar-looking guns are available.</conservative>
+        <moderate>A comprehensive ban on military-style weapons is in effect.</moderate>
+        <liberal>Most guns cannot be sold to anyone outside of law enforcement.</liberal>
+        <eliteliberal>It is illegal to buy or sell a gun, or carry one in public.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Prevent Mass Shootings</liberal>
+        <conservative>Uphold Second Amendment Rights</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>We live in such a backwards country right now that people think it's a right to walk around with the power to murder at any moment.</normal>
+        <stupid>People like, think they need lots of guns.</stupid>
+        <liberal>We need to repeal the second amendment.</liberal>
+        <rejection>Without guns, we're slaves to the Government.</rejection>
+      </issuestalk>
+      <supremecourtbias>CONSERVATIVE</supremecourtbias>
+    </law>
+    <law idname="TAX">
+      <name>Tax Structure</name>
+      <view>TAXES</view>
+      <descriptions>
+        <archconservative>The tax code is a nightmare designed to maintain class structure.</archconservative>
+        <conservative>A flat tax is in effect, and there is no capital gains or inheritance tax.</conservative>
+        <moderate>Taxes are moderate, but the code is full of loopholes.</moderate>
+        <liberal>The wealthy are heavily taxed under a progressive taxation system.</liberal>
+        <eliteliberal>Rich people are virtually unheard of, due to taxation.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Fight Income Inequality</liberal>
+        <conservative>Cut Job-Killing Taxes</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>The tax code has been designed to perpetuate an unjust class structure that is keeping you oppressed.</normal>
+        <stupid>Rich people, like, have money, man.</stupid>
+        <liberal>There's still inequality in this country.</liberal>
+        <rejection>I want to pay lower taxes.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="WOMEN">
+      <name>Women's Rights</name>
+      <view>WOMEN</view>
+      <descriptions>
+        <archconservative>Women are second-class citizens.</archconservative>
+        <conservative>Non-discrimination laws do not apply to gender.</conservative>
+        <moderate>Women are nominally equal under law, but this is not enforced.</moderate>
+        <liberal>Women have substantial recourse against discrimination.</liberal>
+        <eliteliberal>Gender equality is universally respected.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Promote Gender Equality</liberal>
+        <conservative>Preserve Traditional Gender Roles</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Sexism is still pervasive, in subtle ways, and women make much less than they deserve for their labor.</normal>
+        <stupid>We need more women!</stupid>
+        <liberal>Some people are sexist.</liberal>
+        <rejection>Why don't you go burn a bra or something?</rejection>
+      </issuestalk>
+    </law>
+    <law idname="CIVIL_RIGHTS">
+      <name>Civil Rights</name>
+      <view>CIVIL_RIGHTS</view>
+      <descriptions>
+        <archconservative>Civil rights laws have been repealed, ostensibly to promote "states' rights".</archconservative>
+        <conservative>Racial discrimination is prohibited in name only.</conservative>
+        <moderate>Pervasive racial inequality exists, although overt discrimination is illegal.</moderate>
+        <liberal>Affirmative action is in place to counteract racial discrimination.</liberal>
+        <eliteliberal>Racial equality is guaranteed and vigorously enforced.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Promote Racial Equality</liberal>
+        <conservative>Fight Reverse Discrimination</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Despite our progress, this society is still strangled by its continuing legacy of racial discrimination and inequality.</normal>
+        <stupid>Conservatives are all racists!</stupid>
+        <liberal>I knew some people that were pretty racist.</liberal>
+        <rejection>Reverse discrimination is still discrimination.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="DRUGS">
+      <name>Drug Laws</name>
+      <view>DRUGS</view>
+      <descriptions>
+        <archconservative>Violent criminals are released to make room for drug offenders.</archconservative>
+        <conservative>Prisons are filled with the targets of a war on drugs.</conservative>
+        <moderate>Recreational drugs are prohibited unless medically prescribed.</moderate>
+        <liberal>Marijuana is regulated and taxed, but harder drugs are illegal.</liberal>
+        <eliteliberal>Recreational drugs all are regulated and taxed like alcohol and tobacco.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Repeal Oppressive Drug Laws</liberal>
+        <conservative>Strengthen the War On Drugs</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>The government's drug policy is a mess.  We need to stop filling prisons with drug users, and only intervene when people really need help.</normal>
+        <stupid>Dude, the government won't let you do drugs.</stupid>
+        <liberal>Drugs are expensive.</liberal>
+        <rejection>Drugs are a terrible influence on society.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="IMMIGRATION">
+      <name>Immigration</name>
+      <view>IMMIGRATION</view>
+      <descriptions>
+        <archconservative>Immigration is illegal, and noncitizens are shipped to Mexico at gunpoint.</archconservative>
+        <conservative>The National Guard has been deployed to the borders to slow immigration.</conservative>
+        <moderate>Great expense is taken to slow immigration, without success.</moderate>
+        <liberal>The government works to accommodate potential immigrants but deports criminals.</liberal>
+        <eliteliberal>Immigration is unregulated, and new immigrants are welcomed warmly.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Protect Immigrant Rights</liberal>
+        <conservative>Protect our Borders</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Millions of people are doing jobs most folks don't even want, and saving their families from poverty, but we just try to kick them out.</normal>
+        <stupid>They're all trying to keep people out of the country.</stupid>
+        <liberal>All the immigrants, not everybody likes them.</liberal>
+        <rejection>Immigration undermines our economy and culture.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="ELECTION">
+      <name>Election Reform</name>
+      <view>JUSTICES</view>
+      <view>FREE_SPEECH</view>
+      <descriptions>
+        <archconservative>Virtually no ethics restrictions exist on political officeholders.</archconservative>
+        <conservative>Elections are mostly unregulated, but basic ethics restrictions are in place.</conservative>
+        <moderate>Moderate campaign finance reform is implemented.</moderate>
+        <liberal>Election financing is transparent and well-regulated.</liberal>
+        <eliteliberal>Election expenses are publicly funded, and voting is by ranked list.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Fight Political Corruption</liberal>
+        <conservative>Preserve Freedom in Electoral Finances</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Political favors are bought and sold for campaign contributions, and the voting system enforces two party dominance.</normal>
+        <stupid>The politicians are just tools of the corporations!</stupid>
+        <liberal>Some of these politicians rub me the wrong way.</liberal>
+        <rejection>Unregulated campaigning is a matter of free speech.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="MILITARY">
+      <name>Military Spending</name>
+      <view>MILITARY</view>
+      <descriptions>
+        <archconservative>Out-of-control military spending funds several ongoing wars around the world.</archconservative>
+        <conservative>Massive investment is put into the military, which always seems to be at war.</conservative>
+        <moderate>Military spending is growing each year to fund overseas military adventures.</moderate>
+        <liberal>The military is not a major priority, and mostly does peacekeeping missions.</liberal>
+        <eliteliberal>The military has been weakened significantly, as there is little need for it.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Shrink the Military-Industrial Complex</liberal>
+        <conservative>Support our Troops in Defending America</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>Take a breath and think about the world we live in, that we're spending hundreds of billions on new ways to kill people. This has to stop!</normal>
+        <stupid>Patriots are idiots! Give peace a chance!</stupid>
+        <liberal>We still have a military.</liberal>
+        <rejection>The military protects us and enables our way of life.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="PRISON">
+      <name>Prison Regulation</name>
+      <view>PRISONS</view>
+      <descriptions>
+        <archconservative>Prisoners are often subject to torture and slave labor.</archconservative>
+        <conservative>Prisoners suffer from horrible conditions and lack of basic rights.</conservative>
+        <moderate>Prisoners receive basic rights and services, but reports of abuse are common.</moderate>
+        <liberal>The prisons are regulated to protect prisoners' rights and safety.</liberal>
+        <eliteliberal>The prisons are targeted at rehabilitation, rather than punishment.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Expand Prisoners' Rights</liberal>
+        <conservative>Enhance Prison Security</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>The prison system doesn't help criminals by providing rehabilitation, so when they get released, they mostly become criminals again.</normal>
+        <stupid>Prisoners don't have freedom!</stupid>
+        <liberal>Prisons still exist.</liberal>
+        <rejection>Criminals deserve what they get in prison.</rejection>
+      </issuestalk>
+    </law>
+    <law idname="TORTURE">
+      <name>Human Rights</name>
+      <view>TORTURE</view>
+      <descriptions>
+        <archconservative>Military and intelligence interrogators regularly engage in torture.</archconservative>
+        <conservative>The line between standard interrogation and torture is severely blurred.</conservative>
+        <moderate>Torture allegations still occasionally crop up, despite an official ban.</moderate>
+        <liberal>The government strongly enforces a ban on torture.</liberal>
+        <eliteliberal>The nation is a respected international leader on Moral Interrogation Practices.</eliteliberal>
+      </descriptions>
+      <electiontext>
+        <liberal>Protect Human Rights from Torture</liberal>
+        <conservative>Enhance Interrogations to Fight Terrorism</conservative>
+      </electiontext>
+      <issuestalk>
+        <normal>In the name of the war on terror, we've sacrificed our soul by letting the government torture and abuse human beings on our behalf.</normal>
+        <stupid>Torture is bad!</stupid>
+        <liberal>Some conservatives support torture.</liberal>
+        <rejection>The terrorists would do worse to us.</rejection>
+      </issuestalk>
+    </law>
+  </laws>
+  <views>
+    <view idname="GAY">
+      <name>Gay Rights</name>
+      <issuetext>Favor equal rights for homosexuals</issuetext>
+      <liberaltext>protecting gay rights.</liberaltext>
+      <conservativetext>protecting the traditional family.</conservativetext>
+      <protest>
+        <text>disrupted a traditional wedding at a church!</text>
+        <law>GAY</law>
+        <crime>DISTURBANCE</crime>
+      </protest>
+      <recruitprop>a documentary on the gay rights struggle</recruitprop>
+      <broadcasttext>discusses homosexual rights.</broadcasttext>
+    </view>
+    <view idname="DEATH_PENALTY">
+      <name>Capital Punishment</name>      
+      <issuetext>Oppose the death penalty</issuetext>
+      <liberaltext>the unjust death penalty.</liberaltext>
+      <conservativetext condition="LAW:DEATH_PENALTY:=:2">restoring the death penalty.</conservativetext>
+      <conservativetext condition="LAW:DEATH_PENALTY:&lt;:2">expanding the death penalty.</conservativetext>
+      <protest>
+        <text>distributed fliers graphically illustrating executions!</text>
+        <law>DEATH_PENALTY</law>
+      </protest>
+      <recruitprop>a research paper on abuses of the death penalty</recruitprop>
+      <broadcasttext>examines the death penalty.</broadcasttext>
+    </view>
+    <view idname="TAXES">
+      <name>Taxes</name>      
+      <issuetext>Against cutting taxes</issuetext>
+      <liberaltext>the oppressive tax structure.</liberaltext>
+      <conservativetext>the excessive tax burden.</conservativetext>
+      <recruitprop>an economic paper on the flaws of trickle-down</recruitprop>
+      <broadcasttext>discusses the tax code.</broadcasttext>
+    </view>
+    <view idname="NUCLEAR_POWER">
+      <name>Nuclear Power</name>
+      <issuetext>Terrified of nuclear power</issuetext>
+      <liberaltext>the dangers of nuclear power.</liberaltext>
+      <conservativetext condition="LAW:NUCLEAR_POWER:=:2">legalizing nuclear power.</conservativetext>
+      <conservativetext condition="LAW:NUCLEAR_POWER:&lt;:2">threats to nuclear power.</conservativetext>
+      <protest>
+        <text>dressed up and pretended to be radioactive mutants!</text>
+        <singletext>dressed up and pretended to be a radioactive mutant!</singletext>
+        <law>NUCLEAR_POWER</law>
+        <crime>DISTURBANCE</crime>
+      </protest>
+      <recruitprop>a video tour of the Chernobyl dead zone</recruitprop>
+      <broadcasttext>runs down nuclear power.</broadcasttext>
+    </view>
+    <view idname="ANIMAL_RESEARCH">
+      <name>Animal Research</name>
+      <issuetext>Deplore animal research</issuetext>
+      <liberaltext>brutal animal research practices.</liberaltext>
+      <conservativetext>excessive regulation of animal research.</conservativetext>
+      <protest>
+        <text>run around splashing paint on fur coats!</text>
+        <crime>ASSAULT</crime>
+      </protest>
+      <recruitprop>a documentary on animal research</recruitprop>
+      <broadcasttext>discusses the horrors of animal research.</broadcasttext>
+    </view>
+    <view idname="POLICE">
+      <name>Police Regulation</name>
+      <issuetext>Critical of the police</issuetext>
+      <liberaltext>preventing police brutality.</liberaltext>
+      <conservativetext>expanding police powers.</conservativetext>
+      <protest>
+        <text>gone downtown and reenacted a police beating!</text>
+        <law>POLICE</law>
+        <crime>DISTURBANCE</crime>
+      </protest>
+      <recruitprop>a hand-recorded video of police brutality</recruitprop>
+      <broadcasttext>goes over cases of police brutality.</broadcasttext>
+    </view>
+    <view idname="TORTURE">
+      <name>Human Rights</name>
+      <issuetext>Want stronger measures to prevent torture</issuetext>
+      <liberaltext>ending the use of torture.</liberaltext>
+      <conservativetext>enhancing interrogations.</conservativetext>
+      <protest>
+        <text>distributed fliers graphically illustrating CIA torture!</text>
+      </protest>
+      <recruitprop>a government inquiry into military interrogations</recruitprop>
+      <broadcasttext>discusses prisoner abuse and torture.</broadcasttext>
+    </view>
+    <view idname="INTELLIGENCE">
+      <name>Privacy Rights</name>
+      <issuetext>Think the intelligence community invades privacy</issuetext>
+      <liberaltext>civil liberties and personal privacy.</liberaltext>
+      <conservativetext>national security and intelligence.</conservativetext>
+      <recruitprop>a documentary on privacy rights</recruitprop>
+      <broadcasttext>debates privacy law.</broadcasttext>
+    </view>
+    <view idname="FREE_SPEECH">
+      <name>Freedom of Speech</name>
+      <issuetext>Believe in unfettered free speech</issuetext>
+      <liberaltext>protecting free speech.</liberaltext>
+      <conservativetext>ending hate speech.</conservativetext>
+      <recruitprop>a collection of banned books</recruitprop>
+      <broadcasttext>talks about free speech.</broadcasttext>
+    </view>
+    <view idname="GENETICS">
+      <name>Genetically Altered Food</name>
+      <issuetext>Abhor genetically altered food products</issuetext>
+      <liberaltext>the dangers of genetic engineering.</liberaltext>
+      <conservativetext>excessive regulation of genetic research.</conservativetext>
+      <recruitprop>a video about genetic engineering accidents</recruitprop>
+      <broadcasttext>discusses the implications of genetic research.</broadcasttext>
+    </view>
+    <view idname="JUSTICES">
+      <name>Appointment of Liberal Justices</name>
+      <issuetext>For the appointment of Liberal justices</issuetext>
+      <liberaltext>appointing proper Liberal justices.</liberaltext>
+      <conservativetext>appointing proper Conservative justices.</conservativetext>
+      <recruitprop>a Liberal policy paper inquiring into judicial decisions</recruitprop>
+      <broadcasttext>talks about the record of a Conservative judge.</broadcasttext>
+    </view>
+    <view idname="GUN_CONTROL">
+      <name>Gun Control</name>
+      <issuetext>Concerned about gun violence</issuetext>
+      <liberaltext>gun violence.</liberaltext>
+      <conservativetext>protecting the Second Amendment.</conservativetext>
+      <recruitprop>a book profiling school shootings</recruitprop>
+      <broadcasttext>talks about gun control.</broadcasttext>
+    </view>
+    <view idname="SWEATSHOPS">
+      <name>Labor Rights</name>
+      <issuetext>Would boycott companies that use sweatshops</issuetext>
+      <liberaltext>threats to labor rights.</liberaltext>
+      <conservativetext>corrupt union thugs.</conservativetext>
+      <protest>
+        <text>set up a mock sweatshop in the middle of the mall!</text>
+      </protest>
+      <recruitprop>a hand-recorded video of unregulated sweatshops</recruitprop>
+      <broadcasttext>brings details about sweatshops to light.</broadcasttext>
+    </view>
+    <view idname="POLLUTION">
+      <name>Environmental Regulation</name>
+      <issuetext>Think industry should lower pollution</issuetext>
+      <liberaltext>threats to the environment.</liberaltext>
+      <conservativetext>excessive regulation of industry.</conservativetext>
+      <protest>
+        <text>squirted business people with fake polluted water!</text>
+        <law>POLLUTION</law>
+        <crime>DISTURBANCE</crime>
+      </protest>
+      <recruitprop>a leaked government paper on environmental conditions</recruitprop>
+      <broadcasttext>does a show on industrial pollution.</broadcasttext>
+    </view>
+    <view idname="CORPORATE_CULTURE">
+      <name>Corporate Regulation</name>
+      <issuetext>Disgusted by corporate malfeasance</issuetext>
+      <liberaltext>corporate corruption.</liberaltext>
+      <conservativetext>excessive regulation of corporations.</conservativetext>
+      <protest>
+        <text>burned a corporate symbol and denounced capitalism!</text>
+        <crime condition="LAW:CORPORATE:=:-2">FLAG_BURNING</crime>
+      </protest>
+      <recruitprop>a documentary on life under corporate culture</recruitprop>
+      <broadcasttext>jokes about corporate culture.</broadcasttext>
+    </view>
+    <view idname="CEO_SALARY">
+      <name>CEO Salaries</name>
+      <issuetext>Believe CEO salaries are too great</issuetext>
+      <liberaltext>severe income inequality.</liberaltext>
+      <conservativetext>rewarding job creators.</conservativetext>
+      <recruitprop>a Liberal think-tank survey of top CEO salaries</recruitprop>
+      <broadcasttext>gives examples of CEO excesses.</broadcasttext>
+    </view>
+    <view idname="WOMEN">
+      <name>Women's Rights</name>
+      <issuetext>Favor doing more for gender equality</issuetext>
+      <liberaltext>women's equality.</liberaltext>
+      <conservativetext>women.</conservativetext>
+      <protest>
+        <text>posted horrifying dead abortion doctor pictures downtown!</text>
+        <law>ABORTION</law>
+      </protest>
+      <recruitprop>a documentary on the women's rights struggle</recruitprop>
+      <broadcasttext>discusses abortion.</broadcasttext>
+    </view>
+    <view idname="CIVIL_RIGHTS">
+      <issuetext>Feel more work is needed for racial equality</issuetext>
+      <name>Civil Rights</name>
+      <liberaltext>civil rights.</liberaltext>
+      <conservativetext>troublemaking minorities.</conservativetext>
+      <recruitprop>a documentary on the civil rights struggle</recruitprop>
+      <broadcasttext>debates affirmative action.</broadcasttext>
+    </view>
+    <view idname="DRUGS">
+      <name>Drug Laws</name>
+      <issuetext condition="LAW:DRUGS:&gt;=:1">Support keeping marijuana legal</issuetext>
+      <issuetext condition="LAW:DRUGS:&lt;:1">Believe in legalizing marijuana</issuetext>
+      <liberaltext condition ="LAW:DRUGS:=:2">protecting legal drugs.</liberaltext>
+      <liberaltext condition="LAW:DRUGS:&lt;:2">oppressive drug laws.</liberaltext>
+      <conservativetext>drug abuse.</conservativetext>
+      <recruitprop>a collection of studies on the health effects of marijuana</recruitprop>
+      <broadcasttext>has a frank talk about drugs.</broadcasttext>
+    </view>
+    <view idname="IMMIGRATION">
+      <name>Immigration Laws</name>
+      <issuetext condition="LAW:IMMIGRATION:&gt;=:1">Condemn unnecessary immigration regulations</issuetext>
+      <issuetext condition="LAW:IMMIGRATION:&lt;:1">Want amnesty for illegal immigrants</issuetext>
+      <liberaltext>immigrant rights.</liberaltext>
+      <conservativetext condition="LAW:IMMIGRATION:&gt;=:1">uncontrolled immigration.</conservativetext>
+      <conservativetext condition="LAW:IMMIGRATION:&lt;:1">illegal immigration.</conservativetext>
+      <recruitprop>a reality TV episode on the lives of immigrants</recruitprop>
+      <broadcasttext>examines the issue of immigration.</broadcasttext>
+    </view>
+    <view idname="MILITARY">
+      <name>Military Spending</name>
+      <issuetext>Oppose incresed military spending</issuetext>
+      <liberaltext>military overspending.</liberaltext>
+      <conservativetext>defending the nation.</conservativetext>
+      <recruitprop>a book on the history of military atrocities</recruitprop>
+      <broadcasttext>talks about militarism in modern culture.</broadcasttext>
+    </view>
+    <view idname="PRISONS">
+      <name>Prison Regulation</name>
+      <issuetext>Want to end prisoner abuse and torture</issuetext>
+      <liberaltext>ending prisioner abuse.</liberaltext>
+      <conservativetext>putting prisoners in line.</conservativetext>
+      <recruitprop>a documentary on the prisoners' suffering</recruitprop>
+      <broadcasttext>discusses the prison system's flaws.</broadcasttext>
+    </view>
+    <view idname="AM_RADIO">
+      <name>Dislike AM Radio</name>
+      <issuetext>Do not like AM Radio</issuetext>
+      <liberaltext>Conservative media bias.</liberaltext>
+      <conservativetext>Liberal media bias.</conservativetext>
+      <recruitprop>a collection of Conservative radio host rants</recruitprop>
+      <broadcasttext>discusses AM radio shows.</broadcasttext>
+    </view>
+    <view idname="CABLE_NEWS">
+      <name>Dislike Cable News</name>
+      <issuetext>Have a negative opinion of cable news</issuetext>
+      <liberaltext>Conservative media bias.</liberaltext>
+      <conservativetext>Liberal media bias.</conservativetext>
+      <recruitprop>a collection of leaked Conservative cable news memos</recruitprop>
+      <broadcasttext>talks about Cable News.</broadcasttext>
+    </view>
+    <view idname="LIBERALCRIMESQUAD">
+      <name>Respect LCS Power</name>
+      <issuetext>Respect the power of the Liberal Crime Squad</issuetext>
+      <liberaltext><!--HARD CODED--></liberaltext>
+      <conservativetext><!--HARD CODED--></conservativetext>
+      <broadcasttext>lets people know about the Liberal Crime Squad.</broadcasttext>
+    </view>
+    <view idname="LIBERALCRIMESQUADPOS">
+      <name>Like LCS</name>
+      <issuetext>Hold the Liberal Crime Squad in high regard</issuetext>
+      <liberaltext><!--HARD CODED--></liberaltext>
+      <conservativetext><!--HARD CODED--></conservativetext>
+      <broadcasttext>extols the virtues of the Liberal Crime Squad.</broadcasttext>
+    </view>
+    <view idname="CONSERVATIVECRIMESQUAD">
+      <name>Dislike CCS</name>
+      <issuetext>Hold the Conservative Crime Squad in contempt</issuetext>
+      <liberaltext>the CCS terrorists.</liberaltext>
+      <conservativetext>the Conservative Crime Squad.</conservativetext>
+      <broadcasttext>demonizes the Conservative Crime Squad.</broadcasttext>
+    </view>
+  </views>
+  <executionmethods>
+    <cruelandunusual>
+      <method>beheading</method>
+      <method>drawing and quartering</method>
+      <method>disemboweling</method>
+      <method>one thousand cuts</method>
+      <method>feeding the lions</method>
+      <method>repeated gladiatorial death matches</method>
+      <method>burning</method>
+      <method>crucifixion</method>
+      <method>head-squishing</method>
+      <method>piranha tank swimming exhibition</method>
+      <method>forced sucking of Ronald Reagan's ass</method>
+      <method>covering with peanut butter and letting rats eat</method>
+      <method>burying up to the neck in a fire ant nest</method>
+      <method>running truck over the head</method>
+      <method>drowning in a sewage digester vat</method>
+      <method>chipper-shredder</method>
+      <method>use in lab research</method>
+      <method>blood draining</method>
+      <method>chemical weapons test</method>
+      <method>sale to a furniture maker</method>
+      <method>sale to a CEO as a personal pleasure toy</method>
+      <method>sale to foreign slave traders</method>
+      <method>exposure to degenerate Unity ports of Bay 12 Curses games</method>
+    </cruelandunusual>
+    <standard>
+      <method>lethal injection</method>
+      <method>hanging</method>
+      <method>firing squad</method>
+      <method>electrocution</method>
+    </standard>
+    <supposedlypainless>
+      <method>lethal injection</method>
+    </supposedlypainless>
+  </executionmethods>
+</lawDefs>

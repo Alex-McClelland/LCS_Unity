@@ -1,0 +1,4977 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+<location idname="STRING"> idname must be unique
+ name (attributes: condition="CONDITION" shortname="STRING"): The name of the location. Shortname will be the shortened name used on certain buttons. (repeatable)
+    Some notes on names: multiple names without conditions can be specified. When the game starts one will be chosen at random to be the standard name of the location.
+    Conditional names will be used instead of the standard name when the condition evaluates true (see CreatureDefs.xml for notes on condition formatting). Conditions must be unique.
+    Within a single name tag, word variations can be specified by separating them with a | character (e.g. Happy|Friendly|Nice Meadows|Gardens). One word per grouping will be chosen at random when the name is first generated.
+    $SURNAME can be used in a name to insert a random surname into the name of the location
+  ccsname: The "Liberal Equivalent" of the location that the CCS will hit in newspaper reports (optional)
+  hide: The condition under which this location will be hidden from the travel list. Note that CCS safehouses have their own logic for being hidden that is not affected by this tag (optional)
+  hospital: The healing power of this location. If injured Liberals travel to a location with a hospital value, they will check themselves in. (optional)
+  <base>
+    rentprice: The price per month Liberals will have to pay to rent this location (optional)
+    secrecy: The base secrecy provided by this base, without accounting for upgrades (default: 0)
+    flag: Flags on this base (repeatable)
+      Valid flags:
+      UPGRADEABLE - this location can be upgraded
+      CCS_BASE - this location is a CCS base
+      CAPTURABLE - The LCS will not start with this location controlled, instead they can capture it by causing a certain amount of crime during sitemode.
+  </base>
+  <trouble>
+    map: The location generation script to use to generated this map, or the .tmx filename for custom map files (see below for more notes on custom maps). (default: GENERIC_UNSECURE)
+    graffiti: The minimum amount of graffiti this location will have (default: 0)
+    <views>
+      view: View affected by site actions at this location (repeatable)
+    </views>
+    newsheader: The issue that will take the headline in the Liberal Guardian for this location (optional)
+    disguise (attributes: condition="CONDITION"): Valid disguise for this location. If a condition is specified, it is only valid when that condition is true (repeatable)
+    partial_disguise (attributes: condition="CONDITION"): Valid partial disguises for this location (less effective than full disguises). If a condition is specified, only qualifies when that condition is true (repeatable)
+    flag: Flags on this trouble spot (repeatable)
+      Valid flags:
+      HIGH_SECURITY - this location has alarmed doors, more difficult locks, and will summon a higher level police response on alarm
+      MID_SECURITY - this location has more difficult locks (not as difficult as HIGH_SECURITY)
+          Note: Sites with either HIGH or MID_SECURITY will also clean all graffiti at the end of every month (but said graffiti is more impactful), and can be set to "High Security" after a site action instead of completely closing.
+      NEWS_PRIORITY_NONE - Site actions here will never appear in the newspaper
+      NEWS_PRIORITY_LOW - Site actions here have a very low priority for newspaper stories
+      NEWS_PRIORITY_HIGH - Site actions here have their news priority doubled
+      SIEGE_ONLY - This map is not a valid target for causing trouble - it is only used when escaping a siege.
+      RESTRICTED - This entire map is considered "restricted"
+      RESIDENTIAL - Residential maps have a lower encounter rate, but being spotted in a restricted area causes an immediate alarm if the disguise/stealth check fails, even if Conservatives were not previously suspicious
+    <loot weight="INT"> A loot table used for this location. When a loot item is generated, a weighted random roll is performed against all loot lists defined on this location, then one item whose conditions (if defined) are true is picked at random from the selected list (repeatable)
+      item (attributes: condition="CONDITION"): an item definition in this list (repeatable).
+    </loot>
+    responsetype: Enemy type that will respond to alarms raised at this site (default: POLICE)
+      valid enemy types:
+      POLICE
+      MERC
+      AGENT
+      REDNECK
+      ARMY
+      GANG
+      FIREMEN
+      CCS
+    <encounters>
+      <encounter condition="CONDITION"> encounter def for this location. Condition specifies when this creature can be encountered (repeatable)
+        weight: weight given to this creature when generating encounters
+        type: creature idname for this encounter definition
+      </encounter>
+    </encounters>
+  </trouble>
+  <shop>
+    flag: Flags on this shop (repeatable)
+      Valid flags are:
+      LEGAL_ONLY - This shop will not sell items that are not legal under current gun control law
+      SELL_ITEMS - Liberals can sell items to this shop
+      VEHICLES - This shop is a car dealership - if combined will SELL_ITEMS, they will purchase cars from Liberals (but not any other item type)
+    <department name="STRING"> A department in the shop (repeatable)
+      <item idname="STRING"> An item in this department. idname is an item def from ItemDefs.xml (repeatable)
+        name: The text that will appear on the button to buy this item
+        price: The cost to buy this item from the shop. If LEGAL_ONLY is not set and this item is currently illegal, this value will be multiplied depending on how many levels below the current gun control law it is.
+      </item>
+    </department>
+  </shop>
+</location>
+
+NOTES ON CUSTOM MAPS:
+Custom maps are made using a free tilemap editor named Tiled: https://www.mapeditor.org/
+Maps must be built in a specific way, using a a set of layers for each floor named SPECIAL_# and TILE_# where # is the floor number (starting at 0)
+e.g. a two floor map would have four layers in the following order:
+  SPECIAL_1
+  TILE_1
+  SPECIAL_0
+  TILE_0
+  
+Maps are saved in the StreamingAssets/Maps folder. In this folder are two pre-defined tilesets that should be imported when making a map - TiledPalette.tsx and CommonSpecials.tsx
+These will be used to draw tiles on the TILE and SPECIAL layers, respectively. A third png file exists that can be imported as a tileset called TiledUniqueSpecials.png. This can be used
+to define map-unique specials by assigning each tile on the image a property named "id" with the value of the special tile type. An optional property name "restricted" can also be defined
+which will indicate that this should be a restricted tile. If it is not defined then this special will be considered a non-restricted tile.
+
+To explain exactly how maps should be designed is difficult to do in this document - it is easier to just load one of the already defined maps and see how it has been designed to get a better idea
+of how the pieces should be used. The only hard requirement for any map is that a single start location must be explicitly set in a SPECIAL layer (The down-pointing red arrow in the CommonSpecials palette),
+otherwise the map will cause an error when travelling.
+
+The following are the currently defined map-unique specials that can be used:
+  LAB_COSMETICS_CAGEDANIMALS
+  LAB_GENETIC_CAGEDANIMALS
+  POLICESTATION_LOCKUP
+  COURTHOUSE_LOCKUP
+  COURTHOUSE_JURYROOM
+  PRISON_CONTROL
+  PRISON_CONTROL_LOW
+  PRISON_CONTROL_MEDIUM
+  PRISON_CONTROL_HIGH
+  INTEL_SUPERCOMPUTER
+  SWEATSHOP_EQUIPMENT
+  POLLUTER_EQUIPMENT
+  NUCLEAR_ONOFF
+  HOUSE_PHOTOS
+  HOUSE_CEO
+  CORPORATE_FILES
+  RADIO_BROADCASTSTUDIO
+  NEWS_BROADCASTSTUDIO
+  APARTMENT_LANDLORD
+  RESTAURANT_TABLE
+  CAFE_COMPUTER
+  PARK_BENCH
+  CLUB_BOUNCER
+  ARMORY
+  DISPLAY_CASE
+  CCS_BOSS
+  BANK_VAULT
+  BANK_TELLER
+  BANK_MONEY
+  VAULT_DOOR  
+-->
+<locations>
+  <!-- Downtown -->
+  <location idname="RESIDENTIAL_APARTMENT_UPSCALE">
+    <name shortname="Condos">$SURNAME Condominiums</name>
+    <ccsname>University Dormitory</ccsname>
+    <base>
+      <rentprice>1500</rentprice>
+      <secrecy>12</secrecy>
+    </base>
+    <trouble>
+      <map>apartment.tmx</map>
+      <views>
+        <view>TAXES</view>
+        <view>CEO_SALARY</view>
+        <view>GUN_CONTROL</view>
+      </views>
+      <newsheader>TAXES</newsheader>
+      <flag>MID_SECURITY</flag>
+      <flag>RESIDENTIAL</flag>
+      <loot weight="33">
+        <item>WEAPON_BASEBALLBAT</item>
+        <item>WEAPON_COMBATKNIFE</item>
+        <item>WEAPON_DAISHO</item>
+        <item>WEAPON_SHOTGUN_PUMP</item>
+        <item condition="LAW:GUN_CONTROL:&lt;=:1">WEAPON_REVOLVER_44</item>
+        <item condition="LAW:GUN_CONTROL:&lt;=:0">WEAPON_SEMIPISTOL_45</item>
+        <item condition="LAW:GUN_CONTROL:&lt;=:-1">WEAPON_SEMIRIFLE_AR15</item>
+        <item condition="LAW:GUN_CONTROL:=:-2">WEAPON_AUTORIFLE_M16</item>
+      </loot>
+      <loot weight ="48">
+        <item>ARMOR_EXPENSIVEDRESS</item>
+        <item>ARMOR_BLACKDRESS</item>
+        <item>ARMOR_EXPENSIVESUIT</item>
+        <item>ARMOR_BLACKSUIT</item>
+        <item>ARMOR_BONDAGEGEAR</item>
+        <item>ARMOR_CIVILIANARMOR</item>
+        <item>ARMOR_BLACKROBE</item>
+        <item>ARMOR_LABCOAT</item>
+      </loot>
+      <loot weight="92">
+        <item>LOOT_EXPENSIVEJEWELERY</item>
+      </loot>
+      <loot weight="827">
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_SILVERWARE</item>
+        <item>LOOT_PDA</item>
+        <item>LOOT_CHEAPJEWELERY</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>1</weight>
+          <type>SCIENTIST_EMINENT</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JUDGE_LIBERAL</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JUDGE_CONSERVATIVE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RADIOPERSONALITY</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>NEWSANCHOR</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>LAWYER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>DOCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PSYCHOLOGIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>NURSE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>COLLEGESTUDENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MAILMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_ART</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_MUSIC</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AUTHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JOURNALIST</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>SOCIALITE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FASHIONDESIGNER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ATHLETE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>LOCKSMITH</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:True">
+          <weight>10</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:True&amp;VAR:highSecurity:&gt;:0">
+          <weight>90</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:True&amp;VAR:highSecurity:&gt;:0">
+          <weight>50</weight>
+          <type>GUARDDOG</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:True&amp;VAR:highSecurity:&gt;:0">
+          <weight>15</weight>
+          <type>COP</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:True&amp;VAR:highSecurity:&gt;:0&amp;LAW:POLICE:&lt;=:-1">
+          <weight>10</weight>
+          <type>GANGUNIT</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:True&amp;VAR:highSecurity:&gt;:0&amp;LAW:POLICE:=:-2&amp;LAW:DEATH_PENALTY:=:-2">
+          <weight>5</weight>
+          <type>DEATHSQUAD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="GOVERNMENT_POLICE_STATION">
+    <name>Police Station</name>
+    <name condition="LAW:POLICE:=:-2&amp;LAW:DEATH_PENALTY:=:-2">Death Squad HQ</name>
+    <ccsname>Seedy Back Alley(tm)</ccsname>
+    <trouble>
+      <map>GOVERNMENT_POLICE_STATION</map>
+      <views>
+        <view>POLICE</view>
+        <view>PRISONS</view>
+        <view>DRUGS</view>
+      </views>
+      <newsheader>POLICE</newsheader>
+      <disguise>ARMOR_POLICEUNIFORM</disguise>
+      <disguise>ARMOR_POLICEARMOR</disguise>
+      <disguise condition="LAW:DEATH_PENALTY:=:-2&amp;LAW:POLICE:=:-2">ARMOR_DEATHSQUADUNIFORM</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_SWATARMOR</disguise>
+      <partial_disguise condition="VAR:highSecurity:=:0">ARMOR_SWATARMOR</partial_disguise>
+      <flag>HIGH_SECURITY</flag>
+      <flag>NEWS_PRIORITY_HIGH</flag>
+      <loot weight="40">
+        <item condition="LAW:GUN_CONTROL:=:2">WEAPON_NIGHTSTICK</item>
+        <item condition="LAW:GUN_CONTROL:&gt;=:1">WEAPON_NIGHTSTICK</item>
+        <item condition="LAW:GUN_CONTROL:&gt;=:0">WEAPON_SHOTGUN_PUMP</item>
+        <item condition="LAW:GUN_CONTROL:&gt;=:-1">WEAPON_SEMIPISTOL_9MM</item>
+        <item condition="LAW:GUN_CONTROL:&lt;=:1">WEAPON_SMG_MP5</item>
+        <item condition="LAW:GUN_CONTROL:&lt;=:0">WEAPON_CARBINE_M4</item>
+        <item condition="LAW:GUN_CONTROL:&lt;=:-1">WEAPON_AUTORIFLE_M16</item>
+        <item condition="LAW:GUN_CONTROL:=:-2">WEAPON_AUTORIFLE_M16</item>
+      </loot>
+      <loot weight="38">
+        <item condition="LAW:GUN_CONTROL:=:2">ARMOR_POLICEUNIFORM</item>
+        <item condition="LAW:GUN_CONTROL:&gt;=:1">ARMOR_POLICEUNIFORM</item>
+        <item condition="LAW:GUN_CONTROL:&gt;=:0">ARMOR_POLICEARMOR</item>
+        <item condition="LAW:GUN_CONTROL:&gt;=:-1">ARMOR_POLICEUNIFORM</item>
+        <item condition="LAW:GUN_CONTROL:&lt;=:1">ARMOR_SWATARMOR</item>
+        <item condition="LAW:GUN_CONTROL:&lt;=:0">ARMOR_POLICEUNIFORM</item>
+        <item condition="LAW:GUN_CONTROL:&lt;=:-1">ARMOR_POLICEARMOR</item>
+        <item condition="LAW:POLICE:=:-2&amp;LAW:DEATH_PENALTY:=:-2">ARMOR_DEATHSQUADUNIFORM</item>
+      </loot>
+      <loot weight="46">
+        <item>LOOT_POLICERECORDS</item>
+      </loot>
+      <loot weight="876">
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_PDA</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>1</weight>
+          <type>SCIENTIST_LABTECH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>50</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>500</weight>
+          <type>COP</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:2">
+          <weight>250</weight>
+          <type>NEGOTIATOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JUDGE_LIBERAL</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JUDGE_CONSERVATIVE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AGENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RADIOPERSONALITY</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>NEWSANCHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MILITARYOFFICER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>LAWYER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DOCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PSYCHOLOGIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>NURSE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SEWERWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>COLLEGESTUDENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TEACHER</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>HSDROPOUT</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>BUM</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>GANGMEMBER</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>CRACKHEAD</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>PRIEST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ENGINEER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FASTFOODWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BAKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BARISTA</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BARTENDER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TELEMARKETER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CARSALESMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FOOTBALLCOACH</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MAILMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>GARBAGEMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PLUMBER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CHEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CONSTRUCTIONWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AMATEURMAGICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HICK</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SOLDIER</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>VETERAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_ART</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_MUSIC</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AUTHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JOURNALIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SOCIALITE</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>BIKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TRUCKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TAXIDRIVER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PROGRAMMER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>NUN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RETIREE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CAMERAMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HAIRSTYLIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FASHIONDESIGNER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CLERK</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>YOGAINSTRUCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MARTIALARTIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ATHLETE</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>LOCKSMITH</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:&lt;:2">
+          <weight>1</weight>
+          <type>WORKER_FACTORY_NONUNION</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:&gt;=:0">
+          <weight>1</weight>
+          <type>WORKER_FACTORY_UNION</type>
+        </encounter>
+        <encounter condition="LAW:DEATH_PENALTY:=:-2&amp;LAW:POLICE:=:-2">
+          <weight>400</weight>
+          <type>DEATHSQUAD</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&lt;=:-1">
+          <weight>400</weight>
+          <type>GANGUNIT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLLUTION:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2&amp;LAW:POLLUTION:=:-2">
+          <weight>5</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:-2&amp;LAW:PRISON:=:-2">
+          <weight>1</weight>
+          <type>EDUCATOR</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&gt;:-2|LAW:PRISON:&gt;:-2">
+          <weight>1</weight>
+          <type>PRISONGUARD</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>500</weight>
+          <type>COP</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:2&amp;VAR:highSecurity:&gt;:0">
+          <weight>250</weight>
+          <type>NEGOTIATOR</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="GOVERNMENT_COURTHOUSE">
+    <name>Courthouse</name>
+    <name condition="LAW:DEATH_PENALTY:=:-2" shortname="Hall of Judgement">Halls of Ultimate Judgement</name>
+    <ccsname>Abortion Clinic</ccsname>
+    <trouble>
+      <map>GOVERNMENT_COURTHOUSE</map>
+      <views>
+        <view>DEATH_PENALTY</view>
+        <view>JUSTICES</view>
+        <view>FREE_SPEECH</view>
+        <view>GAY</view>
+        <view>WOMEN</view>
+        <view>CIVIL_RIGHTS</view>
+      </views>
+      <newsheader>JUSTICES</newsheader>
+      <disguise>ARMOR_BLACKROBE</disguise>
+      <disguise>ARMOR_BLACKSUIT</disguise>
+      <disguise>ARMOR_BLACKDRESS</disguise>
+      <disguise>ARMOR_CHEAPSUIT</disguise>
+      <disguise>ARMOR_CHEAPDRESS</disguise>
+      <disguise>ARMOR_EXPENSIVESUIT</disguise>
+      <disguise>ARMOR_EXPENSIVEDRESS</disguise>
+      <disguise>ARMOR_POLICEUNIFORM</disguise>
+      <disguise>ARMOR_POLICEARMOR</disguise>
+      <disguise condition="LAW:DEATH_PENALTY:=:-2&amp;LAW:POLICE:=:-2">ARMOR_DEATHSQUADUNIFORM</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_SWATARMOR</disguise>
+      <partial_disguise condition="VAR:highSecurity:=:0">ARMOR_SWATARMOR</partial_disguise>
+      <flag>NEWS_PRIORITY_HIGH</flag>
+      <flag>HIGH_SECURITY</flag>
+      <loot weight="5">
+        <item>LOOT_JUDGEFILES</item>
+      </loot>
+      <loot weight="95">
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_PDA</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>1</weight>
+          <type>SCIENTIST_LABTECH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCIENTIST_EMINENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>50</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>50</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>JUDGE_LIBERAL</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>JUDGE_CONSERVATIVE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AGENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RADIOPERSONALITY</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>NEWSANCHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MILITARYOFFICER</type>
+        </encounter>
+        <encounter>
+          <weight>200</weight>
+          <type>LAWYER</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>PSYCHOLOGIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SEWERWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>COLLEGESTUDENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TEACHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HSDROPOUT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BUM</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>GANGMEMBER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRACKHEAD</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PRIEST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ENGINEER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FASTFOODWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BAKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BARISTA</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BARTENDER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TELEMARKETER</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>CARSALESMAN</type>
+        </encounter>
+        <encounter>
+          <weight>50</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FOOTBALLCOACH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MAILMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>GARBAGEMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PLUMBER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CHEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CONSTRUCTIONWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AMATEURMAGICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HICK</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SOLDIER</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>VETERAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_ART</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_MUSIC</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AUTHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JOURNALIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SOCIALITE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BIKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TRUCKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TAXIDRIVER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PROGRAMMER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>NUN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RETIREE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CAMERAMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HAIRSTYLIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FASHIONDESIGNER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CLERK</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>YOGAINSTRUCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MARTIALARTIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ATHLETE</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>LOCKSMITH</type>
+        </encounter>
+        <encounter>
+          <weight>200</weight>
+          <type>COP</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:2">
+          <weight>100</weight>
+          <type>NEGOTIATOR</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>1800</weight>
+          <type>COP</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:2&amp;VAR:highSecurity:&gt;:0">
+          <weight>900</weight>
+          <type>NEGOTIATOR</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:&lt;:2">
+          <weight>1</weight>
+          <type>WORKER_FACTORY_NONUNION</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:&gt;=:0">
+          <weight>1</weight>
+          <type>WORKER_FACTORY_UNION</type>
+        </encounter>
+        <encounter condition="LAW:DEATH_PENALTY:=:-2&amp;LAW:POLICE:=:-2">
+          <weight>80</weight>
+          <type>DEATHSQUAD</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&lt;=:-1">
+          <weight>80</weight>
+          <type>GANGUNIT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLLUTION:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2&amp;LAW:POLLUTION:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:-2&amp;LAW:PRISON:=:-2">
+          <weight>1</weight>
+          <type>EDUCATOR</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&gt;:-2|LAW:PRISON:&gt;:-2">
+          <weight>1</weight>
+          <type>PRISONGUARD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="BUSINESS_BANK">
+    <name shortname="Bank">American Bank Corp</name>
+    <ccsname>Richard Dawkins Food Bank</ccsname>
+    <trouble>
+      <map>bank.tmx</map>
+      <disguise>ARMOR_CHEAPSUIT</disguise>
+      <disguise>ARMOR_EXPENSIVESUIT</disguise>
+      <disguise>ARMOR_SECURITYUNIFORM</disguise>
+      <disguise>ARMOR_POLICEUNIFORM</disguise>
+      <disguise>ARMOR_POLICEARMOR</disguise>
+      <disguise condition="LAW:DEATH_PENALTY:=:-2&amp;LAW:POLICE:=:-2">ARMOR_DEATHSQUADUNIFORM</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_SWATARMOR</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_CIVILIANARMOR</disguise>
+      <partial_disguise condition="VAR:highSecurity:=:0">ARMOR_SWATARMOR</partial_disguise>
+      <views>
+        <view>TAXES</view>
+        <view>CEO_SALARY</view>
+        <view>CORPORATE_CULTURE</view>
+      </views>
+      <newsheader>TAXES</newsheader>
+      <flag>NEWS_PRIORITY_HIGH</flag>
+      <flag>HIGH_SECURITY</flag>
+      <loot>
+        <item>LOOT_COMPUTER</item>
+        <item>LOOT_WATCH</item>
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_PDA</item>
+      </loot>
+      <encounters>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>20</weight>
+          <type>BANK_MANAGER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>SCIENTIST_LABTECH</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>3</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>COP</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>LAWYER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>SEWERWORKER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>COLLEGESTUDENT</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>TEACHER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>PRIEST</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>ENGINEER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>FASTFOODWORKER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>BAKER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>BARISTA</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>BARTENDER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>TELEMARKETER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>CARSALESMAN</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>FOOTBALLCOACH</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>MAILMAN</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>DOCTOR</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>PSYCHOLOGIST</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>NURSE</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>GARBAGEMAN</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>PLUMBER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>CHEF</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>CONSTRUCTIONWORKER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>AMATEURMAGICIAN</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>SOLDIER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>2</weight>
+          <type>VETERAN</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>CRITIC_ART</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>CRITIC_MUSIC</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>AUTHOR</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>JOURNALIST</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>TAXIDRIVER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>PROGRAMMER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>RETIREE</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>CAMERAMAN</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>HAIRSTYLIST</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>CLERK</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>YOGAINSTRUCTOR</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>MARTIALARTIST</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>ATHLETE</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>FIREFIGHTER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false">
+          <weight>1</weight>
+          <type>LOCKSMITH</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false&amp;VAR:highSecurity:&gt;:0">
+          <weight>100</weight>
+          <type>MERC</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false&amp;VAR:highSecurity:=:0">
+          <weight>50</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false&amp;LAW:LABOR:&lt;:2">
+          <weight>1</weight>
+          <type>WORKER_FACTORY_NONUNION</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false&amp;LAW:LABOR:&gt;=:0">
+          <weight>1</weight>
+          <type>WORKER_FACTORY_UNION</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false&amp;LAW:POLICE:=:-2&amp;LAW:DEATH_PENALTY:=:-2">
+          <weight>1</weight>
+          <type>DEATHSQUAD</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false&amp;LAW:POLICE:&lt;=:-1">
+          <weight>1</weight>
+          <type>GANGUNIT</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false&amp;LAW:POLICE:=:-2&amp;LAW:PRISON:=:-2">
+          <weight>1</weight>
+          <type>EDUCATOR</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:false&amp;LAW:POLICE:&gt;:-2|LAW:PRISON:&gt;:-2">
+          <weight>1</weight>
+          <type>PRISONGUARD</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:true&amp;VAR:highSecurity:&gt;:0">
+          <weight>2000</weight>
+          <type>MERC</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:true&amp;VAR:highSecurity:=:0">
+          <weight>1000</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:true">
+          <weight>200</weight>
+          <type>BANK_MANAGER</type>
+        </encounter>
+        <encounter condition="SPEC:RESTRICTED:=:true">
+          <weight>1</weight>
+          <type>THIEF</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="GOVERNMENT_FIRE_STATION">
+    <name>Fire Station</name>
+    <name condition="LAW:FREE_SPEECH:=:-2">Fireman HQ</name>
+    <hide>LAW:FREE_SPEECH:>:-2</hide>
+    <ccsname>ACLU Branch Office</ccsname>
+    <trouble>
+      <map>GENERIC_SECURE</map>
+      <disguise>ARMOR_BUNKERGEAR</disguise>
+      <disguise>ARMOR_WORKCLOTHES</disguise>
+      <disguise>ARMOR_OVERALLS</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_POLICEUNIFORM</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_POLICEARMOR</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_SWATARMOR</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0&amp;LAW:POLICE:=:-2&amp;LAW:DEATH_PENALTY:=:-2">ARMOR_DEATHSQUADUNIFORM</disguise>
+      <views>
+        <view>FREE_SPEECH</view>
+        <view>INTELLIGENCE</view>
+      </views>
+      <flag>NEWS_PRIORITY_HIGH</flag>
+      <flag>MID_SECURITY</flag>
+      <loot weight="1">
+        <item>ARMOR_BUNKERGEAR</item>
+      </loot>
+      <loot weight="24">
+        <item>LOOT_TRINKET</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>5</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>NURSE</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>PRIEST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JOURNALIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter condition="LAW:FREE_SPEECH:>:-2">
+          <weight>100</weight>
+          <type>FIREFIGHTER</type>
+        </encounter>
+        <encounter condition="LAW:FREE_SPEECH:=:-2">
+          <weight>100</weight>
+          <type>FIREMAN</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0&amp;LAW:POLICE:&gt;:-1">
+          <weight>50</weight>
+          <type>COP</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0&amp;LAW:POLICE:&lt;=:-1&amp;LAW:DEATH_PENALTY:&gt;:-2">
+          <weight>50</weight>
+          <type>GANGUNIT</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0&amp;LAW:POLICE:=:-2&amp;LAW:DEATH_PENALTY:=:-2">
+          <weight>50</weight>
+          <type>DEATHSQUAD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="MEDIA_AM_RADIO">
+    <name shortname="Radio Station">AM Radio Station</name>
+    <ccsname>Public Radio Station</ccsname>
+    <trouble>
+      <map>MEDIA_AM_RADIO</map>
+      <responsetype>REDNECK</responsetype>
+      <disguise>ARMOR_EXPENSIVESUIT</disguise>
+      <disguise>ARMOR_EXPENSIVEDRESS</disguise>
+      <disguise>ARMOR_CHEAPSUIT</disguise>
+      <disguise>ARMOR_CHEAPDRESS</disguise>
+      <disguise>ARMOR_SECURITYUNIFORM</disguise>
+      <views>
+        <view>AM_RADIO</view>
+        <view>FREE_SPEECH</view>
+        <view>GAY</view>
+        <view>WOMEN</view>
+        <view>CIVIL_RIGHTS</view>
+      </views>
+      <newsheader>AM_RADIO</newsheader>
+      <flag>NEWS_PRIORITY_HIGH</flag>
+      <flag>MID_SECURITY</flag>
+      <loot weight="1">
+        <item>LOOT_AMRADIOFILES</item>
+      </loot>
+      <loot weight="19">
+        <item>LOOT_MICROPHONE</item>
+        <item>LOOT_PDA</item>
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>10</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>RADIOPERSONALITY</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>ENGINEER</type>
+        </encounter>
+        <encounter>
+          <weight>40</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>90</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="MEDIA_CABLE_NEWS">
+    <name shortname="Cable News">Cable News Station</name>
+    <name shortname="Minitru" condition="LAW:FREE_SPEECH:=:-2&amp;LAW:CORPORATE:=:-2">Ministry of Truth</name>
+    <ccsname>Network News Station</ccsname>
+    <trouble>
+      <map>MEDIA_CABLE_NEWS</map>
+      <responsetype>REDNECK</responsetype>
+      <disguise>ARMOR_EXPENSIVESUIT</disguise>
+      <disguise>ARMOR_EXPENSIVEDRESS</disguise>
+      <disguise>ARMOR_SECURITYUNIFORM</disguise>
+      <views>
+        <view>CABLE_NEWS</view>
+        <view>FREE_SPEECH</view>
+        <view>GAY</view>
+        <view>WOMEN</view>
+        <view>CIVIL_RIGHTS</view>
+      </views>
+      <newsheader>CABLE_NEWS</newsheader>
+      <flag>NEWS_PRIORITY_HIGH</flag>
+      <flag>MID_SECURITY</flag>
+      <loot weight="1">
+        <item>LOOT_CABLENEWSFILES</item>
+      </loot>
+      <loot weight="19">
+        <item>LOOT_MICROPHONE</item>
+        <item>LOOT_PDA</item>
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>10</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>NEWSANCHOR</type>
+        </encounter>
+        <encounter>
+          <weight>40</weight>
+          <type>ENGINEER</type>
+        </encounter>
+        <encounter>
+          <weight>40</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>CAMERAMAN</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>90</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="BUSINESS_CIGARBAR">
+    <name shortname="Cigar Bar">The $SURNAME Gentleman's Club</name>
+    <ccsname>Lady Luck Strip Club</ccsname>
+    <trouble>
+      <map>BUSINESS_RESTRICTEDCAFE</map>
+      <disguise>ARMOR_CHEAPSUIT</disguise>
+      <disguise>ARMOR_CHEAPDRESS</disguise>
+      <disguise>ARMOR_EXPENSIVESUIT</disguise>
+      <disguise>ARMOR_EXPENSIVEDRESS</disguise>
+      <disguise>ARMOR_BLACKSUIT</disguise>
+      <disguise>ARMOR_BLACKDRESS</disguise>
+      <views>
+        <view>TAXES</view>
+        <view>CEO_SALARY</view>
+        <view>WOMEN</view>
+      </views>
+      <newsheader>TAXES</newsheader>
+      <flag>MID_SECURITY</flag>
+      <encounters>
+        <encounter>
+          <weight>1</weight>
+          <type>SCIENTIST_EMINENT</type>
+        </encounter>
+        <encounter>
+          <weight>30</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>COP</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JUDGE_CONSERVATIVE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RADIOPERSONALITY</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>NEWSANCHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MILITARYOFFICER</type>
+        </encounter>
+        <encounter>
+          <weight>15</weight>
+          <type>LAWYER</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>DOCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PSYCHOLOGIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>ENGINEER</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>BARTENDER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FOOTBALLCOACH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_ART</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_MUSIC</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AUTHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JOURNALIST</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>SOCIALITE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RETIREE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FASHIONDESIGNER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ATHLETE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FIREFIGHTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>LOCKSMITH</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>CCS_VIGILANTE</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>BOUNCER</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>25</weight>
+          <type>GUARDDOG</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&lt;=:-1">
+          <weight>2</weight>
+          <type>GANGUNIT</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:-2&amp;LAW:DEATH_PENALTY:=:-2">
+          <weight>2</weight>
+          <type>DEATHSQUAD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="BUSINESS_LATTESTAND">
+    <name shortname="Latte Stand">Frothy|Milky|Caffiene|Morning|Evening Mug|Cup|Jolt|Wonder|Express Latte Stand</name>
+    <trouble>
+      <map>GENERIC_ONEROOM</map>
+      <encounters>
+        <encounter>
+          <weight>5</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>SCIENTIST_LABTECH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCIENTIST_EMINENT</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>15</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>COP</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:2">
+          <weight>2</weight>
+          <type>NEGOTIATOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JUDGE_LIBERAL</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JUDGE_CONSERVATIVE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AGENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RADIOPERSONALITY</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>NEWSANCHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MILITARYOFFICER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>LAWYER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>DOCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PSYCHOLOGIST</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>NURSE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SEWERWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>30</weight>
+          <type>COLLEGESTUDENT</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>TEACHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HSDROPOUT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BUM</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>GANGMEMBER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRACKHEAD</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PRIEST</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>ENGINEER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>FASTFOODWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BAKER</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>BARISTA</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BARTENDER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>TELEMARKETER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>CARSALESMAN</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FOOTBALLCOACH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MAILMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>GARBAGEMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PLUMBER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CHEF</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>CONSTRUCTIONWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AMATEURMAGICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MERC</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SOLDIER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>VETERAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_ART</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_MUSIC</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AUTHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JOURNALIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SOCIALITE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BIKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TRUCKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TAXIDRIVER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>PROGRAMMER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>RETIREE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CAMERAMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HAIRSTYLIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FASHIONDESIGNER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CLERK</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>YOGAINSTRUCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MARTIALARTIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ATHLETE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FIREFIGHTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>LOCKSMITH</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:&lt;:2">
+          <weight>5</weight>
+          <type>WORKER_FACTORY_NONUNION</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:&gt;=:0">
+          <weight>5</weight>
+          <type>WORKER_FACTORY_UNION</type>
+        </encounter>
+        <encounter condition="LAW:DEATH_PENALTY:=:-2&amp;LAW:POLICE:=:-2">
+          <weight>2</weight>
+          <type>DEATHSQUAD</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&lt;=:-1">
+          <weight>2</weight>
+          <type>GANGUNIT</type>
+        </encounter>
+        <encounter>
+          <weight>4</weight>
+          <type>CCS_VIGILANTE</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2">
+          <weight>1</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLLUTION:=:-2">
+          <weight>1</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2&amp;LAW:POLLUTION:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:-2&amp;LAW:PRISON:=:-2">
+          <weight>1</weight>
+          <type>EDUCATOR</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&gt;:-2|LAW:PRISON:&gt;:-2">
+          <weight>1</weight>
+          <type>PRISONGUARD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="CCS_BAR">
+    <name shortname="Bar &amp; Grill">Desert Eagle Bar &amp; Grill</name>
+    <base>
+      <secrecy>12</secrecy>
+      <flag>CCS_BASE</flag>
+    </base>
+    <trouble>
+      <map>ccs_bar.tmx</map>
+      <loot>
+        <item>WEAPON_SEMIPISTOL_9MM</item>
+        <item>WEAPON_SEMIPISTOL_45</item>
+        <item>WEAPON_REVOLVER_38</item>
+        <item>WEAPON_REVOLVER_44</item>
+        <item>WEAPON_SMG_MP5</item>
+        <item>WEAPON_CARBINE_M4</item>
+        <item>WEAPON_AUTORIFLE_M16</item>
+      </loot>
+      <loot>
+        <item>ARMOR_CHEAPSUIT</item>
+        <item>ARMOR_CLOTHES</item>
+        <item>ARMOR_TRENCHCOAT</item>
+        <item>ARMOR_WORKCLOTHES</item>
+        <item>ARMOR_SECURITYUNIFORM</item>
+        <item>ARMOR_CIVILIANARMOR</item>
+        <item>ARMOR_ARMYARMOR</item>
+        <item>ARMOR_HEAVYARMOR</item>
+      </loot>
+      <loot>
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_SILVERWARE</item>
+        <item>LOOT_TRINKET</item>
+        <item>LOOT_CHEAPJEWELERY</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>5</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>200</weight>
+          <type>BUM</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLLUTION:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2&amp;LAW:POLLUTION:=:-2">
+          <weight>50</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>GANGMEMBER</type>
+        </encounter>
+        <encounter>
+          <weight>50</weight>
+          <type>CRACKHEAD</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AMATEURMAGICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>NURSE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BIKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <!-- Commercial district -->
+  <location idname="BUSINESS_DEPTSTORE">
+    <name shortname="Dept. Store">$SURNAME's Deptartment Store</name>
+    <shop>
+      <flag>LEGAL_ONLY</flag>
+      <department name="Clothing">
+        <item idname="ARMOR_BLACKCLOTHES">
+          <price>50</price>
+          <text>Black Turtleneck</text>
+        </item>
+        <item idname="ARMOR_CHEAPSUIT">
+          <price>400</price>
+          <text>Cheap Suit</text>
+        </item>
+        <item idname="ARMOR_EXPENSIVESUIT">
+          <price>5000</price>
+          <text>Expensive Suit</text>
+        </item>
+        <item idname="ARMOR_BLACKSUIT">
+          <price>500</price>
+          <text>Black Suit</text>
+        </item>
+        <item idname="ARMOR_CHEAPDRESS">
+          <price>400</price>
+          <text>Cheap Dress</text>
+        </item>
+        <item idname="ARMOR_EXPENSIVEDRESS">
+          <price>5000</price>
+          <text>Expensive Dress</text>
+        </item>
+        <item idname="ARMOR_BLACKDRESS">
+          <price>500</price>
+          <text>Black Dress</text>
+        </item>
+      </department>
+      <department name="Hardware">
+        <item idname="WEAPON_CHAIN">
+          <price>15</price>
+          <text>Length of Chain</text>
+        </item>
+        <item idname="WEAPON_CROWBAR">
+          <price>15</price>
+          <text>Prybar</text>
+        </item>
+        <item idname="WEAPON_AXE">
+          <price>30</price>
+          <text>Axe</text>
+        </item>
+      </department>
+      <department name="Sporting Goods">
+        <item idname="WEAPON_BASEBALLBAT">
+          <price>25</price>
+          <text>Baseball Bat</text>
+        </item>
+        <item idname="WEAPON_SMG_MP5">
+          <price>1100</price>
+          <text>MP5 SMG</text>
+        </item>
+        <item idname="WEAPON_REVOLVER_44">
+          <price>500</price>
+          <text>.44 Magnum</text>
+        </item>
+        <item idname="WEAPON_SEMIRIFLE_AR15">
+          <price>450</price>
+          <text>Civilian AR-15</text>
+        </item>
+        <item idname="WEAPON_DESERT_EAGLE">
+          <price>1200</price>
+          <text>.50AE Desert Eagle</text>
+        </item>
+        <item idname="WEAPON_AUTORIFLE_M16">
+          <price>1500</price>
+          <text>M16 Assault Rifle</text>
+        </item>
+        <item idname="WEAPON_M249_MACHINEGUN">
+          <price>15000</price>
+          <text>M249 Machinegune</text>
+        </item>
+        <item idname="WEAPON_SHOTGUN_PUMP">
+          <price>400</price>
+          <text>Hunting Shotgun</text>
+        </item>
+      </department>
+      <department name="Sporting Ammo Counter">
+        <item idname="CLIP_44">
+          <price>40</price>
+          <text>.44 Speedloader</text>
+        </item>
+        <item idname="CLIP_SMG">
+          <price>50</price>
+          <text>9mm SMG Magazine</text>
+        </item>
+        <item idname="CLIP_ASSAULT_CIVILIAN">
+          <price>35</price>
+          <text>Rifle Magazine</text>
+        </item>
+        <item idname="CLIP_ASSAULT">
+          <price>50</price>
+          <text>Assault Rifle Magazine</text>
+        </item>
+        <item idname="CLIP_50AE">
+          <price>100</price>
+          <text>.50 AE Magazine</text>
+        </item>
+        <item idname="CLIP_DRUM">
+          <price>500</price>
+          <text>M249 Drum</text>
+        </item>
+        <item idname="CLIP_BUCKSHOT">
+          <price>20</price>
+          <text>Shotgun Shells</text>
+        </item>
+      </department>
+    </shop>
+  </location>
+  <location idname="BUSINESS_PAWNSHOP">
+    <name shortname="Pawnshop">$SURNAME Pawn &amp; Gun</name>
+    <name shortname="Pawnshop" condition="LAW:GUN_CONTROL:=:2">$SURNAME's Pawnshop</name>
+    <shop>
+      <flag>LEGAL_ONLY</flag>
+      <flag>SELL_ITEMS</flag>
+      <department name="Buy a Liberal Weapon">
+        <item idname="WEAPON_COMBATKNIFE">
+          <price>30</price>
+          <text>Combat Knife</text>
+        </item>
+        <item idname="WEAPON_SHOTGUN_PUMP">
+          <price>400</price>
+          <text>Shotgun</text>
+        </item>
+        <item idname="WEAPON_REVOLVER_38">
+          <price>150</price>
+          <text>.38 Revolver</text>
+        </item>
+        <item idname="WEAPON_SEMIPISTOL_9MM">
+          <price>300</price>
+          <text>9mm Semi-Automatic</text>
+        </item>
+        <item idname="WEAPON_SEMIPISTOL_45">
+          <price>300</price>
+          <text>.45 Semi-Automatic</text>
+        </item>
+        <item idname="WEAPON_REVOLVER_44">
+          <price>300</price>
+          <text>.44 Magnum</text>
+        </item>
+        <item idname="WEAPON_SEMIRIFLE_AR15">
+          <price>350</price>
+          <text>Civilian AR-15</text>
+        </item>
+        <item idname="WEAPON_SMG_MP5">
+          <price>1200</price>
+          <text>9mm MP5 SMG</text>
+        </item>
+        <item idname="WEAPON_AUTORIFLE_M16">
+          <price>1500</price>
+          <text>M16</text>
+        </item>
+      </department>
+      <department name="Buy Liberal Clips">
+        <item idname="CLIP_BUCKSHOT">
+          <price>20</price>
+          <text>Shotgun Shells</text>
+        </item>
+        <item idname="CLIP_38">
+          <price>15</price>
+          <text>.38 Speedloader</text>
+        </item>
+        <item idname="CLIP_9">
+          <price>30</price>
+          <text>9mm Pistol Magazine</text>
+        </item>
+        <item idname="CLIP_45">
+          <price>30</price>
+          <text>.45 Pistol Magazine</text>
+        </item>
+        <item idname="CLIP_44">
+          <price>20</price>
+          <text>.44 Speedloader</text>
+        </item>
+        <item idname="CLIP_ASSAULT_CIVILIAN">
+          <price>35</price>
+          <text>Rifle Magazine</text>
+        </item>
+        <item idname="CLIP_ASSAULT">
+          <price>50</price>
+          <text>Assault Rifle Magazine</text>
+        </item>
+        <item idname="CLIP_SMG">
+          <price>35</price>
+          <text>9mm SMG Magazine</text>
+        </item>
+      </department>
+      <department name="Buy Liberal Tools">
+        <item idname="WEAPON_CROWBAR">
+          <price>20</price>
+          <text>Crowbar</text>
+        </item>
+        <item idname="WEAPON_SPRAYCAN">
+          <price>20</price>
+          <text>Spray Paint</text>
+        </item>
+        <item idname="WEAPON_GUITAR">
+          <price>200</price>
+          <text>Guitar</text>
+        </item>
+        <item idname="WEAPON_MOLOTOV">
+          <price>40</price>
+          <text>Bottle, Rag &amp; Gasoline</text>
+        </item>
+      </department>
+    </shop>
+  </location>
+  <location idname="BUSINESS_HALLOWEEN">
+    <name shortname="Oubliette">The Oubliette</name>
+    <shop>
+      <flag>LEGAL_ONLY</flag>
+      <department name="Halloween Costumes">
+        <item idname="ARMOR_TRENCHCOAT">
+          <price>70</price>
+          <text>Trench Coat</text>
+        </item>
+        <item idname="ARMOR_WORKCLOTHES">
+          <price>50</price>
+          <text>Work Clothes</text>
+        </item>
+        <item idname="ARMOR_LABCOAT">
+          <price>200</price>
+          <text>Lab Coat</text>
+        </item>
+        <item idname="ARMOR_BLACKROBE">
+          <price>200</price>
+          <text>Judge Robe</text>
+        </item>
+        <item idname="ARMOR_CLOWNSUIT">
+          <price>200</price>
+          <text>Clown Suit</text>
+        </item>
+        <item idname="ARMOR_BONDAGEGEAR">
+          <price>350</price>
+          <text>Bondage Gear</text>
+        </item>
+        <item idname="ARMOR_TOGA">
+          <price>90</price>
+          <text>Toga</text>
+        </item>
+        <item idname="ARMOR_ELEPHANTSUIT">
+          <price>1000</price>
+          <text>Elephant Suit</text>
+        </item>
+        <item idname="ARMOR_DONKEYSUIT">
+          <price>1000</price>
+          <text>Donkey Suit</text>
+        </item>
+      </department>
+      <department name="Medieval Gear">
+        <item idname="WEAPON_DAGGER">
+          <price>20</price>
+          <text>Dagger</text>
+        </item>
+        <item idname="WEAPON_SWORD">
+          <price>250</price>
+          <text>Sword of Morfiegor</text>
+        </item>
+        <item idname="WEAPON_DAISHO">
+          <price>250</price>
+          <text>Katana and Wakizashi</text>
+        </item>
+        <item idname="WEAPON_HAMMER">
+          <price>250</price>
+          <text>"Dwarven" Hammer</text>
+        </item>
+        <item idname="WEAPON_MAUL">
+          <price>250</price>
+          <text>Maul of Anrin</text>
+        </item>
+        <item idname="WEAPON_CROSS">
+          <price>250</price>
+          <text>Silver Cross</text>
+        </item>
+        <item idname="WEAPON_STAFF">
+          <price>250</price>
+          <text>Wizard's Staff</text>
+        </item>
+        <item idname="ARMOR_LEATHER">
+          <price>800</price>
+          <text>Leather Armor</text>
+        </item>
+        <item idname="ARMOR_MITHRIL">
+          <price>1000</price>
+          <text>Mithril Mail</text>
+        </item>
+      </department>
+    </shop>
+  </location>
+  <location idname="BUSINESS_CAR_DEALERSHIP">
+    <name shortname="Used Cars">$SURNAME's Used Cars</name>
+    <shop>
+      <flag>VEHICLES</flag>
+      <flag>SELL_ITEMS</flag>
+      <department name="Buy a New Car">
+        <item idname="VEHICLE_BUG">
+          <price>2500</price>
+          <text>Bug</text>
+        </item>
+        <item idname="VEHICLE_PICKUP">
+          <price>5000</price>
+          <text>Pickup Truck</text>
+        </item>
+        <item idname="VEHICLE_SPORTSCAR">
+          <price>10000</price>
+          <text>Sportscar</text>
+        </item>
+        <item idname="VEHICLE_SUV">
+          <price>7500</price>
+          <text>SUV</text>
+        </item>
+      </department>
+    </shop>
+  </location>
+  <!-- University district -->
+  <location idname="RESIDENTIAL_APARTMENT">
+    <name shortname="Apts">$SURNAME Apartments</name>
+    <base>
+      <rentprice>650</rentprice>
+      <secrecy>8</secrecy>
+    </base>
+    <trouble>
+      <map>apartment.tmx</map>
+      <flag>RESIDENTIAL</flag>
+      <loot weight="40">
+        <item>WEAPON_BASEBALLBAT</item>
+        <item>WEAPON_REVOLVER_38</item>
+        <item>WEAPON_REVOLVER_44</item>
+        <item>WEAPON_NIGHTSTICK</item>
+        <item>WEAPON_GUITAR</item>
+      </loot>
+      <loot weight="48">
+        <item>ARMOR_CHEAPDRESS</item>
+        <item>ARMOR_CHEAPSUIT</item>
+        <item>ARMOR_CLOTHES</item>
+        <item>ARMOR_TRENCHCOAT</item>
+        <item>ARMOR_WORKCLOTHES</item>
+        <item>ARMOR_CLOWNSUIT</item>
+        <item>ARMOR_ELEPHANTSUIT</item>
+        <item>ARMOR_DONKEYSUIT</item>
+      </loot>
+      <loot weight="912">
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_SILVERWARE</item>
+        <item>LOOT_TRINKET</item>
+        <item>LOOT_CHEAPJEWELERY</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>1</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCIENTIST_LABTECH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>COP</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>LAWYER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SEWERWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>COLLEGESTUDENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TEACHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PRIEST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ENGINEER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FASTFOODWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BAKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BARISTA</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BARTENDER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TELEMARKETER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CARSALESMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FOOTBALLCOACH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MAILMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DOCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PSYCHOLOGIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>NURSE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>GARBAGEMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PLUMBER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CHEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CONSTRUCTIONWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AMATEURMAGICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SOLDIER</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>VETERAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_ART</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_MUSIC</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AUTHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JOURNALIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TAXIDRIVER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PROGRAMMER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RETIREE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CAMERAMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HAIRSTYLIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CLERK</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>YOGAINSTRUCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MARTIALARTIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ATHLETE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FIREFIGHTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>LOCKSMITH</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:&lt;:2">
+          <weight>1</weight>
+          <type>WORKER_FACTORY_NONUNION</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:&gt;=:0">
+          <weight>1</weight>
+          <type>WORKER_FACTORY_UNION</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&lt;=:-1">
+          <weight>1</weight>
+          <type>GANGUNIT</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:-2&amp;LAW:DEATH_PENALTY:=:-2">
+          <weight>1</weight>
+          <type>DEATHSQUAD</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:-2&amp;LAW:PRISON:=:-2">
+          <weight>1</weight>
+          <type>EDUCATOR</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&gt;:-2|LAW:PRISON:&gt;:-2">
+          <weight>1</weight>
+          <type>PRISONGUARD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="HOSPITAL_UNIVERSITY">
+    <name shortname="Hospital">The University Hospital</name>
+    <hospital>12</hospital>
+  </location>
+  <location idname="HOSPITAL_CLINIC">
+    <name shortname="Clinic">The Free Clinic</name>
+    <hospital>6</hospital>
+  </location>
+  <location idname="LABORATORY_GENETIC">
+    <name shortname="Genetics Lab">$SURNAME Genetics</name>
+    <ccsname>Research Ethics Commission HQ</ccsname>
+    <trouble>
+      <map>LABORATORY_GENETIC</map>
+      <disguise>ARMOR_LABCOAT</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_SECURITYUNIFORM</disguise>
+      <partial_disguise condition="VAR:highSecurity:=:0">ARMOR_SECURITYUNIFORM</partial_disguise>
+      <views>
+        <view>ANIMAL_RESEARCH</view>
+        <view>GENETICS</view>
+      </views>
+      <newsheader>GENETICS</newsheader>
+      <flag>MID_SECURITY</flag>
+      <flag>RESTRICTED</flag>
+      <loot weight="50">
+        <item>LOOT_RESEARCHFILES</item>
+      </loot>
+      <loot weight="475">
+        <item>LOOT_LABEQUIPMENT</item>
+      </loot>
+      <loot weight="390">
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <loot weight="48">
+        <item>LOOT_PDA</item>
+      </loot>
+      <loot weight="38">
+        <item>LOOT_CHEMICAL</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>10</weight>
+          <type>SCIENTIST_LABTECH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCIENTIST_EMINENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DOCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>97</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>25</weight>
+          <type>GUARDDOG</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="LABORATORY_COSMETICS">
+    <name shortname="Cosmetics Lab">$SURNAME Cosmetics</name>
+    <ccsname>Animal Shelter</ccsname>
+    <trouble>
+      <map>LABORATORY_COSMETICS</map>
+      <disguise>ARMOR_LABCOAT</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_SECURITYUNIFORM</disguise>
+      <partial_disguise condition="VAR:highSecurity:=:0">ARMOR_SECURITYUNIFORM</partial_disguise>
+      <views>
+        <view>ANIMAL_RESEARCH</view>
+        <view>WOMEN</view>
+      </views>
+      <newsheader>ANIMAL_RESEARCH</newsheader>
+      <flag>MID_SECURITY</flag>
+      <flag>RESTRICTED</flag>
+      <loot weight="50">
+        <item>LOOT_RESEARCHFILES</item>
+      </loot>
+      <loot weight="475">
+        <item>LOOT_LABEQUIPMENT</item>
+      </loot>
+      <loot weight="390">
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <loot weight="48">
+        <item>LOOT_PDA</item>
+      </loot>
+      <loot weight="38">
+        <item>LOOT_CHEMICAL</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>10</weight>
+          <type>SCIENTIST_LABTECH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCIENTIST_EMINENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>97</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="BUSINESS_VEGANCOOP">
+    <name shortname="Vegan Co-op">Asparagus|Tofu|Broccoli|Radish|Eggplant Forest|Rainbow|Garden|Farm|Meadow Vegan Co-op</name>
+    <trouble>
+      <map>BUSINESS_CAFE</map>
+      <encounters>
+        <encounter>
+          <weight>5</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JUDGE_LIBERAL</type>
+        </encounter>
+        <encounter>
+          <weight>50</weight>
+          <type>COLLEGESTUDENT</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TEACHER</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>HSDROPOUT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BUM</type>
+        </encounter>
+        <encounter>
+          <weight>50</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_ART</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_MUSIC</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AUTHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JOURNALIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RETIREE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>YOGAINSTRUCTOR</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2">
+          <weight>1</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLLUTION:=:-2">
+          <weight>1</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2&amp;LAW:POLLUTION:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="BUSINESS_JUICEBAR">
+    <name shortname="Juice Bar">Natural|Harmonious|Restful|Healthy Diet|Methods|Plan|Orange|Carrot Juice Bar</name>
+    <trouble>
+      <map>BUSINESS_CAFE</map>
+      <encounters>
+        <encounter>
+          <weight>10</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JUDGE_LIBERAL</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>COLLEGESTUDENT</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TEACHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HSDROPOUT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ENGINEER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FASTFOODWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BAKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BARISTA</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BARTENDER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TELEMARKETER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CARSALESMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MAILMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CHEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>NURSE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AMATEURMAGICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>6</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_ART</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_MUSIC</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AUTHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JOURNALIST</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>SOCIALITE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PROGRAMMER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RETIREE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CAMERAMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HAIRSTYLIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FASHIONDESIGNER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CLERK</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>YOGAINSTRUCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MARTIALARTIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ATHLETE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>LOCKSMITH</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="BUSINESS_INTERNETCAFE">
+    <name shortname="Net Cafe">Electric|Wired|Nano|Micro|Techno Panda|Troll|Latte|Unicorn|Pixie Internet Cafe</name>
+    <trouble>
+      <map>BUSINESS_INTERNETCAFE</map>
+      <encounters>
+        <encounter>
+          <weight>5</weight>
+          <type>SCIENTIST_LABTECH</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>15</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>LAWYER</type>
+        </encounter>
+        <encounter>
+          <weight>25</weight>
+          <type>COLLEGESTUDENT</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>TEACHER</type>
+        </encounter>
+        <encounter>
+          <weight>15</weight>
+          <type>ENGINEER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DOCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>BARISTA</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>CARSALESMAN</type>
+        </encounter>
+        <encounter>
+          <weight>15</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>15</weight>
+          <type>PROGRAMMER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>RETIREE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CAMERAMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CLERK</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>LOCKSMITH</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="OUTDOOR_PUBLICPARK">
+    <name shortname="Park">$SURNAME Park</name>
+    <trouble>
+      <map>park.tmx</map>
+      <graffiti>5</graffiti>
+      <encounters>
+        <encounter>
+          <weight>5</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>SCIENTIST_LABTECH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCIENTIST_EMINENT</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>15</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>COP</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:2">
+          <weight>2</weight>
+          <type>NEGOTIATOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JUDGE_LIBERAL</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JUDGE_CONSERVATIVE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AGENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RADIOPERSONALITY</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>NEWSANCHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MILITARYOFFICER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>LAWYER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>DOCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PSYCHOLOGIST</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>NURSE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SEWERWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>30</weight>
+          <type>COLLEGESTUDENT</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>TEACHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HSDROPOUT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BUM</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>GANGMEMBER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRACKHEAD</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PRIEST</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>ENGINEER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>FASTFOODWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BAKER</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>BARISTA</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BARTENDER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>TELEMARKETER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>CARSALESMAN</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FOOTBALLCOACH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MAILMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>GARBAGEMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PLUMBER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CHEF</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>CONSTRUCTIONWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AMATEURMAGICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MERC</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SOLDIER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>VETERAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_ART</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CRITIC_MUSIC</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AUTHOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JOURNALIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SOCIALITE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BIKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TRUCKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TAXIDRIVER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>PROGRAMMER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>RETIREE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CAMERAMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HAIRSTYLIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FASHIONDESIGNER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CLERK</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>YOGAINSTRUCTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MARTIALARTIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ATHLETE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FIREFIGHTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>LOCKSMITH</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:&lt;:2">
+          <weight>5</weight>
+          <type>WORKER_FACTORY_NONUNION</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:&gt;=:0">
+          <weight>5</weight>
+          <type>WORKER_FACTORY_UNION</type>
+        </encounter>
+        <encounter condition="LAW:DEATH_PENALTY:=:-2&amp;LAW:POLICE:=:-2">
+          <weight>2</weight>
+          <type>DEATHSQUAD</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&lt;=:-1">
+          <weight>2</weight>
+          <type>GANGUNIT</type>
+        </encounter>
+        <encounter>
+          <weight>4</weight>
+          <type>CCS_VIGILANTE</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2">
+          <weight>1</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLLUTION:=:-2">
+          <weight>1</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2&amp;LAW:POLLUTION:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:-2&amp;LAW:PRISON:=:-2">
+          <weight>1</weight>
+          <type>EDUCATOR</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&gt;:-2|LAW:PRISON:&gt;:-2">
+          <weight>1</weight>
+          <type>PRISONGUARD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <!-- Industrial district-->
+  <location idname="RESIDENTIAL_SHELTER">
+    <name>Homeless Shelter</name>
+    <base>
+      <secrecy>0</secrecy>
+    </base>
+    <trouble>
+      <map>GENERIC_UNSECURE</map>
+      <encounters>
+        <encounter>
+          <weight>5</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>200</weight>
+          <type>BUM</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLLUTION:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2&amp;LAW:POLLUTION:=:-2">
+          <weight>50</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>GANGMEMBER</type>
+        </encounter>
+        <encounter>
+          <weight>50</weight>
+          <type>CRACKHEAD</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AMATEURMAGICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>NURSE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BIKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>        
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="INDUSTRY_WAREHOUSE">
+    <name shortname="Meat Plant">Abandoned Meat Plant</name>
+    <name shortname="Warehouse">Abandoned Warehouse</name>
+    <name shortname="Paper Mill">Abandoned Paper Mill</name>
+    <name shortname="Cement Factory">Abandoned Cement Factory</name>
+    <name shortname="Fertilizer Plant">Abandoned Fertilizer Plant</name>
+    <name shortname="Drill Factory">Abandoned Drill Factory</name>
+    <name shortname="Steel Plant">Abandoned Steel Plant</name>
+    <name shortname="Packing Plant">Abandoned Packing Plant</name>
+    <name shortname="Toy Factory">Abandoned Toy Factory</name>
+    <name shortname="Building Site">Abandoned Building Site</name>
+    <base>
+      <secrecy>0</secrecy>
+      <flag>UPGRADABLE</flag>
+    </base>
+    <trouble>
+      <map>GENERIC_UNSECURE</map>
+      <flag>SIEGE_ONLY</flag>
+      <encounters />
+    </trouble>
+  </location>
+  <location idname="RESIDENTIAL_TENEMENT">
+    <name shortname="Projects">$SURNAME st. Projects</name>
+    <base>
+      <rentprice>200</rentprice>
+      <secrecy>4</secrecy>
+    </base>
+    <trouble>
+      <map>apartment.tmx</map>
+      <graffiti>10</graffiti>
+      <flag>NEWS_PRIORITY_LOW</flag>
+      <flag>RESIDENTIAL</flag>
+      <loot weight="912">
+        <item>LOOT_FAMILYPHOTO</item>
+        <item>LOOT_DIRTYSOCK</item>
+        <item>LOOT_KIDART</item>
+      </loot>
+      <loot weight="48">
+        <item>ARMOR_CHEAPDRESS</item>
+        <item>ARMOR_CHEAPSUIT</item>
+        <item>ARMOR_CLOTHES</item>
+        <item>ARMOR_TRENCHCOAT</item>
+        <item>ARMOR_WORKCLOTHES</item>
+        <item>ARMOR_TOGA</item>
+        <item>ARMOR_PRISONER</item>
+      </loot>
+      <loot weight="40">
+        <item>WEAPON_BASEBALLBAT</item>
+        <item>WEAPON_CROWBAR</item>
+        <item>WEAPON_SHANK</item>
+        <item>WEAPON_SYRINGE</item>
+        <item>WEAPON_CHAIN</item>
+        <item>WEAPON_GUITAR</item>
+        <item>WEAPON_SPRAYCAN</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>1</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCIENTIST_LABTECH</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:&lt;:2">
+          <weight>1</weight>
+          <type>WORKER_FACTORY_NONUNION</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:&gt;=:0">
+          <weight>1</weight>
+          <type>WORKER_FACTORY_UNION</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SEWERWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>COLLEGESTUDENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TEACHER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>HSDROPOUT</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>BUM</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLLUTION:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2&amp;LAW:POLLUTION:=:-2">
+          <weight>50</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>GANGMEMBER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>CRACKHEAD</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FASTFOODWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BARISTA</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BARTENDER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TELEMARKETER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CARSALESMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MAILMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>GARBAGEMAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CONSTRUCTIONWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AMATEURMAGICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HICK</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SOLDIER</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>VETERAN</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:-2&amp;LAW:PRISON:=:-2">
+          <weight>1</weight>
+          <type>EDUCATOR</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&gt;:-2|LAW:PRISON:&gt;:-2">
+          <weight>1</weight>
+          <type>PRISONGUARD</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BIKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>TAXIDRIVER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>RETIREE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HAIRSTYLIST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CLERK</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>FIREFIGHTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>LOCKSMITH</type>
+        </encounter>        
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="INDUSTRY_POLLUTER">
+    <name shortname="Alum Fact">Aluminum Factory</name>
+    <name shortname="Plast Fact">Plastic Factory</name>
+    <name shortname="Refinery">Oil Refinery</name>
+    <name shortname="Auto Plant">Auto Plant</name>
+    <name shortname="Chem Fact">Chemical Factory</name>
+    <ccsname>Greenpeace Offices</ccsname>
+    <trouble>
+      <map>INDUSTRY_POLLUTER</map>
+      <disguise>ARMOR_WORKCLOTHES</disguise>
+      <disguise>ARMOR_HARDHAT</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_SECURITYUNIFORM</disguise>
+      <views>
+        <view>SWEATSHOPS</view>
+        <view>POLLUTION</view>
+      </views>
+      <newsheader>POLLUTION</newsheader>
+      <flag>MID_SECURITY</flag>
+      <loot>
+        <item>LOOT_CHEMICAL</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>1</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>100</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:=:-2">
+          <weight>20</weight>
+          <type>WORKER_FACTORY_NONUNION</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:=:-2">
+          <weight>140</weight>
+          <type>WORKER_FACTORY_CHILD</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:=:-1">
+          <weight>160</weight>
+          <type>WORKER_FACTORY_NONUNION</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:=:-1">
+          <weight>1</weight>
+          <type>WORKER_FACTORY_CHILD</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:=:0">
+          <weight>80</weight>
+          <type>WORKER_FACTORY_NONUNION</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:=:0">
+          <weight>80</weight>
+          <type>WORKER_FACTORY_UNION</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:=:0">
+          <weight>50</weight>
+          <type>WORKER_FACTORY_NONUNION</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:=:0">
+          <weight>110</weight>
+          <type>WORKER_FACTORY_UNION</type>
+        </encounter>
+        <encounter condition="LAW:LABOR:=:0">
+          <weight>160</weight>
+          <type>WORKER_FACTORY_UNION</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="INDUSTRY_SWEATSHOP">
+    <name shortname="Sweatshop">$SURNAME Garment Makers</name>
+    <ccsname>Labor Union HQ</ccsname>
+    <trouble>
+      <map>INDUSTRY_SWEATSHOP</map>
+      <disguise>ARMOR_NONE</disguise>
+      <disguise>ARMOR_SECURITYUNIFORM</disguise>
+      <views>
+        <view>SWEATSHOPS</view>
+        <view>IMMIGRATION</view>
+      </views>
+      <newsheader>SWEATSHOPS</newsheader>
+      <flag>MID_SECURITY</flag>
+      <loot>
+        <item>LOOT_FINECLOTH</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>5</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>800</weight>
+          <type>WORKER_SWEATSHOP</type>
+        </encounter>
+        <encounter>
+          <weight>100</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>900</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="BUSINESS_CRACKHOUSE">
+    <name shortname="Crack House">$SURNAME St. Crack House</name>
+    <!-- <name shortname="Drug Center" condition="LAW:DRUGS:=:2">$SURNAME St. Recreational Drug Center</name>
+    <name shortname="Coffee House" condition="LAW:DRUGS:=:2">$SURNAME St. Coffee House</name>
+    <name shortname="Cannabis Lounge" condition="LAW:DRUGS:=:2">$SURNAME St. Cannabis Lounge</name> -->
+    <name shortname="Dispensary" condition="LAW:DRUGS:=:2">$SURNAME St. Marijuana Dispensary</name>
+    <base>
+      <secrecy>0</secrecy>
+      <flag>UPGRADABLE</flag>
+      <flag>CAPTURABLE</flag>      
+    </base>
+    <trouble>
+      <map>GENERIC_UNSECURE</map>
+      <graffiti>30</graffiti>
+      <responsetype>GANG</responsetype>
+      <flag>NEWS_PRIORITY_NONE</flag>
+      <encounters>
+        <encounter>
+          <weight>100</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>30</weight>
+          <type>HSDROPOUT</type>
+        </encounter>
+        <encounter>
+          <weight>200</weight>
+          <type>BUM</type>
+        </encounter>
+        <encounter>
+          <weight>200</weight>
+          <type>GANGMEMBER</type>
+        </encounter>
+        <encounter>
+          <weight>200</weight>
+          <type>CRACKHEAD</type>
+        </encounter>
+        <encounter>
+          <weight>200</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>BIKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+        <encounter>
+          <weight>2</weight>
+          <type>JOURNALIST</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>CCS_VIGILANTE</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLLUTION:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2&amp;LAW:POLLUTION:=:-2">
+          <weight>50</weight>
+          <type>MUTANT</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="CCS_BOMBSHELTER">
+    <name shortname="Bomb Shelter">Fallout Shelter</name>
+    <base>
+      <secrecy>12</secrecy>
+      <flag>CCS_BASE</flag>
+    </base>
+    <trouble>
+      <map>ccs_bombshelter.tmx</map>
+      <flag>RESTRICTED</flag>
+      <responsetype>CCS</responsetype>
+      <loot>
+        <item>WEAPON_SEMIPISTOL_9MM</item>
+        <item>WEAPON_SEMIPISTOL_45</item>
+        <item>WEAPON_REVOLVER_38</item>
+        <item>WEAPON_REVOLVER_44</item>
+        <item>WEAPON_SMG_MP5</item>
+        <item>WEAPON_CARBINE_M4</item>
+        <item>WEAPON_AUTORIFLE_M16</item>
+      </loot>
+      <loot>
+        <item>ARMOR_CHEAPSUIT</item>
+        <item>ARMOR_CLOTHES</item>
+        <item>ARMOR_TRENCHCOAT</item>
+        <item>ARMOR_WORKCLOTHES</item>
+        <item>ARMOR_SECURITYUNIFORM</item>
+        <item>ARMOR_CIVILIANARMOR</item>
+        <item>ARMOR_ARMYARMOR</item>
+        <item>ARMOR_HEAVYARMOR</item>
+      </loot>
+      <loot>
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_SILVERWARE</item>
+        <item>LOOT_TRINKET</item>
+        <item>LOOT_CHEAPJEWELERY</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>5</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>200</weight>
+          <type>BUM</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLLUTION:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2&amp;LAW:POLLUTION:=:-2">
+          <weight>50</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>GANGMEMBER</type>
+        </encounter>
+        <encounter>
+          <weight>50</weight>
+          <type>CRACKHEAD</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AMATEURMAGICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>NURSE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BIKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <!-- Outskirts -->
+  <location idname="GOVERNMENT_PRISON">
+    <name>Prison</name>
+    <name condition="LAW:PRISON:=:-2" shortname="Joycamp">Happy|Cheery|Quiet|Green|Nectar Valley|Meadow|Hills|Glade|Forest Forced Labor Camp</name>
+    <ccsname>Rehabilitation Center</ccsname>
+    <trouble>
+      <map>GOVERNMENT_PRISON</map>
+      <views>
+        <view>DEATH_PENALTY</view>
+        <view>DRUGS</view>
+        <view>TORTURE</view>
+        <view>PRISONS</view>
+      </views>
+      <newsheader>DEATH_PENALTY</newsheader>
+      <disguise>ARMOR_PRISONER</disguise>
+      <disguise condition="LAW:POLICE:&gt;:-2|LAW:PRISON:&gt;:-2">ARMOR_PRISONGUARD</disguise>
+      <disguise condition="LAW:POLICE:=:-2&amp;LAW:PRISON:=:-2">ARMOR_LABCOAT</disguise>
+      <flag>NEWS_PRIORITY_HIGH</flag>
+      <flag>HIGH_SECURITY</flag>
+      <loot weight="1">
+        <item>ARMOR_PRISONER</item>
+      </loot>
+      <loot weight="4">
+        <item>WEAPON_SHANK</item>
+      </loot>
+      <encounters>
+        <encounter condition="SPEC:RESTRICTED:=:True">
+          <weight>8</weight>
+          <type>PRISONER</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:-2&amp;LAW:PRISON:=:-2">
+          <weight>2</weight>
+          <type>EDUCATOR</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&gt;:-2|LAW:PRISON:&gt;:-2">
+          <weight>2</weight>
+          <type>PRISONGUARD</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:=:-2&amp;LAW:PRISON:=:-2&amp;VAR:highSecurity:&gt;:0">
+          <weight>1</weight>
+          <type>EDUCATOR</type>
+        </encounter>
+        <encounter condition="LAW:POLICE:&gt;:-2|LAW:PRISON:&gt;:-2&amp;VAR:highSecurity:&gt;:0">
+          <weight>1</weight>
+          <type>PRISONGUARD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="GOVERNMENT_INTELLIGENCEHQ">
+    <name shortname="Int. HQ">Intelligence HQ</name>
+    <name shortname="Miniluv" condition="LAW:PRIVACY:=:-2&amp;LAW:TORTURE:=:-2">Ministry of Love</name>
+    <ccsname>Electronic Frontier Foundation HQ</ccsname>
+    <trouble>
+      <map>GOVERNMENT_INTELLIGENCEHQ</map>
+      <responsetype>AGENT</responsetype>
+      <disguise>ARMOR_BLACKSUIT</disguise>
+      <disguise>ARMOR_BLACKDRESS</disguise>
+      <views>
+        <view>INTELLIGENCE</view>
+        <view>TORTURE</view>
+        <view>PRISONS</view>
+      </views>
+      <newsheader>INTELLIGENCE</newsheader>
+      <flag>NEWS_PRIORITY_HIGH</flag>
+      <flag>HIGH_SECURITY</flag>
+      <flag>RESTRICTED</flag>
+      <loot weight="42">
+        <item>WEAPON_FLAMETHROWER</item>
+        <item>WEAPON_SEMIPISTOL_45</item>
+        <item>WEAPON_SMG_MP5</item>
+        <item>WEAPON_CARBINE_M4</item>
+        <item>WEAPON_AUTORIFLE_M16</item>
+      </loot>
+      <loot weight="32">
+        <item>ARMOR_HEAVYARMOR</item>
+      </loot>
+      <loot weight="46">
+        <item>LOOT_SECRETDOCUMENTS</item>
+      </loot>
+      <loot weight="880">
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_PDA</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>50</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>50</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>50</weight>
+          <type>GUARDDOG</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>PROGRAMMER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>MILITARYOFFICER</type>
+        </encounter>
+        <encounter>
+          <weight>100</weight>
+          <type>AGENT</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>900</weight>
+          <type>AGENT</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>250</weight>
+          <type>GUARDDOG</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="INDUSTRY_NUCLEAR">
+    <name shortname="NPower Plant">Nuclear Power Plant</name>
+    <name shortname="NWaste Center" condition="LAW:NUCLEAR_POWER:=:2">Nuclear Waste Center</name>
+    <ccsname>Renewable Energy Foundation HQ</ccsname>
+    <trouble>
+      <map>INDUSTRY_NUCLEAR</map>
+      <disguise>ARMOR_LABCOAT</disguise>
+      <disguise>ARMOR_SECURITYUNIFORM</disguise>
+      <disguise>ARMOR_CIVILIANARMOR</disguise>
+      <disguise>ARMOR_HARDHAT</disguise>
+      <views>
+        <view>NUCLEAR_POWER</view>
+      </views>
+      <newsheader>NUCLEAR_POWER</newsheader>
+      <flag>NEWS_PRIORITY_HIGH</flag>
+      <flag>HIGH_SECURITY</flag>
+      <loot weight="50">
+        <item>LOOT_RESEARCHFILES</item>
+      </loot>
+      <loot weight="475">
+        <item>LOOT_LABEQUIPMENT</item>
+      </loot>
+      <loot weight="390">
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <loot weight="48">
+        <item>LOOT_PDA</item>
+      </loot>
+      <loot weight="38">
+        <item>LOOT_CHEMICAL</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>10</weight>
+          <type>SCIENTIST_LABTECH</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCIENTIST_EMINENT</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>90</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="CORPORATE_HEADQUARTERS">
+    <name shortname="Corp. HQ">Corporate HQ</name>
+    <ccsname>Welfare Assistance Agency</ccsname>
+    <trouble>
+      <map>CORPORATE_HEADQUARTERS</map>
+      <responsetype>MERC</responsetype>
+      <disguise>ARMOR_EXPENSIVESUIT</disguise>
+      <disguise>ARMOR_EXPENSIVEDRESS</disguise>
+      <disguise>ARMOR_CHEAPSUIT</disguise>
+      <disguise>ARMOR_CHEAPDRESS</disguise>
+      <disguise>ARMOR_SECURITYUNIFORM</disguise>
+      <views>
+        <view>TAXES</view>
+        <view>CORPORATE_CULTURE</view>
+        <view>WOMEN</view>
+      </views>
+      <newsheader>CORPORATE_CULTURE</newsheader>
+      <flag>NEWS_PRIORITY_HIGH</flag>
+      <flag>MID_SECURITY</flag>
+      <loot weight="1">
+        <item>LOOT_CORPFILES</item>
+      </loot>
+      <loot weight="49">
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_PDA</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>20</weight>
+          <type>CORPORATE_MANAGER</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>40</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>JUDGE_CONSERVATIVE</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>LAWYER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PRIEST</type>
+        </encounter>
+        <encounter>
+          <weight>80</weight>
+          <type>OFFICEWORKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>40</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>360</weight>
+          <type>SECURITYGUARD</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>100</weight>
+          <type>GUARDDOG</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="CORPORATE_HOUSE">
+    <name shortname="CEO House">CEO Residence</name>
+    <name condition="LAW:CORPORATE:=:-2&amp;LAW:TAX:=:-2">CEO Castle</name>
+    <ccsname>Tax Collection Agency</ccsname>
+    <trouble>
+      <map>ceoresidence.tmx</map>
+      <responsetype>MERC</responsetype>
+      <disguise>ARMOR_EXPENSIVESUIT</disguise>
+      <disguise>ARMOR_EXPENSIVEDRESS</disguise>
+      <disguise>ARMOR_SECURITYUNIFORM</disguise>
+      <disguise>ARMOR_SERVANTUNIFORM</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_MILITARY</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_ARMYARMOR</disguise>
+      <disguise condition="VAR:highSecurity:&gt;:0">ARMOR_SEALSUIT</disguise>
+      <views>
+        <view>TAXES</view>
+        <view>CEO_SALARY</view>
+      </views>
+      <newsheader>CEO_SALARY</newsheader>
+      <flag>NEWS_PRIORITY_HIGH</flag>
+      <flag>HIGH_SECURITY</flag>
+      <flag>RESTRICTED</flag>
+      <loot weight="1">
+        <item>ARMOR_EXPENSIVEDRESS</item>
+        <item>ARMOR_EXPENSIVESUIT</item>
+        <item>ARMOR_EXPENSIVESUIT</item>
+        <item>ARMOR_EXPENSIVESUIT</item>
+        <item>ARMOR_BONDAGEGEAR</item>
+      </loot>
+      <loot weight="49">
+        <item>LOOT_TRINKET</item>
+        <item>LOOT_WATCH</item>
+        <item>LOOT_PDA</item>
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_SILVERWARE</item>
+        <item>LOOT_CHEAPJEWELERY</item>
+        <item>LOOT_FAMILYPHOTO</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>30</weight>
+          <type>WORKER_SERVANT</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>WORKER_SECRETARY</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>GENETIC</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>LAWYER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PRIEST</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>GUARDDOG</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>GENETIC</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>45</weight>
+          <type>GUARDDOG</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>100</weight>
+          <type>MERC</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="GOVERNMENT_ARMYBASE">
+    <name shortname="Army Base">$SURNAME Army Base</name>
+    <name shortname="Minipax" condition="LAW:MILITARY:=:-2">Ministry of Peace</name>
+    <ccsname>World Peace Museum</ccsname>
+    <trouble>
+      <map>GOVERNMENT_ARMYBASE</map>
+      <responsetype>ARMY</responsetype>
+      <disguise>ARMOR_MILITARY</disguise>
+      <disguise>ARMOR_ARMYARMOR</disguise>
+      <disguise>ARMOR_SEALSUIT</disguise>
+      <views>
+        <view>TORTURE</view>
+        <view>MILITARY</view>
+      </views>
+      <flag>NEWS_PRIORITY_HIGH</flag>
+      <flag>HIGH_SECURITY</flag>
+      <loot weight="333">
+        <item>WEAPON_SEMIPISTOL_9MM</item>
+        <item>WEAPON_CARBINE_M4</item>
+        <item>WEAPON_AUTORIFLE_M16</item>
+      </loot>
+      <loot weight="333">
+        <item>ARMOR_ARMYARMOR</item>
+        <item>ARMOR_MILITARY</item>
+      </loot>
+      <loot weight="17">
+        <item>LOOT_SECRETDOCUMENTS</item>
+      </loot>
+      <loot weight="317">
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_WATCH</item>
+        <item>LOOT_TRINKET</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>750</weight>
+          <type>SOLDIER</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>GUARDDOG</type>
+        </encounter>
+        <encounter>
+          <weight>100</weight>
+          <type>MILITARYPOLICE</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>MILITARYOFFICER</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>SEAL</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>20</weight>
+          <type>GUARDDOG</type>
+        </encounter>
+        <encounter condition="VAR:highSecurity:&gt;:0">
+          <weight>100</weight>
+          <type>MILITARYPOLICE</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <location idname="CCS_BUNKER">
+    <name shortname="Bunker">Robert E. Lee Bunker</name>
+    <base>
+      <secrecy>12</secrecy>
+      <flag>CCS_BASE</flag>
+    </base>
+    <trouble>
+      <map>ccs_bunker.tmx</map>
+      <flag>RESTRICTED</flag>
+      <responsetype>CCS</responsetype>
+      <loot>
+        <item>WEAPON_SEMIPISTOL_9MM</item>
+        <item>WEAPON_SEMIPISTOL_45</item>
+        <item>WEAPON_REVOLVER_38</item>
+        <item>WEAPON_REVOLVER_44</item>
+        <item>WEAPON_SMG_MP5</item>
+        <item>WEAPON_CARBINE_M4</item>
+        <item>WEAPON_AUTORIFLE_M16</item>
+      </loot>
+      <loot>
+        <item>ARMOR_CHEAPSUIT</item>
+        <item>ARMOR_CLOTHES</item>
+        <item>ARMOR_TRENCHCOAT</item>
+        <item>ARMOR_WORKCLOTHES</item>
+        <item>ARMOR_SECURITYUNIFORM</item>
+        <item>ARMOR_CIVILIANARMOR</item>
+        <item>ARMOR_ARMYARMOR</item>
+        <item>ARMOR_HEAVYARMOR</item>
+      </loot>
+      <loot>
+        <item>LOOT_CELLPHONE</item>
+        <item>LOOT_SILVERWARE</item>
+        <item>LOOT_TRINKET</item>
+        <item>LOOT_CHEAPJEWELERY</item>
+        <item>LOOT_COMPUTER</item>
+      </loot>
+      <encounters>
+        <encounter>
+          <weight>5</weight>
+          <type>WORKER_JANITOR</type>
+        </encounter>
+        <encounter>
+          <weight>20</weight>
+          <type>TEENAGER</type>
+        </encounter>
+        <encounter>
+          <weight>3</weight>
+          <type>MUSICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>MATHEMATICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>200</weight>
+          <type>BUM</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:POLLUTION:=:-2">
+          <weight>2</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter condition="LAW:NUCLEAR_POWER:=:-2&amp;LAW:POLLUTION:=:-2">
+          <weight>50</weight>
+          <type>MUTANT</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>GANGMEMBER</type>
+        </encounter>
+        <encounter>
+          <weight>50</weight>
+          <type>CRACKHEAD</type>
+        </encounter>
+        <encounter>
+          <weight>10</weight>
+          <type>PROSTITUTE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>AMATEURMAGICIAN</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>HIPPIE</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>NURSE</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>BIKER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PAINTER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>SCULPTOR</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>DANCER</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>PHOTOGRAPHER</type>
+        </encounter>
+        <encounter>
+          <weight>5</weight>
+          <type>THIEF</type>
+        </encounter>
+        <encounter>
+          <weight>1</weight>
+          <type>ACTOR</type>
+        </encounter>
+      </encounters>
+    </trouble>
+  </location>
+  <!-- "Phantom" location for black market -->
+  <location idname="BLACK_MARKET">
+    <name>Black Market</name>
+    <shop>
+      <department name="Buy a Liberal Gun">
+        <item idname="WEAPON_SMG_MP5">
+          <price>1100</price>
+          <text>MP5 SMG</text>
+        </item>
+        <item idname="WEAPON_AUTORIFLE_AK47">
+          <price>1400</price>
+          <text>AK47</text>
+        </item>
+        <item idname="WEAPON_REVOLVER_44">
+          <price>500</price>
+          <text>.44 Magnum Revolver</text>
+        </item>
+        <item idname="WEAPON_SEMIPISTOL_9MM">
+          <price>300</price>
+          <text>9mm Pistol</text>
+        </item>
+        <item idname="WEAPON_SEMIPISTOL_45">
+          <price>300</price>
+          <text>.45 Pistol</text>
+        </item>
+        <item idname="WEAPON_SHOTGUN_PUMP">
+          <price>400</price>
+          <text>Shotgun</text>
+        </item>
+      </department>
+      <department name="Buy Liberal Clips">
+        <item idname="CLIP_BUCKSHOT">
+          <price>25</price>
+          <text>Shotgun Shells</text>
+        </item>
+        <item idname="CLIP_38">
+          <price>25</price>
+          <text>.38 Speedloader</text>
+        </item>
+        <item idname="CLIP_9">
+          <price>40</price>
+          <text>9mm Pistol Magazine</text>
+        </item>
+        <item idname="CLIP_45_EXTENDED">
+          <price>40</price>
+          <text>.45 Extended Magazine</text>
+        </item>
+        <item idname="CLIP_44">
+          <price>40</price>
+          <text>.44 Speedloader</text>
+        </item>
+        <item idname="CLIP_SMG">
+          <price>50</price>
+          <text>9mm SMG Magazine</text>
+        </item>
+        <item idname="CLIP_ASSAULT">
+          <price>50</price>
+          <text>Assault Rifle Magazine</text>
+        </item>
+      </department>
+    </shop>
+  </location>
+</locations>

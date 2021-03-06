@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+Location gen defs are macro definitions that can be used to define how location maps should be generated. These are distinct from maps built in
+Tiled in that they allow for random elements.
+
+Formatting:
+<sitemap idname="STRING"> idname must be unique
+  use: definition to be invoked before building this one.
+  <TAGNAME name="STRING" overwrite="BOOLEAN"> (repeatable) directions to be placed on the map. These are placed in order from top to bottom, so tiles farther down will overwrite tiles that have already been placed, unless they have been set not to with overwrite="false"
+    A NOTE ON COORDINATES: All coordinates used are based on X=0 being the center of the map, while Y=0 is the very top of the map. Thus, negative X values are allowed but negative Y values are not.
+      z coordinates are optional - if undefined it will default to 0. z=0 is the lowest possible floor on the map.
+    xstart: x coordinate to start placing tiles
+    xend: x coordinate to stop placing tiles
+    ystart: y coordinate to start placing tiles
+    yend: y coordinate to stop placing tiles.
+    zstart: floor to start placing tiles.
+    zend: floort to stop placing tiles
+    x: shortcut for setting xstart and xend to the same value
+    y: shortcut for setting ystart and yend to the same value
+    z: shortcut for setting zstart and zend to the same value
+    freq: used with nonunique tags - indicates this should be placed roughly once per (freq) tiles.
+    <arguments> arguments to be used in the script tag
+      ARGUMENTNAME: argument to send to the script. Currently the only used argument name is ROOMDIMENSION, which indicates how large rooms should be in the ROOM script
+    </arguments>
+  </TAGNAME>
+  TAGNAME can be one of the following:
+    tile - will fill the area with the specified tile type
+    script - runs a pre-defined script in the area
+    special - functionality differs depending on the provided name
+    unique - will place one of the specified tile type in the defined area
+    nonunique - will place one of the specified tile types every (freq) tiles
+    
+    valid tile names are:
+      EXIT
+      WALL
+      DOOR
+      FLOOR_INDOOR
+      FLOOR_OUTDOOR
+      FLOOR_PATH
+      STAIRS_UP
+      STAIRS_DOWN
+    valid script names are:
+      ROOM - fills an area with rectangular rooms of a size roughly determined by the ROOMDIMENSION argument
+    valid special names are:
+      START - the start location on the map. THERE SHOULD ONLY BE ONE OF THESE PER MAP, INCLUDING IN THE "use" CHAIN
+      RESTRICTED - marks tiles in the area as restricted
+      !RESTRICTED - unmarks tiles in the area as restricted (useful if going over an area that was previously marked as restricted)
+        A note about restricted tiles: unrestricted areas will "flood fill", so if a room is half filled with restricted and unrestricted tiles, it will be fully unrestricted before the map completes generation
+    valid unique/nonunique names are:
+      LAB_COSMETICS_CAGEDANIMALS
+      LAB_GENETIC_CAGEDANIMALS
+      POLICESTATION_LOCKUP
+      COURTHOUSE_LOCKUP
+      COURTHOUSE_JURYROOM
+      PRISON_CONTROL
+      PRISON_CONTROL_LOW
+      PRISON_CONTROL_MEDIUM
+      PRISON_CONTROL_HIGH
+      INTEL_SUPERCOMPUTER
+      SWEATSHOP_EQUIPMENT
+      POLLUTER_EQUIPMENT
+      NUCLEAR_ONOFF
+      HOUSE_PHOTOS
+      HOUSE_CEO
+      CORPORATE_FILES
+      RADIO_BROADCASTSTUDIO
+      NEWS_BROADCASTSTUDIO
+      APARTMENT_LANDLORD
+      RESTAURANT_TABLE
+      CAFE_COMPUTER
+      PARK_BENCH
+      CLUB_BOUNCER
+      ARMORY
+      DISPLAY_CASE
+      CCS_BOSS
+      BANK_VAULT
+      BANK_TELLER
+      BANK_MONEY
+      VAULT_DOOR
+        Note that even though these can be used for either unique or nonunique, many do not make sense to appear more than once per map.
+</sitemap>
+-->
+<defs>
+  <sitemap idname="GENERIC_FRONTDOOR">
+    <tile name="EXIT">
+      <xstart>-1</xstart>
+      <xend>1</xend>
+      <ystart>0</ystart>
+      <yend>1</yend>
+    </tile>
+    <tile name="FLOOR_PATH">
+      <x>0</x>
+      <y>1</y>
+    </tile>
+    <tile name="WALL">
+      <xstart>-1</xstart>
+      <xend>1</xend>
+      <y>2</y>
+    </tile>
+    <tile name="DOOR">
+      <x>0</x>
+      <y>2</y>
+    </tile>
+    <special name="START">
+      <x>0</x>
+      <y>1</y>
+      <z>0</z>
+    </special>
+  </sitemap>
+  <sitemap idname="GENERIC_UNSECURE">
+    <use>GENERIC_FRONTDOOR</use>
+    <script name="ROOM">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>3</ystart>
+      <yend>15</yend>
+      <arguments>
+        <ROOMDIMENSION>2</ROOMDIMENSION>
+      </arguments>
+    </script>
+  </sitemap>
+  <sitemap idname="GENERIC_SECURE">
+    <use>GENERIC_UNSECURE</use>
+    <special name="RESTRICTED">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+    </special>
+  </sitemap>
+  <sitemap idname="GENERIC_UNSECURE_LARGEROOM">
+    <use>GENERIC_FRONTDOOR</use>
+    <script name="ROOM">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>3</ystart>
+      <yend>15</yend>
+      <arguments>
+        <ROOMDIMENSION>4</ROOMDIMENSION>
+      </arguments>
+    </script>
+  </sitemap>
+  <sitemap idname="GENERIC_SECURE_LARGEROOM">
+    <use>GENERIC_UNSECURE_LARGEROOM</use>
+    <special name="RESTRICTED">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+    </special>
+  </sitemap>
+  <sitemap idname="GENERIC_ONEROOM">
+    <use>GENERIC_FRONTDOOR</use>
+    <tile name="WALL" overwrite="false">
+      <xstart>-5</xstart>
+      <xend>5</xend>
+      <ystart>2</ystart>
+      <yend>11</yend>
+    </tile>
+    <tile name="FLOOR_INDOOR">
+      <xstart>-4</xstart>
+      <xend>4</xend>
+      <ystart>3</ystart>
+      <yend>10</yend>
+    </tile>
+  </sitemap>
+  <sitemap idname="GENERIC_LOBBY">
+    <use>GENERIC_SECURE</use>
+    <special name="!RESTRICTED">
+      <x>0</x>
+      <y>3</y>
+    </special>
+  </sitemap>
+  <sitemap idname="GOVERNMENT_POLICE_STATION">
+    <use>GENERIC_SECURE</use>
+    <tile name="FLOOR_INDOOR">
+      <xstart>-2</xstart>
+      <xend>2</xend>
+      <ystart>3</ystart>
+      <yend>6</yend>
+    </tile>
+    <unique name="POLICESTATION_LOCKUP">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+    </unique>
+  </sitemap>
+  <sitemap idname="GOVERNMENT_COURTHOUSE">
+    <use>GENERIC_LOBBY</use>
+    <unique name="COURTHOUSE_LOCKUP">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+    </unique>
+    <unique name="COURTHOUSE_JURYROOM">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+    </unique>
+  </sitemap>
+  <sitemap idname="GOVERNMENT_PRISON">
+    <use>GENERIC_LOBBY</use>
+    <unique name="PRISON_CONTROL_LOW">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+      <z>0</z>
+    </unique>
+    <script name="ROOM">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>3</ystart>
+      <yend>15</yend>
+      <zstart>1</zstart>
+      <zend>2</zend>
+    </script>
+    <special name="RESTRICTED">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>3</ystart>
+      <yend>15</yend>
+      <zstart>1</zstart>
+      <zend>2</zend>
+    </special>
+    <unique name="PRISON_CONTROL_MEDIUM">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+      <z>1</z>
+    </unique>
+    <unique name="PRISON_CONTROL_HIGH">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+      <z>2</z>
+    </unique>
+  </sitemap>
+  <sitemap idname="MEDIA_AM_RADIO">
+    <use>GENERIC_SECURE</use>
+    <unique name="RADIO_BROADCASTSTUDIO">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+    </unique>
+  </sitemap>
+  <sitemap idname="MEDIA_CABLE_NEWS">
+    <use>GENERIC_SECURE</use>
+    <unique name="NEWS_BROADCASTSTUDIO">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+    </unique>
+  </sitemap>
+  <sitemap idname="INDUSTRY_SWEATSHOP">
+    <use>GENERIC_SECURE_LARGEROOM</use>
+    <nonunique name="SWEATSHOP_EQUIPMENT">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+      <freq>10</freq>
+    </nonunique>
+  </sitemap>
+  <sitemap idname="INDUSTRY_POLLUTER">
+    <use>GENERIC_SECURE_LARGEROOM</use>
+    <nonunique name="POLLUTER_EQUIPMENT">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+      <freq>10</freq>
+    </nonunique>
+  </sitemap>
+  <sitemap idname="BUSINESS_CAFE">
+    <use>GENERIC_ONEROOM</use>
+    <nonunique name="RESTAURANT_TABLE">
+      <xstart>-4</xstart>
+      <xend>4</xend>
+      <ystart>3</ystart>
+      <yend>10</yend>
+      <freq>10</freq>
+    </nonunique>
+  </sitemap>
+  <sitemap idname="BUSINESS_INTERNETCAFE">
+    <use>BUSINESS_CAFE</use>
+    <nonunique name="CAFE_COMPUTER">
+      <xstart>-4</xstart>
+      <xend>4</xend>
+      <ystart>3</ystart>
+      <yend>10</yend>
+      <freq>10</freq>
+    </nonunique>
+  </sitemap>
+  <sitemap idname="BUSINESS_RESTRICTEDCAFE">
+    <use>BUSINESS_CAFE</use>
+    <unique name="CLUB_BOUNCER">
+      <X>0</X>
+      <y>1</y>
+      <z>0</z>
+    </unique>
+    <special name="RESTRICTED">
+      <xstart>-4</xstart>
+      <xend>4</xend>
+      <ystart>2</ystart>
+      <yend>10</yend>
+    </special>
+  </sitemap>
+  <sitemap idname="INDUSTRY_NUCLEAR">
+    <use>GENERIC_SECURE</use>
+    <unique name="NUCLEAR_ONOFF">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+    </unique>
+  </sitemap>
+  <sitemap idname="GOVERNMENT_INTELLIGENCEHQ">
+    <use>GENERIC_SECURE</use>
+    <unique name="INTEL_SUPERCOMPUTER">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+    </unique>
+  </sitemap>
+  <sitemap idname="GOVERNMENT_ARMYBASE">
+    <use>GENERIC_SECURE</use>
+    <unique name="ARMORY">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+    </unique>
+  </sitemap>
+  <sitemap idname="CORPORATE_HEADQUARTERS">
+    <use>GENERIC_SECURE</use>
+    <unique name="CORPORATE_FILES">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+    </unique>
+  </sitemap>
+  <sitemap idname="LABORATORY_GENETIC">
+    <use>GENERIC_SECURE</use>
+    <nonunique name="LAB_GENETIC_CAGEDANIMALS">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+      <freq>10</freq>
+    </nonunique>
+  </sitemap>
+  <sitemap idname="LABORATORY_COSMETICS">
+    <use>GENERIC_SECURE</use>
+    <nonunique name="LAB_COSMETICS_CAGEDANIMALS">
+      <xstart>-12</xstart>
+      <xend>12</xend>
+      <ystart>2</ystart>
+      <yend>15</yend>
+      <freq>10</freq>
+    </nonunique>
+  </sitemap>
+</defs>

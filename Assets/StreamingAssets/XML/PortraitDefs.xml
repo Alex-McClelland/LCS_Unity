@@ -1,0 +1,1046 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+<part idname="NAME"> idname must be unique
+  class: what type of part this is.
+    valid classes are:
+    EYE
+    NOSE
+    MOUTH
+    EYEBROW
+    HAIR
+    JAW
+    EAR
+    HAIR_FACIAL
+    FACE_ACCESSORY
+    NECK_ACCESSORY
+    SCAR
+  <imageset> when generating a portrait, one of the defined imagesets will be picked for this item (repeatable)
+    image: The filename of the graphic to be used. Graphics need to be placed in the StreamingAssets/Graphics/Portraits folder.
+    image2: The filename of the graphic used by a second part (optional)
+    mask: The filename of the image mask used by the part.
+    mask2: The filename of the image mask used by the second image (optional)
+  </imageset>
+  weight: The weight value for this part when generating a portrait. (default: 20)
+  <flags>
+    flag: Flag associated with this part (repeatable)
+      valid flags are:
+      MASCULINE
+      FEMININE
+      LIBERAL_ONLY
+      CONSERVATIVE_ONLY
+      NON_LIBERAL
+      NON_CONSERVATIVE      
+      YOUNG_ONLY
+      OLD_ONLY
+      NOT_YOUNG
+      NOT_OLD
+      PRISON
+      DYE - special flag used only for hair accessories. Indicates that it should be tinted with the randomly selected "hair dye" colour. This can be used to create dyed/streaked hair graphics.
+  </flags>
+  <extra_flags>
+    flag: Any extra detail to be compared against a creature's "portrait_flags" definition. A ! prefix can be used to indicate that this part should NOT be used if the flag is present in the creature def (repeatable)
+  </extra_flags>
+  <accessories>
+    part: Accessory part tag formatting is the same as for the main part, except that "class" tag is not used.
+  </accessories>
+</part>
+
+Guide to portrait part functionality:
+The final size for the portrait is 200x200, but many parts will want to be smaller than this. There's no specific size requirements but as
+parts will be placed in relatively close proximity to each other it is a good idea to stick to roughly consistent dimensions. In the Graphics
+folder the file "PortraitExample.png" demonstrates the positioning of each part with a purple box indicating their origin points (the exact origin
+is in the middle of the 4 pixels that make the box). The circle that makes the top of the head is a fixed graphic, as is the neck. Note that for the
+FACE_ACCESSORY and NECK_ACCESSORY parts, the origin is the exact middle of the face, allowing them to be placed anywhere by drawing them on a
+200x200 image. The only difference between these two parts is that the FACE_ACCESSORY will be drawn in front of everything but the hair, while
+the NECK_ACCESSORY will be drawn behind everything but the neck.
+
+For EYE and JAW parts, the <mask> tag needs to be used - the mask on the EYE indicates the area of the eye that represents the "whites" of the eye.
+It is used to cull the iris so it doesn't draw outside of the eye area or over the eyelids. The mask on the JAW part simply culls beards so that they
+will conform to the shape of the jaw.
+
+The <image2> tag is used for EYE, EYEBROW, EAR, HAIR, and HAIR_FACIAL parts. For the EYE, EYEBROW, and EAR parts, it allows for the use of asymmetrical
+parts. The <image> tag will be the left side image and the <image2> tag will be the right side image. This also applies to accessories defined for these parts
+- if you wish to define an accessory that only appears on one eye/ear/eyebrow, use both image tags and set one of them to BLANK.png, which is just a single transparent pixel.
+Note that the right eye image is mirrored even if it is defined separately, so the graphic itself should be drawn accordingly. For the HAIR part, the <image2> tag represents hair that should be drawn
+behind the head, while for the HAIR_FACIAL part, the tag represents the beard hair (which will be culled by the jaw mask).
+
+Part flags will indicate which creatures should be allowed to generate with this part. MASCULINE and FEMININE parts are based on Liberal gender
+so creatures with a different birth sex will still select parts based on their preferred gender (note that since portraits are generated when the creature
+is first created, changing their sex after the fact will not alter their appearance). Intersex characters ignore these flags entirely. "YOUNG" applies
+to creatures below age 30, while "OLD" applies to creatures above age 50. extra_flags are freeform - they don't have any specific requirement but rather
+look for matches in a creature's "portrait_flags" definition. Any single match will count, so if a part is defined with eg. RICH and PUNK then any creature
+with either RICH or PUNK in their portrait_flags will be allowed to use this part. If a flag here is negated (using ! as a prefix), then this takes precedence over other matches
+(eg. if !RICH and PUNK are defined in extra_flags, and the creature def contains both RICH and PUNK, than even though the latter would normally cause it to match, the match on the
+former forces it to fail). The PRISON flag is a special flag that bypasses all of these tests for Prisoners, allowing them to use accessories that their creature type would otherwise not
+allow (alongside parts inside the <accessories> tag, this will work with FACE_ACCESSORY and NECK_ACCESSORY classes).
+
+The ~ character can be used as a prefix in an extra tag, along with the name of another accessory in another slot, to prevent that accessory from appearing if this one is chosen.
+To make accessories properly exclusive, this tag should be added to both definitions (e.g. MONACLE should contain ~ACCESSORY_GLASSES_1 and ACCESSORY_GLASSES_1 should contain ~MONACLE)
+
+All parts inside <accessories> tags will only be considered if the specific base part that contains them is selected first. There is only a 1/4
+chance per part that an accessory will be selected at all, but if this check passes then the odds are simply based on the weights.
+-->
+<portraitDefs>
+  <!-- Eyes -->
+  <part idname="EYE_1">
+    <class>EYE</class>
+    <imageset>
+      <image>EYE_1.png</image>
+      <mask>EYE_1_MASK.png</mask>
+    </imageset>
+    <accessories>
+      <part idname="FACE_TATTOO_TRIBAL">
+        <imageset>
+          <image>FACE_TATTOO_TRIBAL.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <imageset>
+          <image>BLANK.png</image>
+          <image2>FACE_TATTOO_TRIBAL.png</image2>
+        </imageset>
+        <extra_flags>
+          <flag>FACE_TATTOO</flag>
+        </extra_flags>
+      </part>
+      <part idname="FACE_TATTOO_TEARDROP">
+        <imageset>
+          <image>EYE_TEARDROP_TATTOO.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <imageset>
+          <image>EYE_TEARDROP_TATTOO_2.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <flags>
+          <flag>PRISON</flag>
+        </flags>
+        <extra_flags>
+          <flag>FACE_TATTOO</flag>
+          <flag>GANG_TATTOO</flag>
+        </extra_flags>
+      </part>
+      <part idname="FACE_TATTOO_THUGLIFE">
+        <imageset>
+          <image>EYE_TATTOO_THUG.png</image>
+          <image2>EYE_TATTOO_LIFE.png</image2>
+        </imageset>
+        <flags>
+          <flag>PRISON</flag>
+        </flags>
+        <extra_flags>
+          <flag>GANG_TATTOO</flag>
+        </extra_flags>
+      </part>
+      <part idname="MONACLE">
+        <imageset>
+          <image>EYE_MONACLE.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <imageset>
+          <image>BLANK.png</image>
+          <image2>EYE_MONACLE.png</image2>
+        </imageset>
+        <flags>
+          <flag>NON_LIBERAL</flag>
+          <flag>NOT_YOUNG</flag>
+        </flags>
+        <extra_flags>
+          <flag>RICH</flag>
+        </extra_flags>
+      </part>
+    </accessories>
+  </part>
+  <part idname="EYE_2">
+    <class>EYE</class>
+    <imageset>
+      <image>EYE_2.png</image>
+      <mask>EYE_2_MASK.png</mask>
+    </imageset>
+    <accessories>
+      <part idname="FACE_TATTOO_TRIBAL">
+        <imageset>
+          <image>FACE_TATTOO_TRIBAL.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <imageset>
+          <image>BLANK.png</image>
+          <image2>FACE_TATTOO_TRIBAL.png</image2>
+        </imageset>
+        <extra_flags>
+          <flag>FACE_TATTOO</flag>
+        </extra_flags>
+      </part>
+      <part idname="FACE_TATTOO_TEARDROP">
+        <imageset>
+          <image>EYE_TEARDROP_TATTOO.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <imageset>
+          <image>EYE_TEARDROP_TATTOO_2.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <flags>
+          <flag>PRISON</flag>
+        </flags>
+        <extra_flags>
+          <flag>FACE_TATTOO</flag>
+          <flag>GANG_TATTOO</flag>
+        </extra_flags>
+      </part>
+      <part idname="FACE_TATTOO_THUGLIFE">
+        <imageset>
+          <image>EYE_TATTOO_THUG.png</image>
+          <image2>EYE_TATTOO_LIFE.png</image2>
+        </imageset>
+        <flags>
+          <flag>PRISON</flag>
+        </flags>
+        <extra_flags>
+          <flag>GANG_TATTOO</flag>
+        </extra_flags>
+      </part>
+      <part idname="MONACLE">
+        <imageset>
+          <image>EYE_MONACLE.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <imageset>
+          <image>BLANK.png</image>
+          <image2>EYE_MONACLE.png</image2>
+        </imageset>
+        <flags>
+          <flag>NON_LIBERAL</flag>
+          <flag>NOT_YOUNG</flag>
+        </flags>
+        <extra_flags>
+          <flag>RICH</flag>
+          <flag>~ACCESSORY_GLASSES_1</flag>
+          <flag>~ACCESSORY_GLASSES_2</flag>
+          <flag>~ACCESSORY_GLASSES_AVIATOR</flag>
+        </extra_flags>
+      </part>
+    </accessories>
+  </part>
+  <!-- Eyebrows -->
+  <part idname="EYEBROW_1">
+    <class>EYEBROW</class>
+    <imageset>
+      <image>EYEBROW_1.png</image>
+    </imageset>
+    <accessories>
+      <part idname="ACCESSORY_1">
+        <imageset>
+          <image>EYEBROW_1_ACCESSORY_1.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <imageset>
+          <image>BLANK.png</image>
+          <image2>EYEBROW_1_ACCESSORY_1.png</image2>
+        </imageset>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="ACCESSORY_1_LIB">
+        <imageset>
+          <image>EYEBROW_1_ACCESSORY_1.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <imageset>
+          <image>BLANK.png</image>
+          <image2>EYEBROW_1_ACCESSORY_1.png</image2>
+        </imageset>
+        <flags>
+          <flag>LIBERAL_ONLY</flag>
+          <flag>NOT_OLD</flag>
+        </flags>
+      </part>
+    </accessories>
+  </part>
+  <part idname="EYEBROW_2">
+    <class>EYEBROW</class>
+    <imageset>
+      <image>EYEBROW_2.png</image>
+    </imageset>
+    <accessories>
+      <part idname="ACCESSORY_1">
+        <imageset>
+          <image>EYEBROW_2_ACCESSORY_1.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <imageset>
+          <image>BLANK.png</image>
+          <image2>EYEBROW_2_ACCESSORY_1.png</image2>
+        </imageset>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="ACCESSORY_1_LIB">
+        <imageset>
+          <image>EYEBROW_2_ACCESSORY_1.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <imageset>
+          <image>BLANK.png</image>
+          <image2>EYEBROW_2_ACCESSORY_1.png</image2>
+        </imageset>
+        <flags>
+          <flag>LIBERAL_ONLY</flag>
+          <flag>NOT_OLD</flag>
+        </flags>
+      </part>
+    </accessories>
+  </part>
+  <!-- Noses -->
+  <part idname="NOSE_1">
+    <class>NOSE</class>
+    <imageset>
+      <image>NOSE_1.png</image>
+    </imageset>
+    <accessories>
+      <part idname="NOSE_STUD">
+        <imageset>
+          <image>NOSE_2_STUD.png</image>
+        </imageset>
+        <imageset>
+          <image>NOSE_2_STUD_2.png</image>
+        </imageset>
+        <flags>
+          <flag>FEMININE</flag>
+        </flags>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="NOSE_STUD_LIB">
+        <imageset>
+          <image>NOSE_2_STUD.png</image>
+        </imageset>
+        <imageset>
+          <image>NOSE_2_STUD_2.png</image>
+        </imageset>
+        <flags>
+          <flag>LIBERAL_ONLY</flag>
+          <flag>NOT_OLD</flag>
+        </flags>
+      </part>
+      <part idname="NOSE_RING">
+        <imageset>
+          <image>NOSE_1_RING.png</image>
+        </imageset>
+        <imageset>
+          <image>NOSE_1_RING_2.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="NOSE_RING_LIB">
+        <imageset>
+          <image>NOSE_1_RING.png</image>
+        </imageset>
+        <imageset>
+          <image>NOSE_1_RING_2.png</image>
+        </imageset>
+        <flags>
+          <flag>LIBERAL_ONLY</flag>
+          <flag>NOT_OLD</flag>
+        </flags>
+      </part>
+    </accessories>
+  </part>
+  <part idname="NOSE_2">
+    <class>NOSE</class>
+    <imageset>
+      <image>NOSE_2.png</image>
+    </imageset>
+    <accessories>
+      <part idname="NOSE_2_STUD">
+        <imageset>
+          <image>NOSE_2_STUD.png</image>
+        </imageset>
+        <imageset>
+          <image>NOSE_2_STUD_2.png</image>
+        </imageset>
+        <flags>
+          <flag>FEMININE</flag>
+        </flags>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="NOSE_2_STUD_LIB">
+        <imageset>
+          <image>NOSE_2_STUD.png</image>
+        </imageset>
+        <imageset>
+          <image>NOSE_2_STUD_2.png</image>
+        </imageset>
+        <flags>
+          <flag>FEMININE</flag>
+        </flags>
+        <flags>
+          <flag>LIBERAL_ONLY</flag>
+          <flag>NOT_OLD</flag>
+        </flags>
+      </part>
+      <part idname="NOSE_2_BULLRING">
+        <imageset>
+          <image>NOSE_2_BULLRING.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="NOSE_2_BULLRING_LIB">
+        <imageset>
+          <image>NOSE_2_BULLRING.png</image>
+        </imageset>
+        <flags>
+          <flag>LIBERAL_ONLY</flag>
+          <flag>NOT_OLD</flag>
+        </flags>
+      </part>
+    </accessories>
+  </part>
+  <!-- Mouths -->
+  <part idname="MOUTH_1">
+    <class>MOUTH</class>
+    <imageset>
+      <image>MOUTH_1.png</image>
+    </imageset>
+    <accessories>
+      <part idname="LIPSTICK_PLAIN">
+        <imageset>
+          <image>MOUTH_1_LIPSTICK_RED.png</image>
+        </imageset>
+        <flags>
+          <flag>FEMININE</flag>
+        </flags>
+        <extra_flags>
+          <flag>!DEATHSQUAD</flag>
+        </extra_flags>
+      </part>
+      <part idname="LIPSTICK_EXOTIC">
+        <weight>10</weight>
+        <imageset>
+          <image>MOUTH_1_LIPSTICK_PURPLE.png</image>
+        </imageset>
+        <imageset>
+          <image>MOUTH_1_LIPSTICK_BLUE.png</image>
+        </imageset>
+        <imageset>
+          <image>MOUTH_1_LIPSTICK_BLACK.png</image>
+        </imageset>
+        <flags>
+          <flag>FEMININE</flag>
+          <flag>LIBERAL_ONLY</flag>
+        </flags>
+      </part>
+      <part idname="LIPSTICK_EXOTIC_PUNK">
+        <weight>10</weight>
+        <imageset>
+          <image>MOUTH_1_LIPSTICK_PURPLE.png</image>
+        </imageset>
+        <imageset>
+          <image>MOUTH_1_LIPSTICK_BLUE.png</image>
+        </imageset>
+        <imageset>
+          <image>MOUTH_1_LIPSTICK_BLACK.png</image>
+        </imageset>
+        <flags>
+          <flag>FEMININE</flag>
+        </flags>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="LIPSTICK_BLACK">
+        <imageset>
+          <image>MOUTH_1_LIPSTICK_BLACK.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>DEATHSQUAD</flag>
+        </extra_flags>
+      </part>
+      <part idname="BEAUTY_MARK">
+        <imageset>
+          <image>MOUTH_BEAUTY_MARK.png</image>
+        </imageset>
+        <flags>
+          <flag>FEMININE</flag>
+        </flags>
+      </part>
+    </accessories>
+  </part>
+  <part idname="MOUTH_2">
+    <class>MOUTH</class>
+    <imageset>
+      <image>MOUTH_2.png</image>
+    </imageset>
+	  <flags>
+		  <flag>FEMININE</flag>
+	  </flags>
+    <accessories>
+      <part idname="LIPSTICK_PLAIN">
+        <imageset>
+          <image>MOUTH_2_LIPSTICK_RED.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>!DEATHSQUAD</flag>
+        </extra_flags>
+      </part>
+      <part idname="LIPSTICK_EXOTIC">
+        <weight>10</weight>
+        <imageset>
+          <image>MOUTH_2_LIPSTICK_PURPLE.png</image>
+        </imageset>
+        <imageset>
+          <image>MOUTH_2_LIPSTICK_BLUE.png</image>
+        </imageset>
+        <imageset>
+          <image>MOUTH_2_LIPSTICK_BLACK.png</image>
+        </imageset>
+        <flags>
+          <flag>LIBERAL_ONLY</flag>
+        </flags>
+      </part>
+      <part idname="LIPSTICK_EXOTIC_PUNK">
+        <weight>10</weight>
+        <imageset>
+          <image>MOUTH_2_LIPSTICK_PURPLE.png</image>
+        </imageset>
+        <imageset>
+          <image>MOUTH_2_LIPSTICK_BLUE.png</image>
+        </imageset>
+        <imageset>
+          <image>MOUTH_2_LIPSTICK_BLACK.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="LIPSTICK_BLACK">
+        <imageset>
+          <image>MOUTH_2_LIPSTICK_BLACK.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>DEATHSQUAD</flag>
+        </extra_flags>
+      </part>
+      <part idname="BEAUTY_MARK">
+        <imageset>
+          <image>MOUTH_BEAUTY_MARK.png</image>
+        </imageset>
+        <flags>
+          <flag>FEMININE</flag>
+        </flags>
+      </part>
+    </accessories>
+  </part>
+  <!-- Jaws -->
+  <part idname="JAW_1">
+    <class>JAW</class>
+    <imageset>
+      <image>JAW_1.png</image>
+      <mask>JAW_1_MASK.png</mask>
+    </imageset>
+    <flags>
+      <flag>FEMININE</flag>
+    </flags>
+  </part>
+  <part idname="JAW_2">
+    <class>JAW</class>
+    <imageset>
+      <image>JAW_2.png</image>
+      <mask>JAW_2_MASK.png</mask>
+    </imageset>
+    <flags>
+      <flag>MASCULINE</flag>
+    </flags>
+  </part>
+  <part idname="JAW_3">
+    <class>JAW</class>
+    <imageset>
+      <image>JAW_3.png</image>
+      <mask>JAW_3_MASK.png</mask>
+    </imageset>
+  </part>
+  <!-- Ears -->
+  <part idname="EAR_1">
+    <class>EAR</class>
+    <imageset>
+      <image>EAR_1.png</image>
+    </imageset>
+    <accessories>
+      <part idname="HOOP_EARRING">
+        <imageset>
+          <image>EAR_1_HOOP_EARRING.png</image>
+        </imageset>
+        <flags>
+          <flag>FEMININE</flag>
+        </flags>
+      </part>
+      <part idname="MULTI_PIERCING">
+        <imageset>
+          <image>BLANK.png</image>
+          <image2>EAR_1_MULTI.png</image2>
+        </imageset>
+        <imageset>
+          <image>EAR_1_MULTI.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <imageset>
+          <image>EAR_1_MULTI.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="MULTI_PIERCING_LIB">
+        <imageset>
+          <image>BLANK.png</image>
+          <image2>EAR_1_MULTI.png</image2>
+        </imageset>
+        <imageset>
+          <image>EAR_1_MULTI.png</image>
+          <image2>BLANK.png</image2>
+        </imageset>
+        <flags>
+          <flag>LIBERAL_ONLY</flag>
+          <flag>NOT_OLD</flag>
+        </flags>
+      </part>
+    </accessories>
+  </part>
+  <!-- Hair -->
+  <part idname="HAIR_1">
+    <class>HAIR</class>
+    <imageset>
+      <image>HAIR_1.png</image>
+    </imageset>
+    <accessories>
+      <part idname="DYE_FULL">
+        <weight>10</weight>
+        <imageset>
+          <image>HAIR_1.png</image>
+        </imageset>
+        <flags>
+          <flag>DYE</flag>
+          <flag>LIBERAL_ONLY</flag>
+          <flag>NOT_OLD</flag>
+        </flags>
+      </part>
+      <part idname="DYE_FULL_PUNK">
+        <weight>10</weight>
+        <imageset>
+          <image>HAIR_1.png</image>
+        </imageset>
+        <flags>
+          <flag>DYE</flag>
+        </flags>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="HIPPIE_HEADBAND">
+        <imageset>
+          <image>HAIR_HIPPIE_HEADBAND.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>HIPPIE</flag>
+        </extra_flags>
+      </part>
+    </accessories>
+  </part>
+  <part idname="HAIR_1_FEMININE">
+    <class>HAIR</class>
+    <imageset>
+      <image>HAIR_1.png</image>
+      <image2>HAIR_1_BACK.png</image2>
+    </imageset>
+    <flags>
+      <flag>FEMININE</flag>
+    </flags>
+    <accessories>
+      <part idname="DYE_FULL">
+        <weight>10</weight>
+        <imageset>
+          <image>HAIR_1.png</image>
+          <image2>HAIR_1_BACK.png</image2>
+        </imageset>
+        <flags>
+          <flag>DYE</flag>
+          <flag>LIBERAL_ONLY</flag>
+          <flag>NOT_OLD</flag>
+        </flags>
+      </part>
+      <part idname="DYE_FULL_PUNK">
+        <weight>10</weight>
+        <imageset>
+          <image>HAIR_1.png</image>
+          <image2>HAIR_1_BACK.png</image2>
+        </imageset>
+        <flags>
+          <flag>DYE</flag>
+        </flags>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="HIPPIE_HEADBAND">
+        <imageset>
+          <image>HAIR_HIPPIE_HEADBAND.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>HIPPIE</flag>
+        </extra_flags>
+      </part>
+    </accessories>
+  </part>
+  <part idname="HAIR_2">
+    <class>HAIR</class>
+    <imageset>
+      <image>HAIR_2.png</image>
+    </imageset>
+    <accessories>
+      <part idname="DYE_FULL">
+        <weight>10</weight>
+        <imageset>
+          <image>HAIR_2.png</image>
+        </imageset>
+        <flags>
+          <flag>DYE</flag>
+          <flag>LIBERAL_ONLY</flag>
+          <flag>NOT_OLD</flag>
+        </flags>
+      </part>
+      <part idname="DYE_FULL_PUNK">
+        <weight>10</weight>
+        <imageset>
+          <image>HAIR_2.png</image>
+        </imageset>
+        <flags>
+          <flag>DYE</flag>
+        </flags>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="HIPPIE_HEADBAND">
+        <imageset>
+          <image>HAIR_2_HIPPIE_HEADBAND.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>HIPPIE</flag>
+        </extra_flags>
+      </part>
+    </accessories>
+  </part>
+  <part idname="HAIR_2_FEMININE">
+    <class>HAIR</class>
+    <imageset>
+      <image>HAIR_2.png</image>
+      <image2>HAIR_2_BACK.png</image2>
+    </imageset>
+    <flags>
+      <flag>FEMININE</flag>
+    </flags>
+    <accessories>
+      <part idname="DYE_FULL">
+        <weight>10</weight>
+        <imageset>
+          <image>HAIR_2.png</image>
+          <image2>HAIR_2_BACK.png</image2>
+        </imageset>
+        <flags>
+          <flag>DYE</flag>
+          <flag>LIBERAL_ONLY</flag>
+          <flag>NOT_OLD</flag>
+        </flags>
+      </part>
+      <part idname="DYE_FULL_PUNK">
+        <weight>10</weight>
+        <imageset>
+          <image>HAIR_2.png</image>
+          <image2>HAIR_2_BACK.png</image2>
+        </imageset>
+        <flags>
+          <flag>DYE</flag>
+        </flags>
+        <extra_flags>
+          <flag>PUNK</flag>
+        </extra_flags>
+      </part>
+      <part idname="HIPPIE_HEADBAND">
+        <imageset>
+          <image>HAIR_2_HIPPIE_HEADBAND.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>HIPPIE</flag>
+        </extra_flags>
+      </part>
+    </accessories>
+  </part>
+  <part idname="HAIR_3">
+    <class>HAIR</class>
+    <imageset>
+      <image>HAIR_3.png</image>
+    </imageset>
+    <imageset>
+      <image>HAIR_3.png</image>
+      <image2>HAIR_2_BACK.png</image2>
+    </imageset>
+    <weight>10</weight>
+    <flags>
+      <flag>NON_CONSERVATIVE</flag>
+      <flag>FEMININE</flag>
+      <flag>YOUNG_ONLY</flag>
+    </flags>
+    <accessories>
+      <part idname="DYE_FRINGE">
+        <imageset>
+          <image>HAIR_3_DYE.png</image>
+        </imageset>
+        <flags>
+          <flag>DYE</flag>
+        </flags>
+      </part>
+      <part idname="HIPPIE_HEADBAND">
+        <imageset>
+          <image>HAIR_3_HIPPIE_HEADBAND.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>HIPPIE</flag>
+        </extra_flags>
+      </part>
+    </accessories>
+  </part>
+  <part idname="HAIR_3_LIB">
+    <class>HAIR</class>
+    <imageset>
+      <image>HAIR_3.png</image>
+    </imageset>
+    <weight>10</weight>
+    <flags>
+      <flag>LIBERAL_ONLY</flag>
+      <flag>NOT_OLD</flag>
+    </flags>
+    <accessories>
+      <part idname="DYE_FRINGE">
+        <imageset>
+          <image>HAIR_3_DYE.png</image>
+        </imageset>
+        <flags>
+          <flag>DYE</flag>
+        </flags>
+      </part>
+      <part idname="HIPPIE_HEADBAND">
+        <imageset>
+          <image>HAIR_3_HIPPIE_HEADBAND.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>HIPPIE</flag>
+        </extra_flags>
+      </part>
+    </accessories>
+  </part>
+  <part idname="HAIR_4">
+    <class>HAIR</class>
+    <weight>10</weight>
+    <imageset>
+      <image>HAIR_4.png</image>
+    </imageset>
+    <flags>
+      <flag>NOT_OLD</flag>
+      <flag>MASCULINE</flag>
+    </flags>
+    <extra_flags>
+      <flag>!RICH</flag>
+    </extra_flags>
+    <accessories>
+      <part idname="HIPPIE_HEADBAND">
+        <imageset>
+          <image>HAIR_HIPPIE_HEADBAND.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>HIPPIE</flag>
+        </extra_flags>
+      </part>
+    </accessories>
+  </part>
+  <part idname="HAIR_4_LIB">
+    <class>HAIR</class>
+    <weight>10</weight>
+    <imageset>
+      <image>HAIR_4.png</image>
+    </imageset>
+    <flags>
+      <flag>NOT_OLD</flag>
+      <flag>LIBERAL_ONLY</flag>
+    </flags>
+    <accessories>
+      <part idname="HIPPIE_HEADBAND">
+        <imageset>
+          <image>HAIR_HIPPIE_HEADBAND.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>HIPPIE</flag>
+        </extra_flags>
+      </part>
+    </accessories>
+  </part>
+  <part idname="HAIR_5">
+    <class>HAIR</class>
+    <imageset>
+      <image>HAIR_5.png</image>
+    </imageset>
+    <flags>
+      <flag>MASCULINE</flag>
+      <flag>NOT_YOUNG</flag>
+    </flags>
+    <accessories>
+      <part idname="HIPPIE_HEADBAND">
+        <imageset>
+          <image>HAIR_HIPPIE_HEADBAND.png</image>
+        </imageset>
+        <extra_flags>
+          <flag>HIPPIE</flag>
+        </extra_flags>
+      </part>
+    </accessories>
+  </part>
+  <!-- Facial Hair -->
+  <part idname="HAIR_FACIAL_1">
+    <class>HAIR_FACIAL</class>
+    <imageset>
+      <image>HAIR_FACIAL_1.png</image>
+    </imageset>
+  </part>
+  <part idname="HAIR_FACIAL_1_BEARD">
+    <class>HAIR_FACIAL</class>
+    <imageset>
+      <image>HAIR_FACIAL_1.png</image>
+      <image2>HAIR_FACIAL_1_BEARD.png</image2>
+    </imageset>
+    <extra_flags>
+      <flag>!COP</flag>
+    </extra_flags>
+  </part>
+  <!-- Face/Neck Accessories -->
+  <part idname="ACCESSORY_NECKALCE_1">
+    <class>NECK_ACCESSORY</class>
+    <imageset>
+      <image>ACCESSORY_NECKLACE_1.png</image>
+    </imageset>
+    <flags>
+      <flag>FEMININE</flag>
+    </flags>
+    <extra_flags>
+      <flag>RICH</flag>
+    </extra_flags>
+  </part>
+  <part idname="ACCESSORY_NECK_TATTOO_CROSS">
+    <class>NECK_ACCESSORY</class>
+    <imageset>
+      <image>ACCESSORY_NECK_TATTOO_CROSS.png</image>
+    </imageset>
+    <flags>
+      <flag>PRISON</flag>
+    </flags>
+    <extra_flags>
+      <flag>GANG_TATTOO</flag>
+    </extra_flags>
+  </part>
+  <part idname="ACCESSORY_GLASSES_1">
+    <class>FACE_ACCESSORY</class>
+    <imageset>
+      <image>ACCESSORY_GLASSES_1_BLACK.png</image>
+    </imageset>
+    <imageset>
+      <image>ACCESSORY_GLASSES_1_RED.png</image>
+    </imageset>
+    <imageset>
+      <image>ACCESSORY_GLASSES_1_BLUE.png</image>
+    </imageset>
+    <imageset>
+      <image>ACCESSORY_GLASSES_1_WHITE.png</image>
+    </imageset>
+    <extra_flags>
+      <flag>NERD</flag>
+      <flag>~MONACLE</flag>
+    </extra_flags>
+  </part>
+  <part idname="ACCESSORY_GLASSES_2">
+    <class>FACE_ACCESSORY</class>
+    <imageset>
+      <image>ACCESSORY_GLASSES_2.png</image>
+    </imageset>
+    <extra_flags>
+      <flag>!PUNK</flag>
+      <flag>!COP</flag>
+      <flag>!DEATHSQUAD</flag>
+      <flag>~MONACLE</flag>
+    </extra_flags>
+  </part>
+  <part idname="ACCESSORY_GLASSES_AVIATOR">
+    <class>FACE_ACCESSORY</class>
+    <imageset>
+      <image>ACCESSORY_GLASSES_AVIATOR.png</image>
+    </imageset>
+    <extra_flags>
+      <flag>COP</flag>
+      <flag>~MONACLE</flag>
+    </extra_flags>
+  </part>
+  <part idname="ACCESSORY_FACE_DEATHSQUAD">
+    <class>FACE_ACCESSORY</class>
+    <imageset>
+      <image>ACCESSORY_FACE_DEATHSQUAD.png</image>
+    </imageset>
+    <extra_flags>
+      <flag>DEATHSQUAD</flag>
+    </extra_flags>
+  </part>
+  <part idname="ACCESSORY_FACE_GLASSES_HIPPIE">
+    <class>FACE_ACCESSORY</class>
+    <imageset>
+      <image>ACCESSORY_GLASSES_HIPPIE.png</image>
+    </imageset>
+    <flags>
+      <flag>NON_CONSERVATIVE</flag>
+    </flags>
+  </part>
+  <part idname="FRECKLES">
+    <class>FACE_ACCESSORY</class>
+    <imageset>
+      <image>FACE_FRECKLES.png</image>
+    </imageset>
+  </part>
+  <!-- scars -->
+  <part idname="SCAR_CHEEK">
+    <class>SCAR</class>
+    <imageset>
+      <image>SCAR_CHEEK_1.png</image>
+    </imageset>
+    <imageset>
+      <image>SCAR_CHEEK_2.png</image>
+    </imageset>
+    <imageset>
+      <image>SCAR_CHEEK_3.png</image>
+    </imageset>
+  </part>
+  <part idname="SCAR_NOSE">
+    <class>SCAR</class>
+    <imageset>
+      <image>SCAR_NOSE_1.png</image>
+    </imageset>
+    <imageset>
+      <image>SCAR_NOSE_2.png</image>
+    </imageset>
+    <imageset>
+      <image>SCAR_NOSE_3.png</image>
+    </imageset>
+  </part>
+</portraitDefs>

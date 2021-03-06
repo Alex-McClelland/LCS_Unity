@@ -1,0 +1,3577 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Item Def formatting:
+
+The weapon/armor/vehicle/clip/loot tags are not mutually exclusive, although given how items are used in practice there isn't a lot of value in
+having both a weapon and armor tag on the same item. Also, having a vehicle tag alongside a weapon or armor tag might lead to some odd behaviour since
+vehicles are not removed from a safehouse inventory when they are equipped, while weapons and armor are.
+
+<item idname="STRING"> idname must be unique
+  icon: filename for graphic to be used as an icon for the item. 64x64, stored in the StreamingAssets/Graphics/Items folder (optional)
+  icon_future: filename for graphic to be used as an icon for the item after the in-game future date. If this is left out the regular icon will be used (optional)
+  name: full name of the item
+  shortname: shortened name for the item (will use regular name if undefined)
+  name_future: name to be used in years beyond FUTUREYEAR (defined in BaseDefs.xml) (optional)
+  shortname_future: shortname to be used in years beyond FUTUREYEAR (optional)
+  <weapon>
+    legality: Number indicating gun control level that the weapon will become available for sale. -3 indicates never legal. 2 means always legal (default 2)
+    size: The size of the weapon (default 15)
+    bashstrengthmod: percentage modifier applied to strength why trying to break down doors (default 100)
+    default_clip: What clip type should be spawned along with this weapon on NPCs. Leaving blank means no clips (optional)
+    <attacks>
+      attack: List of attack defs that the weapon will use, in priority order (first attack will always be tried first, if it fails due to lack of ammo, range, etc. second attack will be tried and so on) (repeatable)
+    </attacks>
+    <flags>
+      flag: Any flags applied to the weapon (repeatable)
+      available flags are:
+        TAKE_HOSTAGE: Can be used to take hostages (without this flag libs will just attempt to grab the hostage)
+        THREATENING: Weapon is threatening (determines if you can take someone holding this weapon hostage, will scare off hicks attacking during liberal disobedience, etc.)
+        INSTRUMENT: Weapon generates bonus income when equipped and using the "play music" fundraising activity
+        GRAFFITI: Weapon can get used to spray graffiti when equipped
+        BREAK_LOCK: Weapon will allow for instantly bashing open doors without a strength check
+        NOT_SUSPICIOUS: Weapon can be carried openly without causing alarm
+        THROWN: Weapon is thrown (consumes itself on attack)
+        ALWAYS_LOADED: When spawned as random loot, weapon will always have a clip inside
+    </flags>
+  </weapon>
+  <armor>
+    make_difficulty: how hard it is to make this armor by hand. 0 means it cannot be created by libs (default 0)
+    make_price: How much it costs to make this armor by hand (default 0)
+    stealth_value: Bonus applied to stealth checks while wearing this armor (default 0)
+    professionalism: Bonus to income when worn during the "solicit donations" fundraising activity (default 2)
+    conceal_weapon_size: How large a weapon this armor can conceal (default 5)
+    qualitylevels: How many quality levels this armor can lose before it is destroyed (default 4)
+    durability: affects the likelihood of this armor losing a quality level when taking damage (default 10)
+    <interrogation> (optional)
+      basepower: basic bonus applied to any interrogation while wearing this armor (default 0)
+      assaultbonus: bonus applied when assaulting hostages (default 0)
+      drugbonus: bonus applied when drugging hostages (default 0)
+    </interrogation>
+    <body_covering> (if left out, this will default to covering HUMAN_TORSO, HUMAN_ARM, and HUMAN_LEG)
+      <part> body part def that this armor will cover (repeatable)
+    </body_covering>
+    <armor> (optional)
+      PART_NAME: Tag name is a part def that this armor value will be used for. Value is the amount of armor on that part.
+    </armor>
+    <appropriate_weapon> (optional)
+      weapon: Weapon def that is considered "appropriate" for this disguise and thus will not raise alarm when carried (repeatable)
+    </appropriate_weapon>
+    <flags>
+      flag: Flags applied to this armor (repeatable)
+      available flags are:
+        DEATHSQUAD: This armor can only be crafted when the death squad exists (police and death penalty laws at C+)
+        NO_BLOODY: This armor can't get bloody
+        NO_DAMAGE: This armor can't get damaged
+        FIRE_PROTECTION: This armor reduces damage taken from fire
+        CONCEAL_FACE: This armor conceals the face (currently has no effect in-game)
+        POLICE: This armor is considered a police outfit (counts as a "partially valid" disguise on any site)
+        SWAT: This armor is considered a SWAT outfit (counts as a valid disguise if massive police response has arrived on the site)
+        FIRE_VULN: This armor is less effective against BURN damage attacks
+        DATE_APPROPRIATE: Creatures will wear these outfits to dates instead of generic clothes, if they already have them.
+    </flags>
+  </armor>
+  <clip>
+    ammotype: what kind of ammo this clip carries
+    ammo: how much ammo in a full clip (default 1)
+    legality: gun control alignment at which this clip will be sold. -3 means never legal, 2 means always legal (default 2).
+  </clip>
+  <vehicle>
+    icon: Graphic file to be used for applying vehicle colour to the icon. This will be drawn over the main icon so any parts that will not take the paint colour should be transparent.
+    <year>
+      start_at_year: What year this car was first produced (if set to 0, it will start at the current year) (default 0)
+      add_random: the range that can be added to the starting year. If negative, will be subtracted instead (use negative with start year of 0 unless you want cars from the future) (default 0)
+    </year>
+    <colors>
+      color: Colors the car can be (repeatable)
+      available colors are:
+        RED,
+        WHITE,
+        BLUE,
+        TAN,
+        BLACK,
+        YELLOW,
+        GREEN,
+        POLICE (note: this color will not apply any tint to the vehicle and will instead use whatever the original color on the icon was)
+    </colors>
+    <drivebonus>
+      base: A bonus given to driving skill for pursuits (default 0)
+      skillfactor: a multiplier to skill for pursuits (default 1)
+      softlimit: bonus + skill above this level will provide half benefit (default 8)
+      hardlimit: bonus + skill beyond this level will provide no benefit (default 99)
+    </drivebonus>
+    <dodgebonus>
+      base: A bonus given to driving skill for evasive maneuvers (default 0)
+      skillfactor: a multiplier to skill for evasive maneuvers (default 1)
+      softlimit: bonus + skill above this level will provide half benefit (default 8)
+      hardlimit: bonus + skill beyond this level will provide no benefit (default 99)
+    </dodgebonus>
+    <attackbonus>
+      driver: A bonus/penalty given to the driver when attacking (default -2)
+      passenger: A bonus/penalty given to passengers when attacking (default 0)
+    </attackbonus>
+    <armor>
+      low_armor: armor bonus range given to attacks against legs/lower body parts (default 5)
+      high_armor: armor bonus range given to attacks against head/upper body parts (default 1)
+      armor_midpoint: A percentage rolled against for attacks against mid body parts to determine if they are protected by high or low armor (default 50)
+    </armor>
+    size: currently unused (default 2)
+    <stealing>
+      difficulty_to_find: How hard this vehicle is to find unattended (default 1)
+      juice: juice given when stealing this vehicle (default 0)
+      extra_heat: additional heat given to this vehicle when stolen (default 0)
+      sense_alarm_chance: The chance of this vehicle having THE VIPER installed (default 0)
+      touch_alarm_chance: The chanse of this vehicle having a standard alarm installed (default 0)
+    </stealing>
+  </vehicle>
+  <loot>
+    fencevalue: amount this loot will be sold for at the pawn shop (default 0)
+    <flags>
+      flag: loot flags for this item (repeatable)
+      available flags are:
+        QUICK_FENCE: This item is "vendor trash" and will be automatically added to the sell cart when clicking the "sell all loot" button.
+        CLOTH: This item is consumed when crafting armor and halves the cost of the attempt.
+    </flags>
+    <evidence> (repeatable) This item can be used to print special editions of the Liberal Guardian. When it is selected, one evidence tag will be chosen at random to be used.
+      <affectedissue> (repeatable)
+        issue: The issue affected by this evidence
+        strength: how much public opinion on this issue is affected
+      </affectedissue>
+      description: text description used in the notification message when this item is selected. One will be chosen randomly if more than one description tag is provided. (repeatable)
+      lawbroken: crime(s) that all Liberal Guardian writers will be charged with when this is printed (repetaable)
+      offendedgroup: Which enemy group this item will offend when it is printed.
+      valid groups are:
+        AMRADIO: Am Radio - rednecks will raid
+        CABLENEWS: Cable News - rednecks will raid
+        FIREMEN: Firemen - firemen will raid (only applies at C+ Free Speech law as they do not exist otherwise)
+        CIA: CIA - agents will raid
+        CORPS: Corporations - mercenaries will raid
+    </evidence>
+  </loot>
+</item>
+-->
+
+<itemDefs>
+  <item idname="CCS">
+    <!-- This is a special type used to define when creatures should be given CCS loadouts (dynamic based on CCS strength) 
+         It should not appear as an actual item in-game -->
+    <name>SYSTEM</name>
+    <shortname>SYS</shortname>
+  </item>
+  <!-- WEAPONS -->
+  <item idname="WEAPON_NONE">
+    <description>Only trust your fists. Police will never help you.</description>
+    <icon>weapon_none.png</icon>
+    <name>None</name>
+    <shortname>None</shortname>
+    <weapon>
+      <size>0</size>
+      <attacks>
+        <attack>UNARMED</attack>
+      </attacks>
+      <flags>
+        <flag>NOT_SUSPICIOUS</flag>
+      </flags>
+    </weapon>
+  </item>
+  <item idname="WEAPON_VOICE">
+    <icon>weapon_voice.png</icon>
+    <name>Compelling Voice</name>
+    <shortname>Voice</shortname>
+    <weapon>
+      <size>0</size>
+      <attacks>
+        <attack>PERSUASION</attack>
+      </attacks>
+      <flags>
+        <flag>NOT_SUSPICIOUS</flag>
+      </flags>
+    </weapon>
+  </item>
+  <item idname="WEAPON_DOG">
+    <name>Teeth</name>
+    <shortname>Teeth</shortname>
+    <weapon>
+      <size>0</size>
+      <attacks>
+        <attack>DOG_BITE</attack>
+      </attacks>
+      <flags>
+        <flag>NOT_SUSPICIOUS</flag>
+        <flag>THREATENING</flag>
+      </flags>
+    </weapon>
+  </item>
+  <item idname="WEAPON_MONSTER_SUCK">
+    <name>Proboscis</name>
+    <shortname>Proboscis</shortname>
+    <weapon>
+      <size>0</size>
+      <attacks>
+        <attack>MONSTER_SUCK</attack>
+      </attacks>
+      <flags>
+        <flag>NOT_SUSPICIOUS</flag>
+        <flag>THREATENING</flag>
+      </flags>
+    </weapon>
+  </item>
+  <item idname="WEAPON_MONSTER_FLAME">
+    <name>Flaming Breath</name>
+    <shortname>Breath</shortname>
+    <weapon>
+      <size>0</size>
+      <attacks>
+        <attack>MONSTER_FLAME</attack>
+      </attacks>
+      <flags>
+        <flag>NOT_SUSPICIOUS</flag>
+        <flag>THREATENING</flag>
+      </flags>
+    </weapon>
+  </item>
+  <item idname="WEAPON_TANK">
+    <name>Main Cannon</name>
+    <shortname>Cannon</shortname>
+    <weapon>
+      <size>15</size>
+      <attacks>
+        <attack>TANK_CANNON</attack>
+      </attacks>
+      <flags>
+        <flag>NOT_SUSPICIOUS</flag>
+        <flag>THREATENING</flag>
+      </flags>
+    </weapon>
+  </item>
+  <item idname="WEAPON_REVOLVER_38">
+    <description>Mr. Saturday night special
+Got a barrel that's blue and cold
+Ain't good for nothin'
+But put a man six feet in a hole</description>
+    <icon>weapon_revolver_38.png</icon>
+    <name>.38 Revolver</name>
+    <name_future>.38 Slug Pistol</name_future>
+    <shortname>.38 Rev</shortname>
+    <shortname_future>.38 Slug</shortname_future>
+    <weapon>
+      <legality>1</legality>
+      <size>5</size>
+      <attacks>
+        <attack>SHOOT_38_REVOLVER</attack>
+        <attack>PISTOL_WHIP</attack>
+      </attacks>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <default_clip>CLIP_38</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>50</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_REVOLVER_44">
+    <description>The perfect piece to make you ask yourself if you feel lucky</description>
+    <icon>weapon_revolver_44.png</icon>
+    <name>.44 Magnum</name>
+    <name_future>.44 Heavy Slug Pistol</name_future>
+    <shortname>.44 Mag</shortname>
+    <shortname_future>.44 Slug</shortname_future>
+    <weapon>
+      <legality>-1</legality>
+      <size>5</size>
+      <attacks>
+        <attack>SHOOT_44_REVOLVER</attack>
+        <attack>PISTOL_WHIP</attack>
+      </attacks>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <default_clip>CLIP_44</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_SEMIPISTOL_9MM">
+    <description>Give a man a gun, he thinks he's Superman. Give him two and he thinks he's God</description>
+    <icon>weapon_semipistol_9mm.png</icon>
+    <name>9mm Semiauto</name>
+    <name_future>9mm Laser Pistol</name_future>
+    <shortname>9mm Semi</shortname>
+    <shortname_future>9mm Las</shortname_future>
+    <weapon>
+      <legality>0</legality>
+      <size>5</size>
+      <attacks>
+        <attack>SHOOT_9MM_PISTOL</attack>
+        <attack>PISTOL_WHIP</attack>
+      </attacks>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <default_clip>CLIP_9</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_SEMIPISTOL_45">
+    <icon>weapon_semipistol_45.png</icon>
+    <name>.45 Semiauto</name>
+    <name_future>.45 Laser Pistol</name_future>
+    <shortname>.45 Semi</shortname>
+    <shortname_future>.45 Las</shortname_future>
+    <weapon>
+      <legality>0</legality>
+      <size>5</size>
+      <attacks>
+        <attack>SHOOT_45_PISTOL</attack>
+        <attack>PISTOL_WHIP</attack>
+      </attacks>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <default_clip>CLIP_45</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_SMG_MP5">
+    <icon>weapon_smg_mp5.png</icon>
+    <name>MP5 SMG</name>
+    <name_future>Beijing Prince SMG</name_future>
+    <shortname>MP5</shortname>
+    <shortname_future>Prince SMG</shortname_future>
+    <weapon>
+      <legality>-2</legality>
+      <size>10</size>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>SHOOT_SMG_MP5</attack>
+        <attack>SMG_BASH</attack>
+      </attacks>
+      <default_clip>CLIP_SMG</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>450</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_SHOTGUN_PUMP">
+    <icon>weapon_shotgun_pump.png</icon>
+    <name>Shotgun</name>
+    <name_future>Plasma Burstgun</name_future>
+    <shortname>Shotgun</shortname>
+    <shortname_future>Burstgun</shortname_future>
+    <weapon>
+      <legality>2</legality>
+      <size>10</size>
+      <bashstrengthmod>125</bashstrengthmod>
+      <attacks>
+        <attack>SHOOT_PUMP_SHOTGUN</attack>
+        <attack>RIFLE_BASH</attack>
+      </attacks>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <default_clip>CLIP_BUCKSHOT</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>150</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_SHOTGUN_AA12">
+    <icon>weapon_shotgun_aa12.png</icon>
+    <name>AA-12 Auto Shotgun</name>
+    <name_future>Z-12 Chain Burstgun</name_future>
+    <shortname>AA-12</shortname>
+    <shortname_future>Z-12</shortname_future>
+    <weapon>
+      <legality>-1</legality>
+      <size>10</size>
+      <bashstrengthmod>125</bashstrengthmod>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>SHOOT_AA12_SHOTGUN</attack>
+        <attack>RIFLE_BASH</attack>
+      </attacks>
+      <default_clip>CLIP_BUCKSHOT</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>400</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_AUTORIFLE_AK47">
+    <description>When you absolutely, positively, got to kill every mother$SWEARFILTER{fucker:hugger} in the room, accept no substitutes</description>
+    <icon>weapon_autorifle_ak47.png</icon>
+    <name>AK-47</name>
+    <name_future>P74 War Laser</name_future>
+    <shortname_future>P74</shortname_future>
+    <weapon>
+      <legality>-2</legality>
+      <size>15</size>
+      <bashstrengthmod>125</bashstrengthmod>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>SHOOT_AK47</attack>
+        <attack>RIFLE_BASH</attack>
+      </attacks>
+      <default_clip>CLIP_ASSAULT</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>500</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_SEMIRIFLE_AR15">
+    <icon>weapon_semirifle_ar15.png</icon>
+    <name>AR-15</name>
+    <name_future>X15 Personal Laser</name_future>
+    <shortname_future>X15 Semi.</shortname_future>
+    <weapon>
+      <legality>-1</legality>
+      <size>15</size>
+      <bashstrengthmod>125</bashstrengthmod>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>SHOOT_AR15</attack>
+        <attack>RIFLE_BASH</attack>
+      </attacks>
+      <default_clip>CLIP_ASSAULT_CIVILIAN</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>250</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_DESERT_EAGLE">
+    <description>The fact that you've got "Replica" written down the side of your guns, and the fact that I've got "Desert Eagle point five O" written on the side of mine, should precipitate your balls into shrinking, along with your presence</description>
+    <icon>weapon_desert_eagle.png</icon>
+    <name>Desert Eagle</name>
+    <shortname>Deagle</shortname>
+    <weapon>
+      <legality>-1</legality>
+      <size>5</size>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+        <flag>ALWAYS_LOADED</flag>
+      </flags>
+      <attacks>
+        <attack>SHOOT_DEAGLE</attack>
+        <attack>PISTOL_WHIP</attack>
+      </attacks>
+      <default_clip>CLIP_50AE</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>250</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_FLAMETHROWER">
+    <description>The smell of napalm in the morning, evening, or whenever you want to smell like victory</description>
+    <icon>weapon_flamethrower.png</icon>
+    <name>M2 Flamethrower</name>
+    <name_future>Plasma Gun</name_future>
+    <shortname>M2A1-7</shortname>
+    <shortname_future>Plasmagun</shortname_future>
+    <weapon>
+      <legality>-3</legality>
+      <size>15</size>
+      <bashstrengthmod>125</bashstrengthmod>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+        <flag>ALWAYS_LOADED</flag>
+      </flags>
+      <attacks>
+        <attack>SHOOT_FLAMETHROWER</attack>
+        <attack>HW_BASH</attack>
+      </attacks>
+      <default_clip>CLIP_GASOLINE</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>0</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_CARBINE_M4">
+    <icon>weapon_carbine_m4.png</icon>
+    <name>M4 Carbine</name>
+    <name_future>J4 Laser Carbine</name_future>
+    <shortname>M4</shortname>
+    <shortname_future>J4 Laser</shortname_future>
+    <weapon>
+      <legality>-2</legality>
+      <size>15</size>
+      <bashstrengthmod>125</bashstrengthmod>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>SHOOT_M4</attack>
+        <attack>RIFLE_BASH</attack>
+      </attacks>
+      <default_clip>CLIP_ASSAULT</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>400</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_AUTORIFLE_M16">
+    <description>This is my rifle; there are many like it, but this one is mine</description>
+    <icon>weapon_autorifle_m16.png</icon>
+    <name>M16</name>
+    <name_future>X15 Military Laser</name_future>
+    <shortname_future>X15 Full</shortname_future>
+    <weapon>
+      <legality>-2</legality>
+      <size>15</size>
+      <bashstrengthmod>125</bashstrengthmod>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>SHOOT_M16</attack>
+        <attack>RIFLE_BASH</attack>
+      </attacks>
+      <default_clip>CLIP_ASSAULT</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>500</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_M249_MACHINEGUN">
+    <icon>weapon_m249_machinegun.png</icon>
+    <name>M249 Machine Gun</name>
+    <name_future>C249 Chaingun</name_future>
+    <shortname>M249</shortname>
+    <shortname_future>Chaingun</shortname_future>
+    <weapon>
+      <legality>-2</legality>
+      <size>15</size>
+      <bashstrengthmod>125</bashstrengthmod>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>SHOOT_M249</attack>
+        <attack>HW_BASH</attack>
+      </attacks>
+      <default_clip>CLIP_DRUM</default_clip>
+    </weapon>
+    <loot>
+      <fencevalue>1500</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_MOLOTOV">
+    <icon>weapon_molotov.png</icon>
+    <name>Molotov Cocktail</name>
+    <shortname>Molotov</shortname>
+    <weapon>
+      <size>15</size>
+      <flags>
+        <flag>THREATENING</flag>
+        <flag>THROWN</flag>
+      </flags>
+      <attacks>
+        <attack>THROW_MOLOTOV</attack>
+      </attacks>
+    </weapon>
+    <clip>
+      <ammotype>AMMO_MOLOTOV</ammotype>
+      <ammo>1</ammo>
+    </clip>
+    <loot>
+      <fencevalue>0</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_MEGAPHONE">
+    <icon>weapon_megaphone.png</icon>
+    <name>Police Megaphone</name>
+    <shortname>Megaphone</shortname>
+    <weapon>
+      <size>5</size>
+      <attacks>
+        <attack>PERSUASION_MEGAPHONE</attack>
+      </attacks>
+      <flags>
+        <flag>NOT_SUSPICIOUS</flag>
+      </flags>
+    </weapon>
+  </item>
+  <item idname="WEAPON_GAVEL">
+    <icon>weapon_gavel.png</icon>
+    <name>Gavel</name>
+    <name_future>Laser Gavel</name_future>
+    <shortname>Gavel</shortname>
+    <shortname_future>LasGav</shortname_future>
+    <weapon>
+      <size>5</size>
+      <attacks>
+        <attack>WEAK_BASH</attack>
+      </attacks>
+      <flags>
+        <flag>NOT_SUSPICIOUS</flag>
+      </flags>
+    </weapon>
+    <loot>
+      <fencevalue>20</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_SPRAYCAN">
+    <icon>weapon_spraycan.png</icon>
+    <name>Spraypaint</name>
+    <name_future>Holo-Paint</name_future>
+    <shortname>Spraypaint</shortname>
+    <shortname_future>Holopaint</shortname_future>
+    <weapon>
+      <size>5</size>
+      <attacks>
+        <attack>WEAK_BASH</attack>
+      </attacks>
+      <flags>
+        <flag>GRAFFITI</flag>
+        <flag>NOT_SUSPICIOUS</flag>
+      </flags>
+    </weapon>
+    <loot>
+      <fencevalue>2</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_NIGHTSTICK">
+    <icon>weapon_nightstick.png</icon>
+    <name>Nightstick</name>
+    <name_future>Electro-Shock Stick</name_future>
+    <shortname>Nightstick</shortname>
+    <shortname_future>Shock Stick</shortname_future>
+    <weapon>
+      <size>15</size>
+      <bashstrengthmod>125</bashstrengthmod>
+      <attacks>
+        <attack>MID_BASH</attack>
+      </attacks>
+      <flags>
+        <flag>NOT_SUSPICIOUS</flag>
+        <flag>THREATENING</flag>
+      </flags>
+    </weapon>
+    <loot>
+      <fencevalue>20</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_SYRINGE">
+    <icon>weapon_syringe.png</icon>
+    <name>Syringe</name>
+    <name_future>Medical Injector</name_future>
+    <shortname_future>Injector</shortname_future>
+    <weapon>
+      <size>5</size>
+      <attacks>
+        <attack>SYRINGE</attack>
+      </attacks>
+      <flags>
+        <flag>NOT_SUSPICIOUS</flag>
+        <flag>TAKE_HOSTAGE</flag>
+      </flags>
+    </weapon>
+    <loot>
+      <fencevalue>10</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_AXE">
+    <icon>weapon_axe.png</icon>
+    <name>Axe</name>
+    <name_future>Laser Axe</name_future>
+    <weapon>
+      <size>15</size>
+      <bashstrengthmod>200</bashstrengthmod>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>AXE</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>0</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_BASEBALLBAT">
+    <icon>weapon_baseballbat.png</icon>
+    <name>Baseball Bat</name>
+    <weapon>
+      <size>15</size>
+      <bashstrengthmod>150</bashstrengthmod>
+      <flags>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>MID_BASH</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>20</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_CHAIN">
+    <icon>weapon_chain.png</icon>
+    <name>Chain</name>
+    <name_future>Industrial Cyber-Arm</name_future>
+    <shortname_future>CyberArm</shortname_future>
+    <weapon>
+      <size>5</size>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>NOT_SUSPICIOUS</flag>
+      </flags>
+      <attacks>
+        <attack>WEAK_BASH</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>10</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_COMBATKNIFE">
+    <description>THIS is a knife</description>
+    <icon>weapon_combatknife.png</icon>
+    <name>Combat Knife</name>
+    <name_future>Vibro-Knife</name_future>
+    <weapon>
+      <size>4</size>
+      <bashstrengthmod>105</bashstrengthmod>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>KNIFE</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>20</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_CROSS">
+    <icon>weapon_cross.png</icon>
+    <name>Silver Cross</name>
+    <shortname>Cross</shortname>
+    <weapon>
+      <size>5</size>
+      <flags>
+        <flag>NOT_SUSPICIOUS</flag>
+      </flags>
+      <attacks>
+        <attack>WEAK_BASH</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_CROWBAR">
+    <icon>weapon_crowbar.png</icon>
+    <name>Crowbar</name>
+    <name_future>Forcefield Prybar</name_future>
+    <shortname_future>Prybar</shortname_future>
+    <weapon>
+      <size>15</size>
+      <bashstrengthmod>200</bashstrengthmod>
+      <flags>
+        <flag>THREATENING</flag>
+        <flag>BREAK_LOCK</flag>
+      </flags>
+      <attacks>
+        <attack>WEAK_BASH</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>10</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_DAGGER">
+    <icon>weapon_dagger.png</icon>
+    <name>Dagger</name>
+    <name_future>Beam Dagger</name_future>
+    <weapon>
+      <size>5</size>
+      <bashstrengthmod>105</bashstrengthmod>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>KNIFE</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>10</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_DAISHO">
+    <icon>weapon_daisho.png</icon>
+    <name>Daisho</name>
+    <name_future>Twin Swords of Liberalism</name_future>
+    <shortname_future>TwinSword</shortname_future>
+    <weapon>
+      <size>15</size>
+      <bashstrengthmod>150</bashstrengthmod>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>SWORD</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_GUITAR">
+    <description>This Machine Kills Fascists</description>
+    <icon>weapon_guitar.png</icon>
+    <name>Guitar</name>
+    <name_future>Cyber-Keytar</name_future>
+    <shortname_future>Keytar</shortname_future>
+    <weapon>
+      <size>15</size>
+      <flags>
+        <flag>INSTRUMENT</flag>
+        <flag>NOT_SUSPICIOUS</flag>
+      </flags>
+      <attacks>
+        <attack>GUITAR</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_HAMMER">
+    <icon>weapon_hammer.png</icon>
+    <name>"Dwarven" Hammer</name>
+    <shortname>Hammer</shortname>
+    <weapon>
+      <size>15</size>
+      <bashstrengthmod>150</bashstrengthmod>
+      <flags>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>STRONG_BASH</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_MAUL">
+    <icon>weapon_maul.png</icon>
+    <name>Maul of Anrin</name>
+    <shortname>Maul</shortname>
+    <weapon>
+      <size>15</size>
+      <bashstrengthmod>150</bashstrengthmod>
+      <flags>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>HEAVY_BASH</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_PITCHFORK">
+    <icon>weapon_pitchfork.png</icon>
+    <name>Pitchfork</name>
+    <name_future>Space Pitchfork</name_future>
+    <shortname_future>Pitchfork</shortname_future>
+    <weapon>
+      <size>15</size>
+      <bashstrengthmod>125</bashstrengthmod>
+      <flags>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>PITCHFORK</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>20</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_SHANK">
+    <icon>weapon_shank.png</icon>
+    <name>Shank</name>
+    <name_future>Cyber Shank</name_future>
+    <shortname_future>Shank</shortname_future>
+    <weapon>
+      <size>5</size>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+      </flags>
+      <attacks>
+        <attack>KNIFE</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>5</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_STAFF">
+    <icon>weapon_staff.png</icon>
+    <name>Wizard's Staff</name>
+    <shortname>Staff</shortname>
+    <weapon>
+      <size>15</size>
+      <bashstrengthmod>125</bashstrengthmod>
+      <flags>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>MID_BASH</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_SWORD">
+    <icon>weapon_sword.png</icon>
+    <name>Sword of Morfiegor</name>
+    <name_future>Light Sword</name_future>
+    <shortname>Sword</shortname>
+    <shortname_future>Sword</shortname_future>
+    <weapon>
+      <size>15</size>
+      <bashstrengthmod>150</bashstrengthmod>
+      <flags>
+        <flag>TAKE_HOSTAGE</flag>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>SWORD</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="WEAPON_TORCH">
+    <icon>weapon_torch.png</icon>
+    <name>Torch</name>
+    <name_future>Burning Flare</name_future>
+    <shortname_future>Flare</shortname_future>
+    <weapon>
+      <size>15</size>
+      <flags>
+        <flag>THREATENING</flag>
+      </flags>
+      <attacks>
+        <attack>TORCH</attack>
+      </attacks>
+    </weapon>
+    <loot>
+      <fencevalue>2</fencevalue>
+    </loot>
+  </item>
+  <!-- AMMO -->
+  <item idname="CLIP_38">
+    <icon>clip_38.png</icon>
+    <name>.38 Speedloader</name>
+    <shortname>.38 Clip</shortname>
+    <name_future>.38 Slug Mag</name_future>
+    <shortname_future>.38 Mag</shortname_future>
+    <clip>
+      <legality>1</legality>
+      <ammotype>AMMO_38_REVOLVER</ammotype>
+      <ammo>6</ammo>
+    </clip>
+    <loot>
+      <fencevalue>2</fencevalue>
+    </loot>
+  </item>
+  <item idname="CLIP_44">
+    <icon>clip_44.png</icon>
+    <name>.44 Speedloader</name>
+    <shortname>.44 Clip</shortname>
+    <name_future>.44 Heavy Slug Mag</name_future>
+    <shortname_future>.44 Mag</shortname_future>
+    <clip>
+      <legality>-1</legality>
+      <ammotype>AMMO_44_REVOLVER</ammotype>
+      <ammo>6</ammo>
+    </clip>
+    <loot>
+      <fencevalue>3</fencevalue>
+    </loot>
+  </item>
+  <item idname="CLIP_45">
+    <icon>clip_45.png</icon>
+    <name>.45 Pistol Mag</name>
+    <shortname>.45 Mag</shortname>
+    <name_future>.45 Powerpack</name_future>
+    <shortname_future>.45 Pack</shortname_future>
+    <clip>
+      <legality>0</legality>
+      <ammotype>AMMO_45_PISTOL</ammotype>
+      <ammo>7</ammo>
+    </clip>
+    <loot>
+      <fencevalue>4</fencevalue>
+    </loot>
+  </item>
+  <item idname="CLIP_45_EXTENDED">
+    <icon>clip_45_extended.png</icon>
+    <name>.45 Extended Pistol Mag</name>
+    <shortname>.45 E.Mag</shortname>
+    <name_future>.45 Supercharged Powerpack</name_future>
+    <shortname_future>.45 S.Pack</shortname_future>
+    <clip>
+      <legality>-1</legality>
+      <ammotype>AMMO_45_PISTOL</ammotype>
+      <ammo>15</ammo>
+    </clip>
+    <loot>
+      <fencevalue>4</fencevalue>
+    </loot>
+  </item>
+  <item idname="CLIP_9">
+    <icon>clip_9.png</icon>
+    <name>9mm Pistol Mag</name>
+    <shortname>9mm Mag</shortname>
+    <name_future>9mm Powerpack</name_future>
+    <shortname_future>9mm Pack</shortname_future>
+    <clip>
+      <legality>0</legality>
+      <ammotype>AMMO_9MM_PISTOL</ammotype>
+      <ammo>15</ammo>
+    </clip>
+    <loot>
+      <fencevalue>4</fencevalue>
+    </loot>
+  </item>
+  <item idname="CLIP_BUCKSHOT">
+    <icon>clip_buckshot.png</icon>
+    <name>Shotgun Shells</name>
+    <shortname>Shells</shortname>
+    <name_future>Shotgun Plasma Pack</name_future>
+    <shortname_future>Plasma</shortname_future>
+    <clip>
+      <legality>2</legality>
+      <ammotype>AMMO_SHOTGUN</ammotype>
+      <ammo>8</ammo>
+    </clip>
+    <loot>
+      <fencevalue>3</fencevalue>
+    </loot>
+  </item>
+  <item idname="CLIP_SMG">
+    <icon>clip_smg.png</icon>
+    <name>9mm SMG Mag</name>
+    <shortname>9mm SMG Mag</shortname>
+    <name_future>SMG Powerpack</name_future>
+    <shortname_future>9mm SMG Pack</shortname_future>
+    <clip>
+      <legality>-2</legality>
+      <ammotype>AMMO_9MM_SMG</ammotype>
+      <ammo>15</ammo>
+    </clip>
+    <loot>
+      <fencevalue>5</fencevalue>
+    </loot>
+  </item>
+  <item idname="CLIP_50AE">
+    <icon>clip_50AE.png</icon>
+    <name>.50AE Pistol Mag</name>
+    <clip>
+      <ammotype>AMMO_50AE</ammotype>
+      <ammo>7</ammo>
+      <legality>-1</legality>
+    </clip>
+    <loot>
+      <fencevalue>3</fencevalue>
+    </loot>
+  </item>
+  <item idname="CLIP_ASSAULT">
+    <icon>clip_assault.png</icon>
+    <name>Aslt/Rifle Mag</name>
+    <name_future>Rifle Powerpack</name_future>
+    <clip>
+      <ammotype>AMMO_RIFLE</ammotype>
+      <ammo>30</ammo>
+      <legality>-2</legality>
+    </clip>
+    <loot>
+      <fencevalue>8</fencevalue>
+    </loot>
+  </item>
+  <item idname="CLIP_ASSAULT_CIVILIAN">
+    <icon>clip_assault_civilian.png</icon>
+    <name>Aslt/Rifle Mag (civ)</name>
+    <name_future>Rifle Minipack</name_future>
+    <clip>
+      <ammotype>AMMO_RIFLE</ammotype>
+      <ammo>10</ammo>
+      <legality>-1</legality>
+    </clip>
+    <loot>
+      <fencevalue>8</fencevalue>
+    </loot>
+  </item>
+  <item idname="CLIP_GASOLINE">
+    <icon>clip_gasoline.png</icon>
+    <name>Gas Tank</name>
+    <name_future>Hydrogen Fuel</name_future>
+    <clip>
+      <ammotype>AMMO_GASOLINE</ammotype>
+      <ammo>2</ammo>
+      <legality>-3</legality>
+    </clip>
+    <loot>
+      <fencevalue>2</fencevalue>
+    </loot>
+  </item>
+  <item idname="CLIP_DRUM">
+    <icon>clip_drum.png</icon>
+    <name>MachineGun Drum</name>
+    <name_future>Chaingun Belt</name_future>
+    <clip>
+      <ammotype>AMMO_MACHINEGUN</ammotype>
+      <ammo>100</ammo>
+      <legality>-2</legality>
+    </clip>
+    <loot>
+      <fencevalue>25</fencevalue>
+    </loot>
+  </item>
+  <!-- ARMOR -->
+  <item idname="ARMOR_NONE">
+    <icon>armor_none.png</icon>
+    <name>Naked</name>
+    <shortname>Naked</shortname>
+    <armor>
+      <professionalism>0</professionalism>
+      <conceal_weapon_size>0</conceal_weapon_size>
+      <interrogation>
+        <drugbonus>1</drugbonus>
+      </interrogation>
+      <body_covering>
+        <!-- Need this tag present so it doesn't take default -->
+      </body_covering>
+      <flags>
+        <flag>NO_BLOODY</flag>
+        <flag>NO_DAMAGE</flag>
+      </flags>
+    </armor>
+  </item>
+  <item idname="ARMOR_DOG">
+    <name>Dog</name>
+    <shortname>Dog</shortname>
+    <armor>
+      <professionalism>0</professionalism>
+      <conceal_weapon_size>0</conceal_weapon_size>
+      <interrogation>
+        <drugbonus>1</drugbonus>
+        <assaultbonus>1</assaultbonus>
+      </interrogation>
+      <body_covering>
+        <!-- Need this tag present so it doesn't take default -->
+      </body_covering>
+      <flags>
+        <flag>NO_BLOODY</flag>
+        <flag>NO_DAMAGE</flag>
+      </flags>
+    </armor>
+  </item>
+  <item idname="ARMOR_TANK">
+    <name>Tank</name>
+    <shortname>Tank</shortname>
+    <armor>
+      <professionalism>0</professionalism>
+      <conceal_weapon_size>0</conceal_weapon_size>
+      <body_covering>
+        <part>TANK_TURRET</part>
+        <part>TANK_CHASSIS</part>
+        <part>TANK_TREAD</part>
+      </body_covering>
+      <flags>
+        <flag>NO_BLOODY</flag>
+        <flag>NO_DAMAGE</flag>
+        <flag>FIRE_VULN</flag>
+      </flags>
+      <armor>
+        <TANK_TURRET>10</TANK_TURRET>
+        <TANK_CHASSIS>15</TANK_CHASSIS>
+        <TANK_TREAD>8</TANK_TREAD>
+      </armor>
+    </armor>
+  </item>
+  <item idname="ARMOR_MONSTER">
+    <name>Monster</name>
+    <shortname>Monster</shortname>
+    <armor>
+      <professionalism>0</professionalism>
+      <conceal_weapon_size>0</conceal_weapon_size>
+      <interrogation>
+        <drugbonus>6</drugbonus>
+      </interrogation>
+      <body_covering>
+        <part>DOG_TORSO</part>
+      </body_covering>
+      <armor>
+        <DOG_TORSO>3</DOG_TORSO>
+      </armor>
+      <flags>
+        <flag>NO_BLOODY</flag>
+        <flag>NO_DAMAGE</flag>
+        <flag>FIRE_PROTECTION</flag>
+      </flags>
+    </armor>
+  </item>
+  <item idname="ARMOR_CLOTHES">
+    <icon>armor_clothes.png</icon>
+    <name>Clothes</name>
+    <shortname>Clothes</shortname>
+    <armor>
+      <make_difficulty>4</make_difficulty>
+      <make_price>10</make_price>
+      <stealth_value>1</stealth_value>
+      <professionalism>1</professionalism>
+      <qualitylevels>2</qualitylevels>
+      <flags>
+        <flag>DATE_APPROPRIATE</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>20</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_BLACKROBE">
+    <icon>armor_blackrobe.png</icon>
+    <name>Black Robe</name>
+    <shortname>B. Robe</shortname>
+    <armor>
+      <make_difficulty>5</make_difficulty>
+      <make_price>20</make_price>
+      <interrogation>
+        <basepower>2</basepower>
+      </interrogation>
+      <professionalism>2</professionalism>
+      <stealth_value>2</stealth_value>
+      <qualitylevels>2</qualitylevels>
+    </armor>
+    <loot>
+      <fencevalue>40</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_BLACKSUIT">
+    <icon>armor_blacksuit.png</icon>
+    <name>Black Suit</name>
+    <shortname>Black Suit</shortname>
+    <armor>
+      <make_difficulty>12</make_difficulty>
+      <make_price>60</make_price>
+      <professionalism>3</professionalism>
+      <stealth_value>2</stealth_value>
+      <qualitylevels>2</qualitylevels>
+      <interrogation>
+        <basepower>4</basepower>
+        <assaultbonus>4</assaultbonus>
+      </interrogation>
+      <flags>
+        <flag>DATE_APPROPRIATE</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>110</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_BLACKDRESS">
+    <icon>armor_blackdress.png</icon>
+    <name>Black Dress</name>
+    <shortname>Black Dress</shortname>
+    <armor>
+      <make_difficulty>12</make_difficulty>
+      <make_price>60</make_price>
+      <professionalism>3</professionalism>
+      <stealth_value>2</stealth_value>
+      <qualitylevels>2</qualitylevels>
+      <interrogation>
+        <basepower>6</basepower>
+        <assaultbonus>4</assaultbonus>
+      </interrogation>
+      <flags>
+        <flag>DATE_APPROPRIATE</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>110</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_CHEAPSUIT">
+    <icon>armor_cheapsuit.png</icon>
+    <name>Cheap Suit</name>
+    <shortname>Cheap Suit</shortname>
+    <armor>
+      <make_difficulty>9</make_difficulty>
+      <make_price>50</make_price>
+      <professionalism>3</professionalism>
+      <stealth_value>1</stealth_value>
+      <qualitylevels>2</qualitylevels>
+      <interrogation>
+        <basepower>4</basepower>
+      </interrogation>
+      <flags>
+        <flag>DATE_APPROPRIATE</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_CHEAPDRESS">
+    <icon>armor_cheapdress.png</icon>
+    <name>Cheap Dress</name>
+    <shortname>Cheap Dress</shortname>
+    <armor>
+      <make_difficulty>6</make_difficulty>
+      <make_price>20</make_price>
+      <professionalism>3</professionalism>
+      <stealth_value>1</stealth_value>
+      <qualitylevels>2</qualitylevels>
+      <interrogation>
+        <basepower>4</basepower>
+      </interrogation>
+      <flags>
+        <flag>DATE_APPROPRIATE</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>40</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_EXPENSIVESUIT">
+    <icon>armor_expensivesuit.png</icon>
+    <name>Expensive Suit</name>
+    <shortname>Exp. Suit</shortname>
+    <armor>
+      <make_difficulty>14</make_difficulty>
+      <make_price>200</make_price>
+      <professionalism>4</professionalism>
+      <stealth_value>1</stealth_value>
+      <qualitylevels>2</qualitylevels>
+      <interrogation>
+        <basepower>6</basepower>
+      </interrogation>
+      <flags>
+        <flag>DATE_APPROPRIATE</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>350</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_EXPENSIVEDRESS">
+    <icon>armor_expensivedress.png</icon>
+    <name>Expensive Dress</name>
+    <shortname>Exp. Dress</shortname>
+    <armor>
+      <make_difficulty>14</make_difficulty>
+      <make_price>200</make_price>
+      <professionalism>4</professionalism>
+      <stealth_value>1</stealth_value>
+      <qualitylevels>2</qualitylevels>
+      <interrogation>
+        <basepower>6</basepower>
+      </interrogation>
+      <flags>
+        <flag>DATE_APPROPRIATE</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>350</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_PRISONER">
+    <icon>armor_prisoner.png</icon>
+    <name>Orange Jumpsuit</name>
+    <shortname>O. Jumpsuit</shortname>
+    <armor>
+      <make_difficulty>5</make_difficulty>
+      <make_price>20</make_price>
+      <professionalism>1</professionalism>
+      <qualitylevels>1</qualitylevels>
+    </armor>
+    <loot>
+      <fencevalue>40</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_POLICEARMOR">
+    <icon>armor_policearmor.png</icon>
+    <name>Police Body Armor</name>
+    <shortname>Pol. Armor</shortname>
+    <armor>
+      <make_difficulty>11</make_difficulty>
+      <make_price>1000</make_price>
+      <professionalism>2</professionalism>
+      <stealth_value>1</stealth_value>
+      <qualitylevels>5</qualitylevels>
+      <armor>
+        <HUMAN_TORSO>7</HUMAN_TORSO>
+      </armor>
+      <body_covering>
+        <part>HUMAN_TORSO</part>
+      </body_covering>
+      <interrogation>
+        <basepower>6</basepower>
+        <assaultbonus>4</assaultbonus>
+      </interrogation>
+      <appropriate_weapon>
+        <weapon>WEAPON_REVOLVER_38</weapon>
+        <weapon>WEAPON_REVOVLER_44</weapon>
+        <weapon>WEAPON_DESERT_EAGLE</weapon>
+        <weapon>WEAPON_PISTOL_9MM</weapon>
+        <weapon>WEAPON_PISTOL_45</weapon>
+        <weapon>WEAPON_NIGHTSTICK</weapon>
+        <weapon>WEAPON_SHOTGUN_PUMP</weapon>
+      </appropriate_weapon>
+      <flags>
+        <flag>POLICE</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>150</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_POLICEUNIFORM">
+    <icon>armor_policeuniform.png</icon>
+    <name>Police Uniform</name>
+    <shortname>Police Uniform</shortname>
+    <armor>
+      <make_difficulty>8</make_difficulty>
+      <make_price>40</make_price>
+      <professionalism>2</professionalism>
+      <stealth_value>1</stealth_value>
+      <qualitylevels>1</qualitylevels>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+      <interrogation>
+        <basepower>6</basepower>
+        <assaultbonus>4</assaultbonus>
+      </interrogation>
+      <appropriate_weapon>
+        <weapon>WEAPON_REVOLVER_38</weapon>
+        <weapon>WEAPON_REVOVLER_44</weapon>
+        <weapon>WEAPON_DESERT_EAGLE</weapon>
+        <weapon>WEAPON_PISTOL_9MM</weapon>
+        <weapon>WEAPON_PISTOL_45</weapon>
+        <weapon>WEAPON_NIGHTSTICK</weapon>
+        <weapon>WEAPON_SHOTGUN_PUMP</weapon>
+      </appropriate_weapon>
+      <flags>
+        <flag>POLICE</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>80</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_DEATHSQUADUNIFORM">
+    <icon>armor_deathsquaduniform.png</icon>
+    <name>Death Squad Uniform</name>
+    <shortname>DSquad Uniform</shortname>
+    <armor>
+      <make_difficulty>9</make_difficulty>
+      <make_price>40</make_price>
+      <professionalism>1</professionalism>
+      <stealth_value>1</stealth_value>
+      <qualitylevels>1</qualitylevels>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+      <interrogation>
+        <basepower>8</basepower>
+        <assaultbonus>6</assaultbonus>
+      </interrogation>
+      <appropriate_weapon>
+        <weapon>WEAPON_SMG_MP5</weapon>
+        <weapon>WEAPON_CARBINE_M4</weapon>
+        <weapon>WEAPON_AUTORIFLE_M16</weapon>
+        <weapon>WEAPON_SEMIRIFLE_AR15</weapon>
+      </appropriate_weapon>
+      <flags>
+        <flag>DEATHSQUAD</flag>
+        <flag>CONCEAL_FACE</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>80</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_SWATARMOR">
+    <icon>armor_swatarmor.png</icon>
+    <name>Tactical SWAT Armor</name>
+    <shortname>SWAT Armor</shortname>
+    <armor>
+      <make_difficulty>14</make_difficulty>
+      <make_price>2000</make_price>
+      <professionalism>1</professionalism>
+      <stealth_value>1</stealth_value>
+      <qualitylevels>5</qualitylevels>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+      <interrogation>
+        <basepower>4</basepower>
+      </interrogation>
+      <armor>
+        <HUMAN_TORSO>7</HUMAN_TORSO>
+        <HUMAN_HEAD>5</HUMAN_HEAD>
+        <HUMAN_ARM>2</HUMAN_ARM>
+        <HUMAN_LEG>2</HUMAN_LEG>
+      </armor>
+      <appropriate_weapon>
+        <weapon>WEAPON_SMG_MP5 </weapon>
+        <weapon>WEAPON_CARBINE_M4</weapon>
+      </appropriate_weapon>
+      <flags>
+        <flag>SWAT</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>200</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_LABCOAT">
+    <icon>armor_labcoat.png</icon>
+    <name>Lab Coat</name>
+    <shortname>Lab Coat</shortname>
+    <armor>
+      <make_difficulty>6</make_difficulty>
+      <make_price>20</make_price>
+      <professionalism>2</professionalism>
+      <stealth_value>1</stealth_value>
+      <qualitylevels>3</qualitylevels>
+      <interrogation>
+        <basepower>6</basepower>
+      </interrogation>
+      <appropriate_weapon>
+        <weapon>WEAPON_SYRINGE</weapon>
+      </appropriate_weapon>
+    </armor>
+    <loot>
+      <fencevalue>40</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_PRISONGUARD">
+    <icon>armor_prisonguard.png</icon>
+    <name>Guard Uniform</name>
+    <shortname>Guard Uniform</shortname>
+    <armor>
+      <make_difficulty>8</make_difficulty>
+      <make_price>40</make_price>
+      <professionalism>2</professionalism>
+      <stealth_value>1</stealth_value>
+      <qualitylevels>2</qualitylevels>
+      <interrogation>
+        <basepower>6</basepower>
+        <assaultbonus>4</assaultbonus>
+      </interrogation>
+      <appropriate_weapon>
+        <weapon>WEAPON_SMG_MP5</weapon>
+        <weapon>WEAPON_SHOTGUN_PUMP</weapon>
+        <weapon>WEAPON_NIGHTSTICK</weapon>
+      </appropriate_weapon>
+    </armor>
+    <loot>
+      <fencevalue>80</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_SECURITYUNIFORM">
+    <icon>armor_securityuniform.png</icon>
+    <name>Security Uniform</name>
+    <shortname>Security Unif.</shortname>
+    <armor>
+      <make_difficulty>8</make_difficulty>
+      <make_price>40</make_price>
+      <professionalism>2</professionalism>
+      <stealth_value>1</stealth_value>
+      <qualitylevels>2</qualitylevels>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+      <interrogation>
+        <basepower>2</basepower>
+      </interrogation>
+      <appropriate_weapon>
+        <weapon>WEAPON_REVOLVER_38</weapon>
+        <weapon>WEAPON_REVOVLER_44</weapon>
+        <weapon>WEAPON_DESERT_EAGLE</weapon>
+        <weapon>WEAPON_PISTOL_9MM</weapon>
+        <weapon>WEAPON_PISTOL_45</weapon>
+        <weapon>WEAPON_NIGHTSTICK</weapon>
+        <weapon>WEAPON_SMG_MP5</weapon>
+        <weapon>WEAPON_CARBINE_M4</weapon>
+      </appropriate_weapon>
+    </armor>
+    <loot>
+      <fencevalue>80</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_ARMYARMOR">
+    <icon>armor_armyarmor.png</icon>
+    <name>Army Body Armor</name>
+    <shortname>Army BodyArmor</shortname>
+    <armor>
+      <make_difficulty>14</make_difficulty>
+      <make_price>2000</make_price>
+      <stealth_value>1</stealth_value>
+      <professionalism>2</professionalism>
+      <qualitylevels>6</qualitylevels>
+      <interrogation>
+        <basepower>6</basepower>
+        <assaultbonus>4</assaultbonus>
+      </interrogation>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+      </body_covering>
+      <appropriate_weapon>
+        <weapon>WEAPON_SMG_MP5</weapon>
+        <weapon>WEAPON_CARBINE_M4</weapon>
+        <weapon>WEAPON_AUTORIFLE_M16</weapon>
+        <weapon>WEAPON_SEMIRIFLE_AR15</weapon>
+      </appropriate_weapon>
+      <armor>
+        <HUMAN_HEAD>6</HUMAN_HEAD>
+        <HUMAN_TORSO>8</HUMAN_TORSO>
+      </armor>
+    </armor>
+    <loot>
+      <fencevalue>250</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_MILITARY">
+    <icon>armor_military.png</icon>
+    <name>Army Uniform</name>
+    <armor>
+      <make_difficulty>8</make_difficulty>
+      <make_price>40</make_price>
+      <stealth_value>1</stealth_value>
+      <professionalism>2</professionalism>
+      <qualitylevels>2</qualitylevels>
+      <interrogation>
+        <basepower>6</basepower>
+        <assaultbonus>4</assaultbonus>
+      </interrogation>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+      <appropriate_weapon>
+        <weapon>WEAPON_SMG_MP5</weapon>
+        <weapon>WEAPON_CARBINE_M4</weapon>
+        <weapon>WEAPON_AUTORIFLE_M16</weapon>
+        <weapon>WEAPON_SEMIRIFLE_AR15</weapon>
+      </appropriate_weapon>
+    </armor>
+    <loot>
+      <fencevalue>80</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_CATSUIT">
+    <icon>armor_catsuit.png</icon>
+    <name>Black Catsuit</name>
+    <armor>
+      <make_difficulty>7</make_difficulty>
+      <make_price>150</make_price>
+      <stealth_value>3</stealth_value>
+      <professionalism>1</professionalism>
+      <qualitylevels>3</qualitylevels>
+      <interrogation>
+        <basepower>4</basepower>
+        <assaultbonus>2</assaultbonus>
+      </interrogation>
+    </armor>
+    <loot>
+      <fencevalue>50</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_LEATHER">
+    <icon>armor_leather.png</icon>
+    <name>Dark Leather Armor</name>
+    <shortname>Black Leather</shortname>
+    <armor>
+      <make_difficulty>7</make_difficulty>
+      <make_price>300</make_price>
+      <stealth_value>3</stealth_value>
+      <professionalism>1</professionalism>
+      <qualitylevels>3</qualitylevels>
+      <durability>20</durability>
+      <body_covering>
+        <part>HUMAN_TORSO</part>
+      </body_covering>
+      <armor>
+        <HUMAN_TORSO>3</HUMAN_TORSO>
+        <HUMAN_ARM>2</HUMAN_ARM>
+        <HUMAN_LEG>2</HUMAN_LEG>
+      </armor>
+      <flags>
+        <flag>DATE_APPROPRIATE</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_BLACKCLOTHES">
+    <icon>armor_blackclothes.png</icon>
+    <name>Black Turtleneck</name>
+    <shortname>Bl. Turtleneck</shortname>
+    <armor>
+      <make_difficulty>4</make_difficulty>
+      <make_price>15</make_price>
+      <stealth_value>2</stealth_value>
+      <professionalism>1</professionalism>
+      <qualitylevels>2</qualitylevels>
+      <flags>
+        <flag>DATE_APPROPRIATE</flag>
+      </flags>
+    </armor>
+    <loot>
+      <fencevalue>20</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_CIVILIANARMOR">
+    <icon>armor_civilianarmor.png</icon>
+    <name>Body Armor</name>
+    <armor>
+      <make_difficulty>8</make_difficulty>
+      <make_price>500</make_price>
+      <stealth_value>1</stealth_value>
+      <professionalism>2</professionalism>
+      <interrogation>
+        <basepower>2</basepower>
+      </interrogation>
+      <body_covering>
+        <part>HUMAN_TORSO</part>
+      </body_covering>
+      <armor>
+        <HUMAN_TORSO>5</HUMAN_TORSO>
+      </armor>
+    </armor>
+    <loot>
+      <fencevalue>75</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_BONDAGEGEAR">
+    <icon>armor_bondagegear.png</icon>
+    <name>Bondage Gear</name>
+    <armor>
+      <make_difficulty>7</make_difficulty>
+      <make_price>30</make_price>
+      <stealth_value>1</stealth_value>
+      <professionalism>1</professionalism>
+      <qualitylevels>2</qualitylevels>
+      <interrogation>
+        <basepower>6</basepower>
+        <assaultbonus>4</assaultbonus>
+        <drugbonus>4</drugbonus>
+      </interrogation>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+    </armor>
+    <loot>
+      <fencevalue>60</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_BUNKERGEAR">
+    <icon>armor_bunkergear.png</icon>
+    <name>Anti-Fire Bunker Gear</name>
+    <shortname>Bunker Gear</shortname>
+    <armor>
+      <make_difficulty>13</make_difficulty>
+      <make_price>500</make_price>
+      <professionalism>2</professionalism>
+      <qualitylevels>2</qualitylevels>
+      <durability>25</durability>
+      <flags>
+        <flag>FIRE_PROTECTION</flag>
+      </flags>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+      <appropriate_weapon>
+        <weapon>WEAPON_AXE</weapon>
+        <weapon>WEAPON_FLAMETHROWER</weapon>
+      </appropriate_weapon>
+      <armor>
+        <HUMAN_TORSO>2</HUMAN_TORSO>
+        <HUMAN_HEAD>2</HUMAN_HEAD>
+        <HUMAN_ARM>2</HUMAN_ARM>
+        <HUMAN_LEG>2</HUMAN_LEG>
+      </armor>
+    </armor>
+    <loot>
+      <fencevalue>75</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_CLOWNSUIT">
+    <icon>armor_clownsuit.png</icon>
+    <name>Clown Suit</name>
+    <armor>
+      <make_difficulty>7</make_difficulty>
+      <make_price>20</make_price>
+      <professionalism>1</professionalism>
+      <qualitylevels>1</qualitylevels>
+      <interrogation>
+        <assaultbonus>4</assaultbonus>
+        <drugbonus>4</drugbonus>
+      </interrogation>
+    </armor>
+    <loot>
+      <fencevalue>40</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_DONKEYSUIT">
+    <icon>armor_donkeysuit.png</icon>
+    <name>Donkey Suit</name>
+    <armor>
+      <make_difficulty>10</make_difficulty>
+      <make_price>300</make_price>
+      <professionalism>1</professionalism>
+      <qualitylevels>1</qualitylevels>
+      <interrogation>
+        <assaultbonus>4</assaultbonus>
+        <drugbonus>4</drugbonus>
+      </interrogation>
+      <flags>
+        <flag>CONCEAL_FACE</flag>
+      </flags>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+    </armor>
+    <loot>
+      <fencevalue>50</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_ELEPHANTSUIT">
+    <icon>armor_elephantsuit.png</icon>
+    <name>Elephant Suit</name>
+    <armor>
+      <make_difficulty>10</make_difficulty>
+      <make_price>300</make_price>
+      <professionalism>1</professionalism>
+      <qualitylevels>1</qualitylevels>
+      <interrogation>
+        <assaultbonus>4</assaultbonus>
+        <drugbonus>4</drugbonus>
+      </interrogation>
+      <flags>
+        <flag>CONCEAL_FACE</flag>
+      </flags>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+    </armor>
+    <loot>
+      <fencevalue>50</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_HEAVYARMOR">
+    <icon>armor_heavyarmor.png</icon>
+    <name>Heavy Ceramic Armor</name>
+    <shortname>HeavyArmor</shortname>
+    <armor>
+      <make_difficulty>17</make_difficulty>
+      <make_price>5000</make_price>
+      <professionalism>1</professionalism>
+      <qualitylevels>7</qualitylevels>
+      <durability>10</durability>
+      <interrogation>
+        <basepower>2</basepower>
+      </interrogation>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+      <armor>
+        <HUMAN_TORSO>10</HUMAN_TORSO>
+        <HUMAN_HEAD>8</HUMAN_HEAD>
+        <HUMAN_ARM>4</HUMAN_ARM>
+        <HUMAN_LEG>4</HUMAN_LEG>
+      </armor>
+    </armor>
+    <loot>
+      <fencevalue>400</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_MASK">
+    <name>Mask</name>
+    <armor>
+      <stealth_value>1</stealth_value>
+      <professionalism>1</professionalism>
+      <qualitylevels>1</qualitylevels>
+      <interrogation>
+        <basepower>4</basepower>
+        <assaultbonus>4</assaultbonus>
+        <drugbonus>4</drugbonus>
+      </interrogation>
+      <flags>
+        <flag>CONCEAL_FACE</flag>
+      </flags>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+      </body_covering>
+    </armor>
+    <loot>
+      <fencevalue>0</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_MITHRIL">
+    <icon>armor_mithril.png</icon>
+    <name>Mithril Mail</name>
+    <armor>
+      <professionalism>1</professionalism>
+      <qualitylevels>1</qualitylevels>
+      <durability>30</durability>
+      <body_covering>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_HEAD</part>
+      </body_covering>
+      <armor>
+        <HUMAN_TORSO>1</HUMAN_TORSO>
+        <HUMAN_HEAD>1</HUMAN_HEAD>
+      </armor>
+    </armor>
+    <loot>
+      <fencevalue>50</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_NINJASUIT">
+    <icon>armor_ninjasuit.png</icon>
+    <name>Ninja Costume</name>
+    <armor>
+      <make_difficulty>7</make_difficulty>
+      <make_price>200</make_price>
+      <stealth_value>3</stealth_value>
+      <professionalism>1</professionalism>
+      <interrogation>
+        <drugbonus>4</drugbonus>
+      </interrogation>
+      <flags>
+        <flag>CONCEAL_FACE</flag>
+      </flags>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+    </armor>
+    <loot>
+      <fencevalue>75</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_OVERALLS">
+    <icon>armor_overalls.png</icon>
+    <name>Overalls</name>
+    <armor>
+      <make_difficulty>4</make_difficulty>
+      <make_price>10</make_price>
+      <stealth_value>1</stealth_value>
+      <professionalism>2</professionalism>
+      <qualitylevels>1</qualitylevels>
+      <body_covering>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+    </armor>
+    <loot>
+      <fencevalue>20</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_SEALSUIT">
+    <icon>armor_sealsuit.png</icon>
+    <name>SEAL Stealth Armor</name>
+    <shortname>SEAL Suit</shortname>
+    <armor>
+      <make_difficulty>16</make_difficulty>
+      <make_price>3000</make_price>
+      <stealth_value>3</stealth_value>
+      <professionalism>1</professionalism>
+      <qualitylevels>6</qualitylevels>
+      <interrogation>
+        <basepower>6</basepower>
+        <assaultbonus>6</assaultbonus>
+      </interrogation>
+      <flags>
+        <flag>CONCEAL_FACE</flag>
+      </flags>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+      <appropriate_weapon>
+        <weapon>WEAPON_SMG_MP5</weapon>
+        <weapon>WEAPON_CARBINE_M4</weapon>
+        <weapon>WEAPON_AUTORIFLE_M16</weapon>
+        <weapon>WEAPON_SEMIRIFLE_AR15</weapon>
+      </appropriate_weapon>
+      <armor>
+        <HUMAN_HEAD>6</HUMAN_HEAD>
+        <HUMAN_TORSO>8</HUMAN_TORSO>
+      </armor>
+    </armor>
+    <loot>
+      <fencevalue>300</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_SERVANTUNIFORM">
+    <icon>armor_servantuniform.png</icon>
+    <name>Servant Uniform</name>
+    <shortname>Servant Unif.</shortname>
+    <armor>
+      <make_difficulty>7</make_difficulty>
+      <make_price>20</make_price>
+      <stealth_value>2</stealth_value>
+      <professionalism>2</professionalism>
+      <qualitylevels>3</qualitylevels>
+    </armor>
+    <loot>
+      <fencevalue>40</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_TOGA">
+    <icon>armor_toga.png</icon>
+    <name>Toga</name>
+    <armor>
+      <make_difficulty>2</make_difficulty>
+      <make_price>5</make_price>
+      <professionalism>1</professionalism>
+      <qualitylevels>2</qualitylevels>
+      <body_covering>
+        <part>HUMAN_TORSO</part>
+      </body_covering>
+    </armor>
+    <loot>
+      <fencevalue>10</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_TRENCHCOAT">
+    <icon>armor_trenchcoat.png</icon>
+    <name>Trenchcoat</name>
+    <armor>
+      <make_difficulty>6</make_difficulty>
+      <make_price>20</make_price>
+      <stealth_value>2</stealth_value>
+      <professionalism>2</professionalism>
+      <conceal_weapon_size>10</conceal_weapon_size>
+      <qualitylevels>3</qualitylevels>
+      <interrogation>
+        <basepower>2</basepower>
+      </interrogation>
+    </armor>
+    <loot>
+      <fencevalue>40</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_HARDHAT">
+    <icon>armor_hardhat.png</icon>
+    <name>Safety Vest &amp; Hardhat</name>
+    <shortname>Vest&amp;Hardhat</shortname>
+    <armor>
+      <make_difficulty>6</make_difficulty>
+      <make_price>100</make_price>
+      <stealth_value>0</stealth_value>
+      <professionalism>2</professionalism>
+      <qualitylevels>1</qualitylevels>
+      <durability>20</durability>
+      <body_covering>
+        <part>HUMAN_HEAD</part>
+        <part>HUMAN_TORSO</part>
+        <part>HUMAN_ARM</part>
+        <part>HUMAN_LEG</part>
+      </body_covering>
+      <armor>
+        <HUMAN_HEAD>2</HUMAN_HEAD>
+      </armor>
+    </armor>
+    <loot>
+      <fencevalue>100</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_WIFEBEATER">
+    <icon>armor_wifebeater.png</icon>
+    <name>Wife Beater</name>
+    <armor>
+      <make_difficulty>2</make_difficulty>
+      <make_price>5</make_price>
+      <professionalism>1</professionalism>
+      <qualitylevels>1</qualitylevels>
+      <durability>30</durability>
+      <body_covering>
+        <part>HUMAN_TORSO</part>
+      </body_covering>
+    </armor>
+    <loot>
+      <fencevalue>4</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_WORKCLOTHES">
+    <icon>armor_workclothes.png</icon>
+    <name>Work Clothes</name>
+    <armor>
+      <make_difficulty>4</make_difficulty>
+      <make_price>10</make_price>
+      <stealth_value>1</stealth_value>
+      <professionalism>2</professionalism>
+      <qualitylevels>2</qualitylevels>
+    </armor>
+    <loot>
+      <fencevalue>20</fencevalue>
+    </loot>
+  </item>
+  <item idname="ARMOR_HOSPITALGOWN">
+    <icon>armor_hospitalgown.png</icon>
+    <name>Hospital Gown</name>
+    <shortname>H. Gown</shortname>
+    <armor>
+      <make_difficulty>2</make_difficulty>
+      <make_price>5</make_price>
+      <professionalism>1</professionalism>
+      <qualitylevels>1</qualitylevels>
+      <durability>30</durability>
+      <body_covering>
+        <part>HUMAN_TORSO</part>
+      </body_covering>
+    </armor>
+    <loot>
+      <fencevalue>4</fencevalue>
+    </loot>
+  </item>
+  <!-- LOOT -->
+  <item idname="LOOT_CHEAPJEWELERY">
+    <icon>loot_cheapjewelery.png</icon>
+    <name>Cheap Jewelery</name>
+    <loot>
+      <fencevalue>50</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_FAMILYPHOTO">
+    <icon>loot_familyphoto.png</icon>
+    <name>Family Photos</name>
+    <loot>
+      <fencevalue>1</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_DIRTYSOCK">
+    <icon>loot_dirtysock.png</icon>
+    <name>Dirty Sock</name>
+    <loot>
+      <fencevalue>1</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_FINECLOTH">
+    <icon>loot_finecloth.png</icon>
+    <name>Fine Cloth</name>
+    <loot>
+      <fencevalue>20</fencevalue>
+      <flags>
+        <flag>CLOTH</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_EXPENSIVEJEWELERY">
+    <icon>loot_expensivejewelery.png</icon>
+    <name>Fine Jewelery</name>
+    <loot>
+      <fencevalue>500</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_TRINKET">
+    <icon>loot_trinket.png</icon>
+    <name>Kitschy Trinket</name>
+    <loot>
+      <fencevalue>5</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_LABEQUIPMENT">
+    <icon>loot_labequipment.png</icon>
+    <name>Lab Equipment</name>
+    <loot>
+      <fencevalue>50</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_COMPUTER">
+    <icon>loot_computer.png</icon>
+    <name>Laptop</name>
+    <loot>
+      <fencevalue>200</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_KIDART">
+    <icon>loot_kidart.png</icon>
+    <name>Macaroni Art</name>
+    <loot>
+      <fencevalue>1</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_MICROPHONE">
+    <icon>loot_microphone.png</icon>
+    <name>Microphone</name>
+    <loot>
+      <fencevalue>20</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_SILVERWARE">
+    <icon>loot_silverware.png</icon>
+    <name>Silverware</name>
+    <loot>
+      <fencevalue>20</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_CELLPHONE">
+    <icon>loot_cellphone.png</icon>
+    <name>Smartphone</name>
+    <loot>
+      <fencevalue>20</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_PDA">
+    <icon>loot_pda.png</icon>
+    <name>Tablet</name>
+    <loot>
+      <fencevalue>50</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_WATCH">
+    <icon>loot_watch.png</icon>
+    <name>Watch</name>
+    <loot>
+      <fencevalue>20</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_CHEMICAL">
+    <icon>loot_chemical.png</icon>
+    <name>Weird Chemical</name>
+    <loot>
+      <fencevalue>20</fencevalue>
+      <flags>
+        <flag>QUICK_FENCE</flag>
+      </flags>
+    </loot>
+  </item>
+  <item idname="LOOT_AMRADIOFILES">
+    <icon>loot_evidence.png</icon>
+    <name>AM Radio Memos</name>
+    <loot>
+      <fencevalue>250</fencevalue>
+      <evidence>
+        <affectedissue>
+          <issue>AM_RADIO</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring AM radio plans calling listeners "sheep to be told what to think".</description>
+        <description>The Liberal Guardian runs a story featuring AM radio plans saying "it's okay to lie, they don't need the truth".</description>
+        <description>The Liberal Guardian runs a story featuring AM radio plans planning to drum up a false scandal about a Liberal figure.</description>
+        <offendedgroup>AMRADIO</offendedgroup>
+      </evidence>
+    </loot>
+  </item>
+  <item idname="LOOT_CABLENEWSFILES">
+    <icon>loot_evidence.png</icon>
+    <name>Cable News Memos</name>
+    <loot>
+      <fencevalue>250</fencevalue>
+      <evidence>
+        <affectedissue>
+          <issue>CABLE_NEWS</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring cable news memos calling their news "the vanguard of Conservative thought".</description>
+        <description>The Liberal Guardian runs a story featuring cable news memos mandating negative coverage of Liberal politicians.</description>
+        <description>The Liberal Guardian runs a story featuring cable news memos planning to drum up a false scandal about a Liberal figure.</description>
+        <description>The Liberal Guardian runs a story featuring cable news memos instructing a female anchor to 'get sexier or get a new job'.</description>
+        <offendedgroup>CABLENEWS</offendedgroup>
+      </evidence>
+    </loot>
+  </item>
+  <item idname="LOOT_CCS_BACKERLIST">
+    <icon>loot_evidence.png</icon>
+    <name>CCS Backer List</name>
+    <loot>
+      <fencevalue>2000</fencevalue>
+      <evidence>
+        <!-- This has special hard coded behaviour in addition to the standard special edition-->
+        <affectedissue>
+          <issue>INTELLIGENCE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CONSERVATIVECRIMESQUAD</issue>
+          <strength>100</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs more than one thousand pages of documents about the CCS organization, also revealing in extreme detail the names and responsibilities of Conservative Crime Squad sympathizers and supporters in the state and federal governments. Sections precisely document the extensive planning to create an extra-judicial death squad that would be above prosecution, and could hunt down law-abiding Liberals and act as a foil when no other enemies were present to direct public energy against.\nThe scandal reaches into the heart of the Conservative leadership in the country, and the full ramifications of this revelation may not be felt for months. One thing is clear, however, from the immediate public reaction toward the revelations, and the speed with which even AM Radio and Cable News denounce the CCS.\nThis is the beginning of the end for the Conservative Crime Squad.</description>        
+      </evidence>
+    </loot>
+  </item>
+  <item idname="LOOT_CEOLOVELETTERS">
+    <icon>loot_ceoloveletters.png</icon>
+    <name>CEO Love Letters</name>
+    <loot>
+      <fencevalue>250</fencevalue>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring love letters from a major CEO that seem to touch on every fetish known to man.</description>
+        <description>The Liberal Guardian runs a story featuring love letters from a major CEO promising someone company profits in exchange for sexual favors.</description>
+        <description>The Liberal Guardian runs a story featuring love letters from a major CEO to himself. They're very steamy.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>ANIMAL_RESEARCH</issue>
+          <strength>15</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring love letters from a major CEO addressed to his pet dog. Yikes.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>JUSTICES</issue>
+          <strength>15</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring love letters from a major CEO to the judge that acquit him in a corruption trial.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>GAY</issue>
+          <strength>15</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring love letters from a major CEO to an illicit gay lover.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>SWEATSHOPS</issue>
+          <strength>10</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring love letters from a major CEO implying that he has enslaved his houseservants.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>GENETICS</issue>
+          <strength>10</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>POLLUTION</issue>
+          <strength>10</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring love letters from a major CEO to the FDA official overseeing the CEO's products.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+    </loot>
+  </item>
+  <item idname="LOOT_CEOPHOTOS">
+    <icon>loot_ceophotos.png</icon>
+    <name>CEO Photos</name>
+    <loot>
+      <fencevalue>1000</fencevalue>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring photos of a major CEO digging up graves and sleeping with the dead.</description>
+        <description>The Liberal Guardian runs a story featuring photos of a major CEO engaging in heavy bondage. A cucumber was involved in some way.</description>
+        <description>The Liberal Guardian runs a story featuring photos of a major CEO tongue-kissing an infamous dictator.</description>
+        <description>The Liberal Guardian runs a story featuring photos of a major CEO castrating himself.</description>
+        <description>The Liberal Guardian runs a story featuring photos of a major CEO waving a Nazi flag at a supremacist rally.</description>
+        <description>The Liberal Guardian runs a story featuring photos of a major CEO playing with feces and urine.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>ANIMAL_RESEARCH</issue>
+          <strength>15</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring photos of a major CEO engaging in lewd behavior with animals.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>POLICE</issue>
+          <strength>15</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>JUSTICES</issue>
+          <strength>10</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring photos of a major CEO participating in a murder.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>GENETICS</issue>
+          <strength>10</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>POLLUTION</issue>
+          <strength>10</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring photos of a major CEO making out with an FDA official overseeing the CEO's products.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>SWEATSHOPS</issue>
+          <strength>10</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring photos of a major CEO torturing an employee with a hot iron.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+    </loot>
+  </item>
+  <item idname="LOOT_CEOTAXPAPERS">
+    <icon>loot_evidence.png</icon>
+    <name>CEO Tax Papers</name>
+    <loot>
+      <fencevalue>1000</fencevalue>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>TAXES</issue>
+          <strength>25</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring a major CEO's tax papers showing that he has engaged in consistent tax evasion.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+    </loot>
+  </item>
+  <item idname="LOOT_INTHQDISK">
+    <icon>loot_inthqdisk.png</icon>
+    <name>Intel. HQ Data Disk</name>
+    <loot>
+      <fencevalue>1500</fencevalue>
+      <evidence>
+        <affectedissue>
+          <issue>INTELLIGENCE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring CIA and other intelligence files documenting the overthrow of a government.</description>
+        <description>The Liberal Guardian runs a story featuring CIA and other intelligence files containing private information on innocent citizens.</description>
+        <offendedgroup>CIA</offendedgroup>
+        <lawbroken>TREASON</lawbroken>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>INTELLIGENCE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>JUSTICES</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring CIA and other intelligence files documenting the planned assassination of a Liberal federal judge.</description>
+        <offendedgroup>CIA</offendedgroup>
+        <lawbroken>TREASON</lawbroken>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>INTELLIGENCE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>FREE_SPEECH</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring CIA and other intelligence files documenting "harmful speech" made by innocent citizens.</description>
+        <offendedgroup>CIA</offendedgroup>
+        <lawbroken>TREASON</lawbroken>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>INTELLIGENCE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>GAY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring CIA and other intelligence files used to keep tabs on gay citizens.</description>
+        <offendedgroup>CIA</offendedgroup>
+        <lawbroken>TREASON</lawbroken>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>INTELLIGENCE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>WOMEN</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring CIA and other intelligence files documenting the infiltration of a pro-choice group.</description>
+        <offendedgroup>CIA</offendedgroup>
+        <lawbroken>TREASON</lawbroken>
+      </evidence>
+    </loot>
+  </item>
+  <item idname="LOOT_JUDGEFILES">
+    <icon>loot_evidence.png</icon>
+    <name>Judge Corrupt. Evidence</name>
+    <loot>
+      <fencevalue>1000</fencevalue>
+      <evidence>
+        <affectedissue>
+          <issue>JUSTICES</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story with evidence of a Conservative judge taking bribes to acquit murderers.</description>
+        <description>The Liberal Guardian runs a story with evidence of a Conservative judge promising Conservative rulings in exchange for appointments.</description>
+      </evidence>
+    </loot>
+  </item>
+  <item idname="LOOT_POLICERECORDS">
+    <icon>loot_evidence.png</icon>
+    <name>Police Records</name>
+    <loot>
+      <fencevalue>750</fencevalue>
+      <evidence>
+        <affectedissue>
+          <issue>POLICE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring police records documenting a forced confession.</description>
+        <description>The Liberal Guardian runs a story featuring police records documenting widespread corruption in the force.</description>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>POLICE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>TORTURE</issue>
+          <strength>15</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring police records documenting human rights abuses by the force.</description>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>POLICE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>TORTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring police records documenting a police torture case.</description>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>POLICE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>INTELLIGENCE</issue>
+          <strength>15</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring police records documenting a systematic invasion of privacy by the force.</description>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>POLICE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>DEATH_PENALTY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>PRISONS</issue>
+          <strength>20</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring police records documenting gladiatorial matches held between prisoners by guards.</description>
+      </evidence>
+    </loot>
+  </item>
+  <item idname="LOOT_PRISONFILES">
+    <icon>loot_evidence.png</icon>
+    <name>Prison Records</name>
+    <loot>
+      <fencevalue>750</fencevalue>
+      <evidence>
+        <affectedissue>
+          <issue>PRISONS</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>DEATH_PENALTY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring prison documents documenting human rights abuses by prison guards.</description>
+        <description>The Liberal Guardian runs a story featuring prison documents documenting widespread corruption among prison employees.</description>
+        <description>The Liberal Guardian runs a story featuring prison documents documenting gladiatorial matches held between prisoners by guards.</description>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>PRISONS</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>DEATH_PENALTY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>TORTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring prison documents ocumenting a prison torture case.</description>
+      </evidence>
+    </loot>
+  </item>
+  <item idname="LOOT_RESEARCHFILES">
+    <icon>loot_evidence.png</icon>
+    <name>Research Papers</name>
+    <loot>
+      <fencevalue>750</fencevalue>
+      <evidence>
+        <affectedissue>
+          <issue>ANIMAL_RESEARCH</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring research papers documenting horrific animal rights abuses.</description>
+        <description>The Liberal Guardian runs a story featuring research papers studying the effects of torture on cats.</description>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>GENETICS</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring research papers covering up the accidental creation of a genetic monster.</description>
+        <description>The Liberal Guardian runs a story featuring research papers showing human test subjects dying under genetic research.</description>
+      </evidence>
+    </loot>
+  </item>
+  <item idname="LOOT_CORPFILES">
+    <icon>loot_evidence.png</icon>
+    <name>Secret Corporate Files</name>
+    <loot>
+      <fencevalue>1000</fencevalue>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>GENETICS</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring Corporate files describing a genetic monster created in a lab.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>GAY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring Corporate files with a list of gay employees entitled "Homo-workers".</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>WOMEN</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring Corporate files containing a memo: "Terminate the pregnancy, I terminate you."</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>SWEATSHOPS</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring Corporate files cheerfully describing foreign corporate sweatshops.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>CEO_SALARY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>CORPORATE_CULTURE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>TAXES</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring Corporate files describing an intricate tax scheme.</description>
+        <offendedgroup>CORPS</offendedgroup>
+      </evidence>
+    </loot>
+  </item>
+  <item idname="LOOT_SECRETDOCUMENTS">
+    <icon>loot_evidence.png</icon>
+    <name>Secret Documents</name>
+    <loot>
+      <fencevalue>1500</fencevalue>
+      <evidence>
+        <affectedissue>
+          <issue>INTELLIGENCE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring CIA and other intelligence files documenting the overthrow of a government.</description>
+        <description>The Liberal Guardian runs a story featuring CIA and other intelligence files containing private information on innocent citizens.</description>
+        <offendedgroup>CIA</offendedgroup>
+        <lawbroken>TREASON</lawbroken>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>INTELLIGENCE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>JUSTICES</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring CIA and other intelligence files documenting the planned assassination of a Liberal federal judge.</description>
+        <offendedgroup>CIA</offendedgroup>
+        <lawbroken>TREASON</lawbroken>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>INTELLIGENCE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>FREE_SPEECH</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring CIA and other intelligence files documenting "harmful speech" made by innocent citizens.</description>
+        <offendedgroup>CIA</offendedgroup>
+        <lawbroken>TREASON</lawbroken>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>INTELLIGENCE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>GAY</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring CIA and other intelligence files used to keep tabs on gay citizens.</description>
+        <offendedgroup>CIA</offendedgroup>
+        <lawbroken>TREASON</lawbroken>
+      </evidence>
+      <evidence>
+        <affectedissue>
+          <issue>INTELLIGENCE</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <affectedissue>
+          <issue>WOMEN</issue>
+          <strength>50</strength>
+        </affectedissue>
+        <description>The Liberal Guardian runs a story featuring CIA and other intelligence files documenting the infiltration of a pro-choice group.</description>
+        <offendedgroup>CIA</offendedgroup>
+        <lawbroken>TREASON</lawbroken>
+      </evidence>
+    </loot>
+  </item>
+  <!-- Vehicles -->
+  <item idname="VEHICLE_BUG">
+    <icon>vehicle_bug.png</icon>
+    <name>Bug</name>
+    <shortname>Bug</shortname>
+    <vehicle>
+      <icon>vehicle_bug_paint.png</icon>
+      <year>
+        <start_at_year>1969</start_at_year>
+        <add_random>6</add_random>
+      </year>
+      <colors>
+        <color>RED</color>
+        <color>WHITE</color>
+        <color>BLUE</color>
+        <color>TAN</color>
+        <color>BLACK</color>
+      </colors>
+      <drivebonus>
+        <base>6</base>
+        <skillfactor>0.5</skillfactor>
+        <softlimit>7</softlimit>
+        <!-- easy for beginners, but masters won't get much out of it -->
+        <hardlimit>10</hardlimit>
+      </drivebonus>
+      <dodgebonus>
+        <base>3</base>
+        <skillfactor>0.5</skillfactor>
+        <softlimit>4</softlimit>
+        <!-- ok for beginners, but doesn't improve much -->
+        <hardlimit>6</hardlimit>
+      </dodgebonus>
+      <attackbonus>
+        <driver>-3</driver>
+        <!-- cramped and difficult to shoot from -->
+        <passenger>-2</passenger>
+      </attackbonus>
+      <armor>
+        <low_armor>6</low_armor>
+        <!-- Classic steel frame for a bit more protection-->
+        <high_armor>0</high_armor>
+        <armor_midpoint>60</armor_midpoint>
+      </armor>
+      <size>1</size>
+      <stealing>
+        <difficulty_to_find>2</difficulty_to_find>
+        <juice>0</juice>
+        <extra_heat>0</extra_heat>
+        <sense_alarm_chance>1</sense_alarm_chance>
+        <touch_alarm_chance>10</touch_alarm_chance>
+      </stealing>
+    </vehicle>
+    <loot>
+      <fencevalue>2000</fencevalue>
+    </loot>
+  </item>
+  <item idname="VEHICLE_HMMWV">
+    <name>HMMWV</name>
+    <shortname>Humvee</shortname>
+    <vehicle>
+      <year>
+        <start_at_year>0</start_at_year>
+        <add_random>-10</add_random>
+      </year>
+      <colors>
+        <color>TAN</color>
+        <color>GREEN</color>
+      </colors>
+      <drivebonus>
+        <base>1</base>
+        <skillfactor>1</skillfactor>
+        <!-- beginners will struggle, but it gets better -->
+        <softlimit>6</softlimit>
+        <hardlimit>12</hardlimit>
+      </drivebonus>
+      <dodgebonus>
+        <base>0</base>
+        <skillfactor>1</skillfactor>
+        <softlimit>5</softlimit>
+        <hardlimit>12</hardlimit>
+      </dodgebonus>
+      <attackbonus>
+        <driver>-2</driver>
+        <passenger>1</passenger>
+        <!-- designed to help passengers shoot back-->
+      </attackbonus>
+      <armor>
+        <low_armor>6-8</low_armor>
+        <!-- Tough car -->
+        <high_armor>0-2</high_armor>
+        <armor_midpoint>90</armor_midpoint>
+        <!-- Small windows - Go for the headshots-->
+      </armor>
+      <size>4</size>
+      <!-- but easy to hit car -->
+      <stealing>
+        <difficulty_to_find>10</difficulty_to_find>
+        <juice>0</juice>
+        <extra_heat>0</extra_heat>
+        <sense_alarm_chance>0</sense_alarm_chance>
+        <touch_alarm_chance>0</touch_alarm_chance>
+      </stealing>
+    </vehicle>
+    <loot>
+      <fencevalue>64000</fencevalue>
+    </loot>
+  </item>
+  <item idname="VEHICLE_JEEP">
+    <icon>vehicle_jeep.png</icon>
+    <name>Jeep</name>
+    <shortname>Jeep</shortname>
+    <vehicle>
+      <icon>vehicle_jeep_paint.png</icon>
+      <year>
+        <start_at_year>0</start_at_year>
+        <add_random>-41</add_random>
+      </year>
+      <colors>
+        <color>RED</color>
+        <color>WHITE</color>
+        <color>BLUE</color>
+        <color>TAN</color>
+        <color>BLACK</color>
+      </colors>
+      <drivebonus>
+        <base>2</base>
+        <skillfactor>1</skillfactor>
+        <softlimit>6</softlimit>
+        <!-- Midrange vehicle -->
+        <hardlimit>15</hardlimit>
+      </drivebonus>
+      <dodgebonus>
+        <base>3</base>
+        <skillfactor>0.67</skillfactor>
+        <!-- dodging is difficult -->
+        <softlimit>6</softlimit>
+        <hardlimit>15</hardlimit>
+      </dodgebonus>
+      <attackbonus>
+        <driver>-1</driver>
+        <!-- open concept makes it easier to shoot from -->
+        <passenger>2</passenger>
+      </attackbonus>
+      <armor>
+        <low_armor>2-6</low_armor>
+        <!-- Bit exposed in places -->
+        <high_armor>0</high_armor>
+        <!-- open top -->
+        <armor_midpoint>30</armor_midpoint>
+      </armor>
+      <size>1</size>
+      <stealing>
+        <difficulty_to_find>6</difficulty_to_find>
+        <juice>0</juice>
+        <extra_heat>0</extra_heat>
+        <sense_alarm_chance>1</sense_alarm_chance>
+        <touch_alarm_chance>10</touch_alarm_chance>
+      </stealing>
+    </vehicle>
+    <loot>
+      <fencevalue>6000</fencevalue>
+    </loot>
+  </item>
+  <item idname="VEHICLE_PICKUP">
+    <icon>vehicle_pickup.png</icon>
+    <name>Pickup Truck</name>
+    <shortname>Pickup</shortname>
+    <vehicle>
+      <icon>vehicle_pickup_paint.png</icon>
+      <year>
+        <start_at_year>0</start_at_year>
+        <add_random>-41</add_random>
+      </year>
+      <colors>
+        <color>RED</color>
+        <color>WHITE</color>
+        <color>BLUE</color>
+        <color>TAN</color>
+        <color>BLACK</color>
+      </colors>
+      <drivebonus>
+        <base>3</base>
+        <skillfactor>0.67</skillfactor>
+        <softlimit>6</softlimit>
+        <!-- midrange, but tougher to just drive away -->
+        <hardlimit>15</hardlimit>
+      </drivebonus>
+      <dodgebonus>
+        <base>2</base>
+        <skillfactor>1</skillfactor>
+        <softlimit>6</softlimit>
+        <!-- midrange -->
+        <hardlimit>15</hardlimit>
+      </dodgebonus>
+      <attackbonus>
+        <driver>-1</driver>
+        <!-- not too roomy, but probably comes with a gun rack for the driver -->
+        <passenger>-1</passenger>
+      </attackbonus>
+      <armor>
+        <low_armor>4-6</low_armor>
+        <high_armor>0-2</high_armor>
+        <armor_midpoint>65</armor_midpoint>
+      </armor>
+      <size>3</size>
+      <stealing>
+        <difficulty_to_find>1</difficulty_to_find>
+        <juice>0</juice>
+        <extra_heat>0</extra_heat>
+        <sense_alarm_chance>1</sense_alarm_chance>
+        <touch_alarm_chance>10</touch_alarm_chance>
+      </stealing>
+    </vehicle>
+    <loot>
+      <fencevalue>4000</fencevalue>
+    </loot>
+  </item>
+  <item idname="VEHICLE_POLICECAR">
+    <icon>vehicle_policecar.png</icon>
+    <name>Police Cruiser</name>
+    <shortname>Cruiser</shortname>
+    <vehicle>
+      <year>
+        <start_at_year>0</start_at_year>
+        <add_random>-21</add_random>
+      </year>
+      <colors>
+        <color>POLICE</color>
+      </colors>
+      <drivebonus>
+        <base>1</base>
+        <skillfactor>1.5</skillfactor>
+        <!-- easy and powerful -->
+        <softlimit>11</softlimit>
+        <hardlimit>99</hardlimit>
+      </drivebonus>
+      <dodgebonus>
+        <base>1</base>
+        <skillfactor>1.5</skillfactor>
+        <!-- bit better at driving than dodging -->
+        <softlimit>8</softlimit>
+        <hardlimit>99</hardlimit>
+      </dodgebonus>
+      <attackbonus>
+        <driver>-2</driver>
+        <passenger>0</passenger>
+      </attackbonus>
+      <armor>
+        <low_armor>5-7</low_armor>
+        <high_armor>1-3</high_armor>
+        <armor_midpoint>50</armor_midpoint>
+      </armor>
+      <size>2</size>
+      <stealing>
+        <difficulty_to_find>7</difficulty_to_find>
+        <juice>2</juice>
+        <extra_heat>16</extra_heat>
+        <sense_alarm_chance>0</sense_alarm_chance>
+        <touch_alarm_chance>0</touch_alarm_chance>
+      </stealing>
+    </vehicle>
+    <loot>
+      <fencevalue>4000</fencevalue>
+    </loot>
+  </item>
+  <item idname="VEHICLE_AGENTCAR">
+    <name>Sportscar</name>
+    <shortname>Sport</shortname>
+    <icon>vehicle_sportscar.png</icon>
+    <vehicle>
+      <icon>vehicle_sportscar_paint.png</icon>
+      <year>
+        <start_at_year>0</start_at_year>
+        <add_random>-11</add_random>
+      </year>
+      <colors>
+        <color>BLACK</color>
+      </colors>
+      <drivebonus>
+        <base>0</base>
+        <skillfactor>2</skillfactor>
+        <softlimit>15</softlimit>
+        <!-- suped-up awesomeness -->
+        <hardlimit>99</hardlimit>
+      </drivebonus>
+      <dodgebonus>
+        <base>0</base>
+        <skillfactor>2</skillfactor>
+        <softlimit>15</softlimit>
+        <hardlimit>99</hardlimit>
+      </dodgebonus>
+      <attackbonus>
+        <driver>-1</driver>
+        <passenger>0</passenger>
+      </attackbonus>
+      <armor>
+        <low_armor>6-8</low_armor>
+        <high_armor>2-4</high_armor>
+        <armor_midpoint>30</armor_midpoint>
+      </armor>
+      <size>2</size>
+      <stealing>
+        <!-- Stealing isn't possible for agentcars -->
+        <difficulty_to_find>10</difficulty_to_find>
+        <juice>0</juice>
+        <extra_heat>0</extra_heat>
+        <sense_alarm_chance>0</sense_alarm_chance>
+        <touch_alarm_chance>0</touch_alarm_chance>
+      </stealing>
+    </vehicle>
+    <loot>
+      <fencevalue>8000</fencevalue>
+    </loot>
+  </item>
+  <item idname="VEHICLE_SPORTSCAR">
+    <name>Sportscar</name>
+    <shortname>Sport</shortname>
+    <icon>vehicle_sportscar.png</icon>
+    <vehicle>
+      <icon>vehicle_sportscar_paint.png</icon>
+      <year>
+        <start_at_year>0</start_at_year>
+        <add_random>-21</add_random>
+      </year>
+      <colors>
+        <color>RED</color>
+        <color>WHITE</color>
+        <color>BLUE</color>
+        <color>TAN</color>
+        <color>BLACK</color>
+      </colors>
+      <drivebonus>
+        <base>-4</base>
+        <!-- not forgiving of noobs, but if you're good you can get a lot out of it. -->
+        <skillfactor>2</skillfactor>
+        <softlimit>15</softlimit>
+        <hardlimit>99</hardlimit>
+      </drivebonus>
+      <dodgebonus>
+        <base>-4</base>
+        <skillfactor>2</skillfactor>
+        <softlimit>15</softlimit>
+        <hardlimit>99</hardlimit>
+      </dodgebonus>
+      <attackbonus>
+        <driver>0</driver>
+        <!-- open and clear LoS -->
+        <passenger>3</passenger>
+      </attackbonus>
+      <armor>
+        <low_armor>2-5</low_armor>
+        <high_armor>0</high_armor>
+        <armor_midpoint>30</armor_midpoint>
+      </armor>
+      <size>2</size>
+      <stealing>
+        <difficulty_to_find>3</difficulty_to_find>
+        <juice>0</juice>
+        <extra_heat>5</extra_heat>
+        <sense_alarm_chance>15</sense_alarm_chance>
+        <touch_alarm_chance>95</touch_alarm_chance>
+      </stealing>
+    </vehicle>
+    <loot>
+      <fencevalue>8000</fencevalue>
+    </loot>
+  </item>
+  <item idname="VEHICLE_STATIONWAGON">
+    <icon>vehicle_stationwagon.png</icon>
+    <name>Station Wagon</name>
+    <shortname>Wagon</shortname>
+    <vehicle>
+      <icon>vehicle_stationwagon_paint.png</icon>
+      <year>
+        <start_at_year>0</start_at_year>
+        <add_random>-41</add_random>
+      </year>
+      <colors>
+        <color>RED</color>
+        <color>WHITE</color>
+        <color>BLUE</color>
+        <color>TAN</color>
+        <color>BLACK</color>
+      </colors>
+      <drivebonus>
+        <base>5</base>
+        <skillfactor>0.5</skillfactor>
+        <softlimit>7</softlimit>
+        <!-- A beginner's car - you won't crash it much, but its got a sad top-end -->
+        <hardlimit>10</hardlimit>
+      </drivebonus>
+      <dodgebonus>
+        <base>0</base>
+        <skillfactor>0.5</skillfactor>
+        <!-- you won't be dodging in this boat of a vehicle -->
+        <softlimit>4</softlimit>
+        <hardlimit>9</hardlimit>
+      </dodgebonus>
+      <attackbonus>
+        <driver>-2</driver>
+        <passenger>1</passenger>
+        <!-- roomy for passengers -->
+      </attackbonus>
+      <armor>
+        <low_armor>4-6</low_armor>
+        <high_armor>0-2</high_armor>
+        <armor_midpoint>60</armor_midpoint>
+      </armor>
+      <size>4</size>
+      <stealing>
+        <difficulty_to_find>1</difficulty_to_find>
+        <juice>0</juice>
+        <extra_heat>0</extra_heat>
+        <sense_alarm_chance>1</sense_alarm_chance>
+        <touch_alarm_chance>10</touch_alarm_chance>
+      </stealing>
+    </vehicle>
+    <loot>
+      <fencevalue>6000</fencevalue>
+    </loot>
+  </item>
+  <item idname="VEHICLE_SUV">
+    <name>SUV</name>
+    <shortname>SUV</shortname>
+    <icon>vehicle_suv.png</icon>
+    <vehicle>
+      <icon>vehicle_suv_paint.png</icon>
+      <year>
+        <start_at_current_year>false</start_at_current_year>
+        <start_at_year>1995</start_at_year>
+        <add_random_up_to_current_year>true</add_random_up_to_current_year>
+        <add_random>0</add_random>
+      </year>
+      <colors>
+        <color>RED</color>
+        <color>WHITE</color>
+        <color>BLUE</color>
+        <color>TAN</color>
+        <color>BLACK</color>
+      </colors>
+      <drivebonus>
+        <base>2</base>
+        <skillfactor>1</skillfactor>
+        <softlimit>3</softlimit>
+        <!-- Midrange vehicle -->
+        <hardlimit>12</hardlimit>
+      </drivebonus>
+      <dodgebonus>
+        <base>1</base>
+        <skillfactor>1</skillfactor>
+        <softlimit>4</softlimit>
+        <!-- Midrange -->
+        <hardlimit>12</hardlimit>
+      </dodgebonus>
+      <attackbonus>
+        <driver>-2</driver>
+        <passenger>0</passenger>
+      </attackbonus>
+      <armor>
+        <low_armor>5-7</low_armor>
+        <high_armor>0-2</high_armor>
+        <armor_midpoint>50</armor_midpoint>
+      </armor>
+      <size>3</size>
+      <stealing>
+        <difficulty_to_find>1</difficulty_to_find>
+        <juice>2</juice>
+        <extra_heat>0</extra_heat>
+        <sense_alarm_chance>4</sense_alarm_chance>
+        <touch_alarm_chance>85</touch_alarm_chance>
+      </stealing>
+    </vehicle>
+    <loot>
+      <fencevalue>6000</fencevalue>
+    </loot>
+  </item>
+  <item idname="VEHICLE_TAXICAB">
+    <name>Taxicab</name>
+    <shortname>Taxicab</shortname>
+    <icon>vehicle_taxicab.png</icon>
+    <vehicle>
+      <icon>vehicle_taxicab_paint.png</icon>
+      <year>
+        <start_at_year>0</start_at_year>
+        <add_random>-41</add_random>
+      </year>
+      <colors>
+        <color>YELLOW</color>
+      </colors>
+      <drivebonus>
+        <base>2</base>
+        <skillfactor>1.34</skillfactor>
+        <softlimit>4</softlimit>
+        <!-- fairly forgiving, plus blends into traffic well if you know what you're doing -->
+        <hardlimit>12</hardlimit>
+      </drivebonus>
+      <dodgebonus>
+        <base>2</base>
+        <skillfactor>1.34</skillfactor>
+        <softlimit>6</softlimit>
+        <hardlimit>12</hardlimit>
+      </dodgebonus>
+      <attackbonus>
+        <driver>-2</driver>
+        <passenger>0</passenger>
+      </attackbonus>
+      <armor>
+        <low_armor>4-6</low_armor>
+        <high_armor>0-2</high_armor>
+        <armor_midpoint>50</armor_midpoint>
+      </armor>
+      <size>2</size>
+      <stealing>
+        <difficulty_to_find>8</difficulty_to_find>
+        <juice>0</juice>
+        <extra_heat>0</extra_heat>
+        <sense_alarm_chance>0</sense_alarm_chance>
+        <touch_alarm_chance>0</touch_alarm_chance>
+      </stealing>
+    </vehicle>
+    <loot>
+      <fencevalue>4000</fencevalue>
+    </loot>
+  </item>
+  <item idname="VEHICLE_VAN">
+    <name>Van</name>
+    <shortname>Van</shortname>
+    <icon>vehicle_van.png</icon>
+    <vehicle>
+      <icon>vehicle_van_paint.png</icon>
+      <year>
+        <start_at_year>0</start_at_year>
+        <add_random>-41</add_random>
+      </year>
+      <colors>
+        <color>RED</color>
+        <color>WHITE</color>
+        <color>BLUE</color>
+        <color>TAN</color>
+        <color>BLACK</color>
+      </colors>
+      <drivebonus>
+        <base>2</base>
+        <skillfactor>1</skillfactor>
+        <softlimit>4</softlimit>
+        <!-- pretty pathetic really -->
+        <hardlimit>7</hardlimit>
+      </drivebonus>
+      <dodgebonus>
+        <base>0</base>
+        <skillfactor>1</skillfactor>
+        <softlimit>0</softlimit>
+        <!-- big slow target -->
+        <hardlimit>6</hardlimit>
+      </dodgebonus>
+      <attackbonus>
+        <driver>-4</driver>
+        <!-- bad visibility from driver's seat, but roomy.  Don't drive it alone -->
+        <passenger>3</passenger>
+      </attackbonus>
+      <size>1</size>
+      <armor>
+        <low_armor>6-9</low_armor>
+        <high_armor>3-5</high_armor>
+        <armor_midpoint>95</armor_midpoint>
+      </armor>
+      <size>5</size>
+      <stealing>
+        <difficulty_to_find>2</difficulty_to_find>
+        <juice>0</juice>
+        <extra_heat>0</extra_heat>
+        <sense_alarm_chance>1</sense_alarm_chance>
+        <touch_alarm_chance>10</touch_alarm_chance>
+      </stealing>
+    </vehicle>
+    <loot>
+      <fencevalue>8000</fencevalue>
+    </loot>
+  </item>
+</itemDefs>

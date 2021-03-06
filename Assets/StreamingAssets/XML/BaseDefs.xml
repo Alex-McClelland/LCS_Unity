@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<definitions>
+  <!-- Misc globals -->
+  <vars>
+    <MAXATTRIBUTE>99</MAXATTRIBUTE>
+    <JUICEMIN>-50</JUICEMIN>
+    <JUICEMAX>1000</JUICEMAX>
+    <!-- The Founder's birth year is hard coded to 1984 so the start year should probably not be set to anything too crazy. The intro text
+    also implies that the game starts right after a presidential election year but the game itself won't actually care. -->
+    <STARTYEAR>2017</STARTYEAR>
+    <FUTUREYEAR>2100</FUTUREYEAR>
+  </vars>
+  <creatureAttributes>
+    <!-- It's best not to remove the base 7 attributes as they are referenced directly in code. More can be added, though. -->
+    <attribute idname="HEART">
+      <name>Heart</name>
+    </attribute>
+    <attribute idname="WISDOM">
+      <name>Wisdom</name>
+    </attribute>
+    <attribute idname="HEALTH">
+      <name>Health</name>
+    </attribute>
+    <attribute idname="STRENGTH">
+      <name>Strength</name>
+    </attribute>
+    <attribute idname="AGILITY">
+      <name>Agility</name>
+    </attribute>
+    <attribute idname="INTELLIGENCE">
+      <name>Intelligence</name>
+    </attribute>
+    <attribute idname="CHARISMA">
+      <name>Charisma</name>
+    </attribute>
+  </creatureAttributes>
+  <!-- As with attributes, many of these are referenced in code so it is best not to remove them. Additional skills can be added -->
+  <skills>
+    <skill idname="ART">
+      <category>activism</category>
+      <name>Art</name>
+      <associatedAttribute>HEART</associatedAttribute>
+      <flags>
+        <flag>TRAINED_ONLY</flag>
+      </flags>
+    </skill>
+    <skill idname="AXE">
+      <category>combat</category>
+      <name>Axe</name>
+      <associatedAttribute>STRENGTH</associatedAttribute>
+    </skill>
+    <skill idname="BUSINESS">
+      <category>activism</category>
+      <name>Business</name>
+      <associatedAttribute>INTELLIGENCE</associatedAttribute>
+      <flags>
+        <flag>TRAINED_ONLY</flag>
+        <flag>LEARN_FROM_RECRUITMENT</flag>
+      </flags>
+    </skill>
+    <skill idname="CLUB">
+      <category>combat</category>
+      <name>Club</name>
+      <associatedAttribute>STRENGTH</associatedAttribute>
+    </skill>
+    <skill idname="COMPUTERS">
+      <category>infiltration</category>
+      <name>Computers</name>
+      <associatedAttribute>INTELLIGENCE</associatedAttribute>
+      <flags>
+        <flag>TRAINED_ONLY</flag>
+      </flags>
+    </skill>
+    <skill idname="DISGUISE">
+      <category>infiltration</category>
+      <name>Disguise</name>
+      <associatedAttribute>CHARISMA</associatedAttribute>
+    </skill>
+    <skill idname="DODGE">
+      <category>combat</category>
+      <name>Dodge</name>
+      <associatedAttribute>AGILITY</associatedAttribute>
+    </skill>
+    <skill idname="DRIVING">
+      <category>infiltration</category>
+      <name>Driving</name>
+      <associatedAttribute>AGILITY</associatedAttribute>
+    </skill>
+    <skill idname="FIRST_AID">
+      <category>combat</category>
+      <name>First Aid</name>
+      <associatedAttribute>INTELLIGENCE</associatedAttribute>
+      <flags>
+        <flag>TRAINED_ONLY</flag>
+      </flags>
+    </skill>
+    <skill idname="HEAVY_WEAPONS">
+      <category>combat</category>
+      <name>Heavy Weapons</name>
+      <associatedAttribute>STRENGTH</associatedAttribute>
+    </skill>
+    <skill idname="KNIFE">
+      <category>combat</category>
+      <name>Knife</name>
+      <associatedAttribute>AGILITY</associatedAttribute>
+    </skill>
+    <skill idname="LAW">
+      <category>activism</category>
+      <name>Law</name>
+      <associatedAttribute>INTELLIGENCE</associatedAttribute>
+      <flags>
+        <flag>TRAINED_ONLY</flag>
+        <flag>LEARN_FROM_RECRUITMENT</flag>
+      </flags>
+    </skill>
+    <skill idname="MARTIAL_ARTS">
+      <category>combat</category>
+      <name>Martial Arts</name>
+      <associatedAttribute>AGILITY</associatedAttribute>
+    </skill>
+    <skill idname="MUSIC">
+      <category>activism</category>
+      <name>Music</name>
+      <associatedAttribute>HEART</associatedAttribute>
+      <flags>
+        <flag>TRAINED_ONLY</flag>
+      </flags>
+    </skill>
+    <skill idname="PERSUASION">
+      <category>activism</category>
+      <name>Persuasion</name>
+      <associatedAttribute>CHARISMA</associatedAttribute>
+    </skill>
+    <skill idname="PISTOL">
+      <category>combat</category>
+      <name>Pistol</name>
+      <associatedAttribute>AGILITY</associatedAttribute>
+    </skill>
+    <skill idname="PSYCHOLOGY">
+      <category>infiltration</category>
+      <name>Psychology</name>
+      <associatedAttribute>INTELLIGENCE</associatedAttribute>
+      <flags>
+        <flag>TRAINED_ONLY</flag>
+      </flags>
+    </skill>
+    <skill idname="RELIGION">
+      <category>activism</category>
+      <name>Religion</name>
+      <associatedAttribute>INTELLIGENCE</associatedAttribute>
+      <flags>
+        <flag>TRAINED_ONLY</flag>
+        <flag>LEARN_FROM_RECRUITMENT</flag>
+      </flags>
+    </skill>
+    <skill idname="RIFLE">
+      <category>combat</category>
+      <name>Rifle</name>
+      <associatedAttribute>AGILITY</associatedAttribute>
+    </skill>
+    <skill idname="SCIENCE">
+      <category>activism</category>
+      <name>Science</name>
+      <associatedAttribute>INTELLIGENCE</associatedAttribute>
+      <flags>
+        <flag>TRAINED_ONLY</flag>
+        <flag>LEARN_FROM_RECRUITMENT</flag>
+      </flags>
+    </skill>
+    <skill idname="SECURITY">
+      <category>infiltration</category>
+      <name>Security</name>
+      <associatedAttribute>INTELLIGENCE</associatedAttribute>
+      <flags>
+        <flag>TRAINED_ONLY</flag>
+        <flag>SPECIALTY</flag>
+      </flags>
+    </skill>
+    <skill idname="SEDUCTION">
+      <category>infiltration</category>
+      <name>Seduction</name>
+      <associatedAttribute>CHARISMA</associatedAttribute>
+    </skill>
+    <skill idname="SHOTGUN">
+      <category>combat</category>
+      <name>Shotgun</name>
+      <associatedAttribute>AGILITY</associatedAttribute>
+    </skill>
+    <skill idname="SMG">
+      <category>combat</category>
+      <name>SMG</name>
+      <associatedAttribute>AGILITY</associatedAttribute>
+    </skill>
+    <skill idname="STEALTH">
+      <category>infiltration</category>
+      <name>Stealth</name>
+      <associatedAttribute>AGILITY</associatedAttribute>
+    </skill>
+    <skill idname="STREET_SENSE">
+      <category>activism</category>
+      <name>Street Sense</name>
+      <associatedAttribute>INTELLIGENCE</associatedAttribute>
+    </skill>
+    <skill idname="SWORD">
+      <category>combat</category>
+      <name>Sword</name>
+      <associatedAttribute>AGILITY</associatedAttribute>
+    </skill>
+    <skill idname="TAILORING">
+      <category>infiltration</category>
+      <name>Tailoring</name>
+      <associatedAttribute>INTELLIGENCE</associatedAttribute>
+    </skill>
+    <skill idname="TEACHING">
+      <category>activism</category>
+      <name>Teaching</name>
+      <associatedAttribute>INTELLIGENCE</associatedAttribute>
+      <flags>
+        <flag>TRAINED_ONLY</flag>
+      </flags>
+    </skill>
+    <skill idname="THROWING">
+      <category>combat</category>
+      <name>Throwing</name>
+      <associatedAttribute>AGILITY</associatedAttribute>
+    </skill>
+    <skill idname="WRITING">
+      <category>activism</category>
+      <name>Writing</name>
+      <associatedAttribute>INTELLIGENCE</associatedAttribute>
+    </skill>
+  </skills>
+</definitions>

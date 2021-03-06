@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<newsdefs>
+  <siteactions>
+    <action idname="STOLEGROUND">
+      <priority>0</priority>
+      <cap>10</cap>
+      <text>theft</text>
+      <guardiantext>liberated enemy resources</guardiantext>
+    </action>
+    <action idname="UNLOCKEDDOOR">
+      <priority>0</priority>
+      <cap>10</cap>
+      <text>unlawful entry</text>
+      <guardiantext>picked locks</guardiantext>
+    </action>
+    <action idname="BROKEDOWNDOOR">
+      <priority>0</priority>
+      <cap>10</cap>
+      <text>breaking and entering</text>
+      <guardiantext>broke down doors</guardiantext>
+    </action>
+    <action idname="ATTACKED_MISTAKE">
+      <priority>7</priority>
+      <violence>12</violence>
+      <cap>10</cap>
+      <text>violence</text>
+    </action>
+    <action idname="ATTACKED">
+      <priority>4</priority>
+      <violence>4</violence>
+      <cap>10</cap>
+      <text>$CONDITION{CRIME:ATTACKED_MISTAKE:>:0:more violence:violence}</text>
+      <guardiantext>engaged in combat with Conservative forces</guardiantext>
+    </action>
+    <action idname="CARCHASE">
+      <priority>0</priority>
+      <flag>MAJORCRIME</flag>
+    </action>
+    <action idname="CARCRASH">
+      <priority>0</priority>
+      <flag>MAJORCRIME</flag>
+    </action>
+    <action idname="FOOTCHASE">
+      <priority>0</priority>
+      <flag>MAJORCRIME</flag>
+    </action>
+    <action idname="KILLEDSOMEBODY">
+      <priority>30</priority>
+      <violence>20</violence>
+      <text>murder</text>
+    </action>
+    <action idname="SHUTDOWNREACTOR">
+      <priority>100</priority>
+      <politics>100</politics>
+      <flag>MAJORCRIME</flag>
+      <text> According to sources that were at the scene, the Liberal Crime Squad $CONDITION{LAW:NUCLEAR_POWER:=:2:contaminated the state's water supply yesterday by tampering with equipment on the site:nearly caused a catastrophic meltdown of the nuclear reactor}.</text>
+      <guardiantext> The Liberal Crime Squad $CONDITION{LAW:NUCLEAR_POWER:=:2:tampered with the state's water supply yesterday, demonstrating the extreme dangers of Nuclear Waste:brought the reactor to the verge of a nuclear meltdown, demonstrating the extreme vulnerability and danger of Nuclear Power Plants}.</guardiantext>
+    </action>
+    <action idname="POLICE_LOCKUP">
+      <priority>30</priority>
+      <politics>30</politics>
+      <flag>MAJORCRIME</flag>
+      <text> According to sources that were at the scene, the Liberal Crime Squad allegedly freed or attempted to free prisoners from the police lockup.</text>
+      <guardiantext> The Liberal Crime Squad attempted to rescue innocent people from the police lockup, saving them from torture and brutality at the hands of Conservative police interrogators.</guardiantext>
+    </action>
+    <action idname="COURTHOUSE_LOCKUP">
+      <priority>30</priority>
+      <politics>30</politics>
+      <flag>MAJORCRIME</flag>
+      <text> According to sources that were at the scene, the Liberal Crime Squad allegedly freed or attempted to free prisoners from the courthouse lockup.</text>
+      <guardiantext> The Liberal Crime Squad attempted to rescue innocent people from the courthouse lockup, saving them from the highly corrupt Conservative justice system.</guardiantext>
+    </action>
+    <action idname="PRISON_RELEASE">
+      <priority>50</priority>
+      <politics>50</politics>
+      <flag>MAJORCRIME</flag>
+      <text> According to sources that were at the scene, the Liberal Crime Squad allegedly freed prisoners while in the facility.</text>
+      <guardiantext> The Liberal Crime Squad attempted to rescue innocent people from the abusive Conservative conditions at the prison.</guardiantext>
+    </action>
+    <action idname="JURYTAMPERING">
+      <priority>30</priority>
+      <flag>MAJORCRIME</flag>
+      <text> According to police sources that were at the scene, the Liberal Crime Squad allegedly violated the sacred trust and attempted to influence a jury.</text>
+      <guardiantext> The Liberal Crime Squad has apologized over reports that the operation may have interfered with jury deliberations.</guardiantext>
+    </action>
+    <action idname="HACK_INTEL">
+      <priority>100</priority>
+      <politics>100</politics>
+      <flag>MAJORCRIME</flag>
+      <text> According to police sources that were at the scene, intelligence officials seemed very nervous about something.</text>
+      <guardiantext> Liberal Crime Squad computer specialists worked to liberate information from CIA computers.</guardiantext>
+    </action>
+    <action idname="BREAK_SWEATSHOP">
+      <priority>8</priority>
+      <politics>10</politics>
+      <cap>10</cap>
+      <text>destruction of private property</text>
+      <guardiantext>damaged enemy infrastructure</guardiantext>
+    </action>
+    <action idname="BREAK_FACTORY">
+      <priority>8</priority>
+      <politics>10</politics>
+      <cap>10</cap>
+      <text>destruction of private property</text>
+      <guardiantext>damaged enemy infrastructure</guardiantext>
+    </action>
+    <action idname="HOUSE_PHOTOS">
+      <priority>100</priority>
+      <politics>100</politics>
+      <flag>MAJORCRIME</flag>
+      <text> According to police sources that were at the scene, the owner of the house seemed very frantic about some missing property.</text>
+      <guardiantext> The Liberal Crime Squad was attempting to uncover the CEO's Conservative corruption.</guardiantext>
+    </action>
+    <action idname="CORP_FILES">
+      <priority>100</priority>
+      <politics>100</politics>
+      <flag>MAJORCRIME</flag>
+      <text> According to police sources that were at the scene, executives on the scene seemed very nervous about something.</text>
+      <guardiantext> The Liberal Crime Squad was attempting to uncover the company's Conservative corruption.</guardiantext>
+    </action>
+    <action idname="FREE_RABBITS">
+      <priority>8</priority>
+      <politics>10</politics>
+      <cap>10</cap>
+      <text>tampering with lab animals</text>
+      <guardiantext>liberated abused animals</guardiantext>
+    </action>
+    <action idname="FREE_BEASTS">
+      <priority>12</priority>
+      <politics>10</politics>
+      <cap>10</cap>
+      <text>tampering with lab animals</text>
+      <guardiantext>liberated abused animals</guardiantext>
+    </action>
+    <action idname="ARSON">
+      <priority>0</priority>
+      <text>arson</text>
+      <guardiantext>brought righteous flame to Conservative property</guardiantext>
+    </action>
+    <action idname="TAGGING">
+      <priority>2</priority>
+      <politics>3</politics>
+      <cap>10</cap>
+      <text>vandalism</text>
+      <guardiantext>marked the site for Liberation</guardiantext>
+    </action>
+    <action idname="ARMORY">
+      <priority>100</priority>
+      <violence>100</violence>
+      <flag>MAJORCRIME</flag>
+      <text> According to sources, the Liberal Crime Squad attempted to break into the armory.</text>
+      <guardiantext> Liberal Crime Squad infiltration specialists worked to liberate weapons from the oppressors.</guardiantext>
+    </action>
+    <action idname="VANDALISM">
+      <priority>2</priority>
+      <politics>5</politics>
+      <cap>10</cap>
+      <text>destruction of private property</text>
+      <guardiantext>damaged enemy infrastructure</guardiantext>
+    </action>
+    <action idname="BANKVAULTROBBERY">
+      <priority>100</priority>
+      <flag>MAJORCRIME</flag>
+      <text> According to sources that were at the scene, the Liberal Crime Squad opened the bank vault, which held more than $100,000 at the time.</text>
+      <guardiantext> The Liberal Crime Squad opened the bank vault, showing the triumph of Liberal ideals over Conservative economics.</guardiantext>
+    </action>
+    <action idname="BANKTELLERROBBERY">
+      <priority>30</priority>
+      <text>robbery</text>
+      <guardiantext>liberated enemy resources</guardiantext>
+    </action>
+    <action idname="BANKSTICKUP">
+      <priority>100</priority>
+      <flag>MAJORCRIME</flag>
+      <text> According to sources that were at the scene, the Liberal Crime Squad threatened innocent bystanders in order to rob the bank vault.</text>
+      <guardiantext> The Liberal Crime Squad demanded access to the bank vault, hoping to acquire the resources to overcome evil.</guardiantext>
+    </action>
+  </siteactions>
+  <storytypes>
+    <storytype idname="MAJOREVENT">
+      <priority>30000</priority>
+      <!-- headlines and text are hardcoded -->
+    </storytype>
+    <storytype idname="SQUAD_SITE">
+      <priority>0</priority>
+      <flag>SHIFT_PUBLIC_OPINION</flag>
+      <flag>NEWSCHERRY</flag>
+      <headline>$CONDITION{STORY:POSITIVE:=:true:LCS STRIKES $LOCATION:LCS RAMPAGE}</headline>
+      <guardianheadline>$CONDITION{STORY:POSITIVE:=:true:LCS STRIKES $LOCATION:LCS SORRY}</guardianheadline>
+      <!-- Guardian headline will be overridden with hard coded headlines if story is high priority-->
+      <text>$NEWSCHERRY. The events took place at the $LOCATION.$LISTMAJORCRIMES$LISTMINORCRIMES</text>
+    </storytype>
+    <storytype idname="SQUAD_ESCAPED">
+      <priority>10</priority>
+      <headline>LCS ESCAPES POLICE SIEGE</headline>
+      <text>Members of the Liberal Crime Squad escaped from a police siege yesterday, according to a spokesperson from the police department.</text>
+      <guardiantext>Members of the Liberal Crime Squad escaped from a police siege yesterday, according to a Liberal Crime Squad spokesperson.</guardiantext>
+      <flag>LCSPRIORITY</flag>
+      <flag>SHIFT_PUBLIC_OPINION</flag>
+      <flag>SIEGE</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="SQUAD_FLEDATTACK">
+      <priority>15</priority>
+      <headline>LCS ESCAPES POLICE SIEGE</headline>
+      <text>Members of the Liberal Crime Squad escaped from police officers during a raid yesterday, according to a spokesperson from the police department.</text>
+      <guardiantext>Members of the Liberal Crime Squad escaped from police officers during a raid yesterday, according to a Liberal Crime Squad spokesperson.</guardiantext>
+      <flag>LCSPRIORITY</flag>
+      <flag>SHIFT_PUBLIC_OPINION</flag>
+      <flag>SIEGE</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="SQUAD_DEFENDED">
+      <priority>30</priority>
+      <headline>LCS FIGHTS OFF COPS</headline>
+      <text>Members of the Liberal Crime Squad fought off a police raid yesterday, according to a spokesperson from the police department.</text>
+      <guardiantext>Members of the Liberal Crime Squad fought off a police raid yesterday, according to a Liberal Crime Squad spokesperson.</guardiantext>
+      <flag>LCSPRIORITY</flag>
+      <flag>SHIFT_PUBLIC_OPINION</flag>
+      <flag>SIEGE</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="SQUAD_BROKESIEGE">
+      <priority>45</priority>
+      <headline>LCS FIGHTS OFF COPS</headline>
+      <text>Members of the Liberal Crime Squad violently broke a police siege yesterday, according to a spokesperson from the police department.</text>
+      <guardiantext>Members of the Liberal Crime Squad valiently broke a police siege yesterday, according to a Liberal Crime Squad spokesperson.</guardiantext>
+      <flag>LCSPRIORITY</flag>
+      <flag>SHIFT_PUBLIC_OPINION</flag>
+      <flag>SIEGE</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="SQUAD_KILLED_SIEGEATTACK">
+      <priority>10</priority>
+      <headline>LCS SIEGE TRAGIC END</headline>
+      <guardianheadline>POLICE KILL LCS MARTYRS</guardianheadline>
+      <text>Members of the Liberal Crime Squad were slain during a police raid yesterday, according to a spokesperson from the police department.</text>
+      <guardiantext>Members of the Liberal Crime Squad were extrajudicially murdered while resisting an unlawful search and seizure yesterday, according to a Liberal Crime Squad spokesperson.</guardiantext>
+      <flag>LCSPRIORITY</flag>
+      <flag>SHIFT_PUBLIC_OPINION</flag>
+      <flag>SIEGE</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="SQUAD_KILLED_SIEGEESCAPE">
+      <priority>15</priority>
+      <headline>LCS SIEGE TRAGIC END</headline>
+      <guardianheadline>POLICE KILL LCS MARTYRS</guardianheadline>
+      <text>Members of the Liberal Crime Squad were slain trying to escape from a police siege yesterday, according to a spokesperson from the police department.</text>
+      <guardiantext>Members of the Liberal Crime Squad were extrajudicially murdered while exercising their right to freedom of movement yesterday, according to a Liberal Crime Squad spokesperson.</guardiantext>
+      <flag>LCSPRIORITY</flag>
+      <flag>SHIFT_PUBLIC_OPINION</flag>
+      <flag>SIEGE</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="SQUAD_KILLED_SITE">
+      <priority>10</priority>
+      <flag>LCSPRIORITY</flag>
+      <flag>SHIFT_PUBLIC_OPINION</flag>
+      <flag>NEWSCHERRY</flag>
+      <headline>$CONDITION{STORY:POSITIVE:=:true:LCS STRIKES $LOCATION:LCS RAMPAGE}</headline>
+      <guardianheadline>$CONDITION{STORY:POSITIVE:=:true:LCS STRIKES $LOCATION:LCS SORRY}</guardianheadline>
+      <!-- guardian headline will be overrideen with hard coded headlines if story is high priority -->
+      <text>$NEWSCHERRY. The events took place at the $LOCATION.$LISTMAJORCRIMES$LISTMINORCRIMES $CONDITION{STORY:POSITIVE:=:true:Everyone in the LCS group was arrested or killed.:Fortunately, the LCS thugs were stopped by brave citizens.}</text>
+    </storytype>
+    <storytype idname="CCS_SITE">
+      <priority>0</priority>
+      <flag>SHIFT_PUBLIC_OPINION</flag>
+      <flag>CCS_ACTION</flag>
+      <headline>CCS STRIKES $LOCATION</headline>
+      <text>$NEWSCHERRY. The events took place at the $LOCATION.$LISTMAJORCRIMES$LISTMINORCRIMES</text>
+    </storytype>
+    <storytype idname="CCS_DEFENDED">
+      <priority>40</priority>
+      <flag>LCSPRIORITY</flag>
+    </storytype>
+    <storytype idname="CCS_KILLED_SIEGEATTACK">
+      <priority>40</priority>
+      <flag>LCSPRIORITY</flag>
+    </storytype>
+    <storytype idname="CCS_KILLED_SITE">
+      <priority>0</priority>
+      <flag>SHIFT_PUBLIC_OPINION</flag>
+      <flag>CCS_ACTION</flag>
+      <headline>CCS STRIKES $LOCATION</headline>
+      <text>$NEWSCHERRY. The events took place at the $LOCATION.$LISTMAJORCRIMES$LISTMINORCRIMES $CONDITION{STORY:POSITIVE:=:true:Everyone in the CCS group was arrested or killed.:Fortunately, the CCS thugs were stopped by brave citizens.}</text>
+      <guardiantext>$NEWSCHERRY. The events took place at the $LOCATION.$LISTMAJORCRIMES$LISTMINORCRIMES Fortunately, the CCS thugs were stopped by brave citizens and got what they deserved.</guardiantext>
+    </storytype>
+    <storytype idname="CARTHEFT">
+      <headline>POLICE KILLED</headline>
+      <text>A routine arrest went horribly wrong yesterday, according to a spokesperson from the police department. A suspect, whose identity is unclear, killed $KILLEDSOMEBODY police $CONDITION{CRIME:KILLEDSOMEBODY:>:1:officers that were:officer that was} attempting to perform an arrest. A passerby had allegedly spotted the suspect committing a car theft. The $CONDITION{CRIME:KILLEDSOMEBODY:>:1:names of the officers have:name of the officer has} not been released pending notification of their $CONDITION{CRIME:KILLEDSOMEBODY:>:1:families:family}.</text>
+      <flag>POLICE_KILLED</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="MASSACRE">
+      <priority>10</priority>
+    </storytype>
+    <storytype idname="KIDNAPREPORT">
+      <priority>20</priority>
+      <headline>$TYPENAME KIDNAPPED</headline>
+      <text>The disappearance of $SUBJECT is now considered a kidnapping, according to a police spokesperson. $GENERATENAME, speaking on behalf of the police department, stated "We now believe that $SUBJECT was taken $DAYSMISSING days ago, by a person or persons yet undetermined. We have several leads and are confident that we will bring $SUBJECT back home and bring the kidnappers to justice. As the investigation is ongoing, I cannot be more specific at this time. To the citizens, please contact the department if you have any additional information."
+      According to sources, $SUBJECT's last known location was the $LOCATION. Police were seen searching the surrounding area yesterday.</text>
+      <guardiantext>The disappearance of $SUBJECT is now considered a kidnapping, according to a police spokesperson. $GENERATENAME, speaking on behalf of the police department, stated "We now believe that $SUBJECT was taken $DAYSMISSING days ago, by a person or persons yet undetermined. We have several leads and are confident that we will bring $SUBJECT back home and bring the kidnappers to justice. As the investigation is ongoing, I cannot be more specific at this time. To the citizens, please contact the department if you have any additional information."
+        According to sources, $SUBJECT's last known location was the $LOCATION. Police were seen searching the surrounding area yesterday. Details are sketchy, but we are certain that the Liberal Crime Squad was definitely not involved.
+      </guardiantext>
+    </storytype>
+    <storytype idname="NUDITYARREST">
+      <headline>POLICE KILLED</headline>
+      <text>A routine arrest went horribly wrong yesterday, according to a spokesperson from the police department. A suspect, whose identity is unclear, killed $KILLEDSOMEBODY police $CONDITION{CRIME:KILLEDSOMEBODY:>:1:officers that were:officer that was} attempting to perform an arrest. The incident apparently occurred as a response to a public nudity complaint. The $CONDITION{CRIME:KILLEDSOMEBODY:>:1:names of the officers have:name of the officer has} not been released pending notification of their $CONDITION{CRIME:KILLEDSOMEBODY:>:1:families:family}.</text>
+      <flag>POLICE_KILLED</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="WANTEDARREST">
+      <headline>POLICE KILLED</headline>
+      <text>$KILLEDSOMEBODY police $CONDITION{CRIME:KILLEDSOMEBODY:>:1:officers were:officer was} killed in the line of duty yesterday according to a spokesperson from the police department. A suspect, identified only as a member of the radical political group known as the Liberal Crime Squad, is believed to have killed $KILLEDSOMEBODY $CONDITION{CRIME:KILLEDSOMEBODY:>:1:officers:officer} while they were attempting to perform an arrest. The $CONDITION{CRIME:KILLEDSOMEBODY:>:1:names of the officers have:name of the officer has} not been released pending notification of their $CONDITION{CRIME:KILLEDSOMEBODY:>:1:families:family}.</text>
+      <flag>SHIFT_PUBLIC_OPINION</flag>
+      <flag>POLICE_KILLED</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="DRUGARREST">
+      <headline>POLICE KILLED</headline>
+      <text>A routine arrest went horribly wrong yesterday, according to a spokesperson from the police department. A suspect, whose identity is unclear, killed $KILLEDSOMEBODY police $CONDITION{CRIME:KILLEDSOMEBODY:>:1:officers that were:officer that was} attempting to perform an arrest. The suspect was allegedly selling "pot brownies". The $CONDITION{CRIME:KILLEDSOMEBODY:>:1:names of the officers have:name of the officer has} not been released pending notification of their $CONDITION{CRIME:KILLEDSOMEBODY:>:1:families:family}.</text>
+      <flag>POLICE_KILLED</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="GRAFFITIARREST">
+      <headline>POLICE KILLED</headline>
+      <text>$KILLEDSOMEBODY police $CONDITION{CRIME:KILLEDSOMEBODY:>:1:officers were:officer was} killed in the line of duty yesterday according to a spokesperson from the police department. A suspect, identified only as a member of the radical political group known as the Liberal Crime Squad, is believed to have killed $KILLEDSOMEBODY $CONDITION{CRIME:KILLEDSOMEBODY:>:1:officers:officer} while they were attempting to perform an arrest. The $CONDITION{CRIME:KILLEDSOMEBODY:>:1:names of the officers have:name of the officer has} not been released pending notification of their $CONDITION{CRIME:KILLEDSOMEBODY:>:1:families:family}.</text>
+      <flag>SHIFT_PUBLIC_OPINION</flag>
+      <flag>POLICE_KILLED</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="BURIALARREST">
+      <headline>POLICE KILLED</headline>
+      <text>A routine arrest went horribly wrong yesterday, according to a spokesperson from the police department. A suspect, whose identity is unclear, killed $KILLEDSOMEBODY police $CONDITION{CRIME:KILLEDSOMEBODY:>:1:officers that were:officer that was} attempting to perform an arrest. A passerby allegedly called the authorities after seeing the suspect dragging what appeared to be a corpse through an empty lot. The $CONDITION{CRIME:KILLEDSOMEBODY:>:1:names of the officers have:name of the officer has} not been released pending notification of their $CONDITION{CRIME:KILLEDSOMEBODY:>:1:families:family}.</text>
+      <flag>POLICE_KILLED</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="TROUBLEARREST">
+      <headline>POLICE KILLED</headline>
+      <text>A protest turned violent yesterday, resulting in the $CONDITION{CRIME:KILLEDSOMEBODY:>:1:deaths:death} of $KILLEDSOMEBODY police $CONDITION{CRIME:KILLEDSOMEBODY:>:1:officers:officer}. A suspect, identified only as a member of the radical political group known as the Liberal Crime Squad, is believed to have provoked an altercation with police which led to the violence. The $CONDITION{CRIME:KILLEDSOMEBODY:>:1:names of the officers have:name of the officer has} not been released pending notification of their $CONDITION{CRIME:KILLEDSOMEBODY:>:1:families:family}.</text>
+      <flag>POLICE_KILLED</flag>
+      <flag>NEWSCHERRY</flag>
+    </storytype>
+    <storytype idname="RAID_CORPSESFOUND">
+      
+    </storytype>
+    <storytype idname="RAID_GUNSFOUND">
+      
+    </storytype>
+    <storytype idname="HOSTAGE_RESCUED">
+      
+    </storytype>
+    <storytype idname="HOSTAGE_ESCAPES">
+      
+    </storytype>
+    <storytype idname="CCS_NOBACKERS">
+      <priority>8000</priority>
+      <headline>FBI HUNTS CCS</headline>
+      <text>The FBI investigation into the Conservative Crime Squad's government connections has led to the arrest of more than a dozen elected officials and revealed extensive corruption in law enforcement. "The uphevals in the police force, and arrest of corrupt officials, are only the beginning," FBI Chief Roberta T. Malton said during a news conference. "A major focus of our efforts will be on the complete destruction of the Conservative Crime Squad. Within six months, we'll have their entire leadership, dead or alive. I personally guarantee it."</text>
+    </storytype>
+    <storytype idname="CCS_DEFEATED">
+      <priority>8000</priority>
+      <headline>RAIDS END CCS</headline>
+      <text>An elite FBI force conducted simultaneous raids on several suspected Conservative Crime Squad safehouses in the early hours. Despite resistance from CCS terrorists armed with automatic weapons and body armor, no FBI agents were killed in the raids, and all three raids were successful. Seventeen suspects were killed in the fighting, and twenty-three are now in custody. The Conservative Crime Squad fell on hard times when the alternative newspaper Liberal Guardian published 1147 pages of documents showing extensive government support for the group. The ensuing scandal led to the arrest of twenty-five members of Congress, as well as several leadership figures in the Conservative Party's National Committee. "I want parents to rest easy tonight, " FBI Chief Roberta T. Malton said during a news conference to announce the raids. "You don't need the Liberal Crime Squad to protect you. The Government can handle it."</text>
+    </storytype>   
+  </storytypes>
+</newsdefs>

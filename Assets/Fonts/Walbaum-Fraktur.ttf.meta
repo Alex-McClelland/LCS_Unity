@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 146c2090e993c2841970a92a4bbe99d1
+timeCreated: 1531731117
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Walbaum Fraktur
+  fontNames:
+  - Walbaum Fraktur
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

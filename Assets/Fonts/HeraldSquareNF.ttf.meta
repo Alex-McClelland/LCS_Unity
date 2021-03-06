@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 0ce9fb1d910bca542b0c63756c7e9c43
+timeCreated: 1537104435
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Herald Square NF
+  fontNames:
+  - Herald Square NF
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

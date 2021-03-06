@@ -1,0 +1,567 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+AttackDefs define the attacks that can be attached to weapons.
+
+Attack def formatting:
+
+<attack idname="STRING"> idname must be unique.
+  attack_description: The descriptive text used with this attack eg. CREATURE_A (attack_description) CREATURE_B (default: assaults)
+  hit_description: The descriptive text used on a successful hit with this attack eg. (hit_description) CREATURE_B's arm (default: striking)
+  hit_punctuation: The value used to conclude a hit description eg. "striking CREATURE_B's arm 3 times(hit_punctuation)" (default: .)  
+  skill: The skill used for this attack
+  ammotype: The type of ammo used for this attack - if the weapon is loaded it will check the loaded ammo for the matching type and consume it if it does, otherwise the attack will fail. No ammotype means the attack does not need ammo (optional)
+  accuracy_bonus: bonus accuracy granted on this attack (default: 0)
+  number_attacks: The number of attacks made each time this attack is used. Note: This will affect ammo consumption as one unit of ammo is consumed per attack (default: 1)
+  successive_attacks_difficulty: The accuracy penalty applied to each attack beyond the first. This penalty stacks, so a value of -2 will be an accuracy of 0 on attack 1, -2 on attack 2, -4 on attack 3, etc. (default: 0)
+  strength_min: The minimum strength to deal normal damage and armour piercing with this attack. This is only applied to melee attacks (default: 5)
+  strength_max: The soft cap at which strength beyond the minimum will provide bonus damage to attacks (default: 10)
+    A note on strength min and max: These values are compared to a strength ROLL, not the actual strength attribute of a character. Thus only values between 1-18 are meaningful and the distribution of rolls should be considered
+  fixed_damage: The base damage dealt per hit by this attack (default: 1)
+  random_damage: A random amount between 0 and (random_damage - 1) will be added to fixed_damage per hit to determine the final damage of the attack (default: 1);
+  severtype: The type of sever this attack does if it exceeds the severing threshold of the attacked part (default: NONE).
+    valid severtypes:
+    NONE - cannot sever parts
+    CLEAN - severs parts without causing bleeding
+    NASTY - severs parts with bleeding
+  armorpiercing: The amount of armour this attack is capable of ignoring (default: 0)
+  no_damage_reduction_for_limbs_chance: percentage chance that this attack can cause a kill on a limb hit (default: 0)
+  damage_type: The damage type caused by this attack (default: BRUISE)
+    valid damage_types:
+      BRUISE
+      TEAR
+      CUT
+      BURN
+      SHOOT
+      MUSIC - special "damage" type that causes this to be a conversion attack instead
+      PERSUASION - special "damage" type that causes this to be a conversion attack instead
+  <critical>
+    chance: The percentage chance of causing critical damage (default: 0)
+    hits_required: The number of hits required to roll on the above critical chance (default: 1)
+    fixed_damage: The amount of extra fixed damage to add per hit (default: base fixed_damage)
+    random_damage: The amount of extra random damage to add per hit (default: base random_damage)
+    severtype: The severtype to use on a critical hit (default: same as base severtype)
+  </critical>
+  <fire>
+    chance: The chance for this attack to start a fire in the current tile (default: 0)
+    chance_causes_debris: The chance for this attack to create debris in the current tile (default: 0) (note: currently unimplemented)
+  </fire>
+  <flags>
+    flag: Flag to apply to this attack type (repeatable)
+      valid flags:
+        RANGED - this is a ranged attack
+        ALWAYS_DESCRIBE_HIT - use hit description even on a single hit
+        BACKSTAB - this can cause backstab damage on unaware enemies (not currently implemented)
+        DAMAGE_ARMOR - this attack can cause damage to armour
+        CAUSE_BLEED - this attack can cause bleeding
+        SKILL_DAMAGE - this attack's damage is based on the skill of the attacker rather than the fixed/random damage
+  </flags>
+</attack>
+-->
+<attackDefs>
+  <attack idname="UNARMED">
+    <!-- Unarmed will have many of its aspects hard coded because its specific attributes vary based on martial arts skill -->
+    <skill>MARTIAL_ARTS</skill>
+    <accuracy_bonus>0</accuracy_bonus>
+    <strength_min>5</strength_min>
+    <strength_max>10</strength_max>
+    <armorpiercing>0</armorpiercing>
+    <damage_type>BRUISE</damage_type>
+    <flags>
+      <flag>SKILL_DAMAGE</flag>
+    </flags>
+  </attack>
+  <attack idname="PERSUASION">
+    <attack_description>argues politics with</attack_description>
+    <skill>PERSUASION</skill>
+    <damage_type>PERSUASION</damage_type>
+  </attack>
+  <attack idname="PERSUASION_MEGAPHONE">
+    <attack_description>reasons with</attack_description>
+    <skill>PERSUASION</skill>
+    <damage_type>PERSUASION</damage_type>
+  </attack>
+  <attack idname="DOG_BITE">
+    <attack_description>bites</attack_description>
+    <strength_min>5</strength_min>
+    <strength_max>10</strength_max>
+    <skill>MARTIAL_ARTS</skill>
+    <armorpiercing>2</armorpiercing>
+    <severtype>NASTY</severtype>
+    <damage_type>TEAR</damage_type>
+    <flags>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+      <flag>SKILL_DAMAGE</flag>
+    </flags>
+  </attack>
+  <attack idname="MONSTER_SUCK">
+    <attack_description>stabs</attack_description>
+    <strength_min>5</strength_min>
+    <strength_max>10</strength_max>
+    <skill>MARTIAL_ARTS</skill>
+    <armorpiercing>2</armorpiercing>
+    <severtype>NASTY</severtype>
+    <damage_type>CUT</damage_type>
+    <flags>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+      <flag>SKILL_DAMAGE</flag>
+    </flags>
+  </attack>
+  <attack idname="MONSTER_FLAME">
+    <attack_description>breathes fire at</attack_description>
+    <strength_min>5</strength_min>
+    <strength_max>10</strength_max>
+    <skill>MARTIAL_ARTS</skill>
+    <armorpiercing>2</armorpiercing>
+    <severtype>NASTY</severtype>
+    <damage_type>BURN</damage_type>
+    <fire>
+      <chance>33</chance>
+    </fire>
+    <flags>
+      <flag>DAMAGE_ARMOR</flag>
+      <flag>SKILL_DAMAGE</flag>
+    </flags>
+  </attack>
+  <attack idname="TANK_CANNON">
+    <attack_description>fires a 120mm shell at</attack_description>
+    <skill>HEAVY_WEAPONS</skill>
+    <random_damage>5000</random_damage>
+    <fixed_damage>5000</fixed_damage>
+    <armorpiercing>20</armorpiercing>
+    <severtype>NASTY</severtype>
+    <damage_type>SHOOT</damage_type>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+      <flag>CAUSE_BLEED</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_38_REVOLVER">
+    <attack_description>shoots at</attack_description>
+    <skill>PISTOL</skill>
+    <ammotype>AMMO_38_REVOLVER</ammotype>
+    <random_damage>141</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>3</armorpiercing>
+    <damage_type>SHOOT</damage_type>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+      <flag>CAUSE_BLEED</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_44_REVOLVER">
+    <attack_description>shoots at</attack_description>
+    <skill>PISTOL</skill>
+    <ammotype>AMMO_44_REVOLVER</ammotype>
+    <random_damage>276</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>4</armorpiercing>
+    <damage_type>SHOOT</damage_type>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_45_PISTOL">
+    <attack_description>shoots at</attack_description>
+    <skill>PISTOL</skill>
+    <ammotype>AMMO_45_PISTOL</ammotype>
+    <random_damage>201</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>3</armorpiercing>
+    <damage_type>SHOOT</damage_type>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_9MM_PISTOL">
+    <attack_description>shoots at</attack_description>
+    <skill>PISTOL</skill>
+    <ammotype>AMMO_9MM_PISTOL</ammotype>
+    <random_damage>181</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>4</armorpiercing>
+    <damage_type>SHOOT</damage_type>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_AA12_SHOTGUN">
+    <attack_description>shoots at</attack_description>
+    <skill>SHOTGUN</skill>
+    <ammotype>AMMO_SHOTGUN</ammotype>
+    <random_damage>201</random_damage>
+    <fixed_damage>30</fixed_damage>
+    <armorpiercing>0</armorpiercing>
+    <accuracy_bonus>4</accuracy_bonus>
+    <number_attacks>2</number_attacks>
+    <successive_attacks_difficulty>3</successive_attacks_difficulty>
+    <severtype>NASTY</severtype>
+    <damage_type>SHOOT</damage_type>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_PUMP_SHOTGUN">
+    <attack_description>shoots at</attack_description>
+    <skill>SHOTGUN</skill>
+    <ammotype>AMMO_SHOTGUN</ammotype>
+    <random_damage>201</random_damage>
+    <fixed_damage>30</fixed_damage>
+    <armorpiercing>0</armorpiercing>
+    <damage_type>SHOOT</damage_type>
+    <accuracy_bonus>4</accuracy_bonus>
+    <severtype>NASTY</severtype>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_SMG_MP5">
+    <attack_description>shoots at</attack_description>
+    <skill>SMG</skill>
+    <ammotype>AMMO_9MM_SMG</ammotype>
+    <random_damage>181</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>4</armorpiercing>
+    <damage_type>SHOOT</damage_type>
+    <accuracy_bonus>2</accuracy_bonus>
+    <number_attacks>3</number_attacks>
+    <successive_attacks_difficulty>2</successive_attacks_difficulty>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_AK47">
+    <attack_description>shoots at</attack_description>
+    <skill>RIFLE</skill>
+    <ammotype>AMMO_RIFLE</ammotype>
+    <random_damage>251</random_damage>
+    <fixed_damage>15</fixed_damage>
+    <armorpiercing>7</armorpiercing>
+    <number_attacks>3</number_attacks>
+    <successive_attacks_difficulty>4</successive_attacks_difficulty>
+    <damage_type>SHOOT</damage_type>
+    <critical>
+      <chance>100</chance>
+      <hits_required>3</hits_required>
+      <severtype>NASTY</severtype>
+    </critical>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_AR15">
+    <attack_description>shoots at</attack_description>
+    <skill>RIFLE</skill>
+    <ammotype>AMMO_RIFLE</ammotype>
+    <random_damage>251</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>7</armorpiercing>
+    <severtype>NONE</severtype>
+    <damage_type>SHOOT</damage_type>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_DEAGLE">
+    <attack_description>shoots at</attack_description>
+    <skill>PISTOL</skill>
+    <ammotype>AMMO_50AE</ammotype>
+    <random_damage>301</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>4</armorpiercing>
+    <severtype>NASTY</severtype>
+    <damage_type>SHOOT</damage_type>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_FLAMETHROWER">
+    <attack_description>streams fire at</attack_description>
+    <skill>HEAVY_WEAPONS</skill>
+    <ammotype>AMMO_GASOLINE</ammotype>
+    <random_damage>201</random_damage>
+    <fixed_damage>50</fixed_damage>
+    <armorpiercing>9</armorpiercing>
+    <damage_type>BURN</damage_type>
+    <fire>
+      <chance>33</chance>
+    </fire>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_M4">
+    <attack_description>shoots at</attack_description>
+    <skill>RIFLE</skill>
+    <ammotype>AMMO_RIFLE</ammotype>
+    <random_damage>221</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>7</armorpiercing>
+    <accuracy_bonus>2</accuracy_bonus>
+    <number_attacks>3</number_attacks>
+    <successive_attacks_difficulty>3</successive_attacks_difficulty>
+    <damage_type>SHOOT</damage_type>
+    <critical>
+      <chance>100</chance>
+      <hits_required>3</hits_required>
+      <severtype>NASTY</severtype>
+    </critical>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_M16">
+    <attack_description>shoots at</attack_description>
+    <skill>RIFLE</skill>
+    <ammotype>AMMO_RIFLE</ammotype>
+    <random_damage>251</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>7</armorpiercing>
+    <number_attacks>3</number_attacks>
+    <successive_attacks_difficulty>3</successive_attacks_difficulty>
+    <damage_type>SHOOT</damage_type>
+    <critical>
+      <chance>100</chance>
+      <hits_required>3</hits_required>
+      <severtype>NASTY</severtype>
+    </critical>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="SHOOT_M249">
+    <attack_description>shoots at</attack_description>
+    <skill>HEAVY_WEAPONS</skill>
+    <ammotype>AMMO_MACHINEGUN</ammotype>
+    <random_damage>301</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>7</armorpiercing>
+    <number_attacks>5</number_attacks>
+    <accuracy_bonus>5</accuracy_bonus>
+    <successive_attacks_difficulty>3</successive_attacks_difficulty>
+    <damage_type>SHOOT</damage_type>
+    <critical>
+      <chance>100</chance>
+      <hits_required>3</hits_required>
+      <severtype>NASTY</severtype>
+    </critical>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="THROW_MOLOTOV">
+    <attack_description>hurls a molotov at</attack_description>
+    <hit_description>exploding</hit_description>
+    <hit_punctuation>!</hit_punctuation>
+    <skill>THROWING</skill>
+    <ammotype>AMMO_MOLOTOV</ammotype>
+    <random_damage>101</random_damage>
+    <fixed_damage>25</fixed_damage>
+    <armorpiercing>7</armorpiercing>
+    <no_damage_reduction_for_limbs_chance>33</no_damage_reduction_for_limbs_chance>
+    <damage_type>BURN</damage_type>
+    <fire>
+      <chance_causes_debris>100</chance_causes_debris>
+      <chance>100</chance>
+    </fire>
+    <flags>
+      <flag>RANGED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+      <flag>ALWAYS_DESCRIBE_HIT</flag>
+    </flags>
+  </attack>
+  
+  <attack idname="PISTOL_WHIP">
+    <strength_min>2</strength_min>
+    <strength_max>6</strength_max>
+    <attack_description>swings at</attack_description>
+    <skill>CLUB</skill>
+    <random_damage>6</random_damage>
+    <fixed_damage>5</fixed_damage>
+    <damage_type>BRUISE</damage_type>
+  </attack>
+  <attack idname="RIFLE_BASH">
+    <strength_min>6</strength_min>
+    <strength_max>12</strength_max>
+    <attack_description>swings at</attack_description>
+    <skill>CLUB</skill>    
+    <random_damage>21</random_damage>
+    <fixed_damage>5</fixed_damage>
+    <damage_type>BRUISE</damage_type>
+  </attack>
+  <attack idname="SMG_BASH">
+    <strength_min>5</strength_min>
+    <strength_max>10</strength_max>
+    <attack_description>swings at</attack_description>
+    <skill>CLUB</skill>
+    <random_damage>21</random_damage>
+    <fixed_damage>5</fixed_damage>
+    <damage_type>BRUISE</damage_type>
+  </attack>
+  <attack idname="HW_BASH">
+    <attack_description>swings at</attack_description>
+    <skill>CLUB</skill>
+    <strength_min>12</strength_min>
+    <strength_max>18</strength_max>
+    <random_damage>21</random_damage>
+    <fixed_damage>5</fixed_damage>
+    <damage_type>BRUISE</damage_type>
+  </attack>
+  
+  <attack idname="SYRINGE">
+    <attack_description>pokes at</attack_description>
+    <strength_min>1</strength_min>
+    <strength_max>2</strength_max>
+    <skill>KNIFE</skill>
+    <random_damage>4</random_damage>
+    <fixed_damage>1</fixed_damage>
+    <damage_type>CUT</damage_type>
+    <armorpiercing>4</armorpiercing>
+  </attack>
+  <attack idname="AXE">
+    <attack_description>chops at</attack_description>
+    <strength_min>6</strength_min>
+    <strength_max>12</strength_max>
+    <skill>AXE</skill>
+    <random_damage>101</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>2</armorpiercing>
+    <severtype>CLEAN</severtype>
+    <damage_type>CUT</damage_type>
+    <flags>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="WEAK_BASH">
+    <attack_description>swings at</attack_description>
+    <strength_min>1</strength_min>
+    <strength_max>4</strength_max>
+    <skill>CLUB</skill>
+    <random_damage>11</random_damage>
+    <fixed_damage>5</fixed_damage>
+    <damage_type>BRUISE</damage_type>
+  </attack>
+  <attack idname="MID_BASH">
+    <attack_description>swings at</attack_description>
+    <strength_min>4</strength_min>
+    <strength_max>8</strength_max>
+    <skill>CLUB</skill>
+    <random_damage>21</random_damage>
+    <fixed_damage>5</fixed_damage>
+    <damage_type>BRUISE</damage_type>
+  </attack>
+  <attack idname="STRONG_BASH">
+    <attack_description>swings at</attack_description>
+    <strength_min>4</strength_min>
+    <strength_max>8</strength_max>
+    <skill>CLUB</skill>
+    <random_damage>21</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <damage_type>BRUISE</damage_type>
+    <flags>
+      <flag>CAUSE_BLEED</flag>
+    </flags>
+  </attack>
+  <attack idname="HEAVY_BASH">
+    <attack_description>swings at</attack_description>
+    <strength_min>6</strength_min>
+    <strength_max>12</strength_max>
+    <skill>CLUB</skill>
+    <random_damage>41</random_damage>
+    <fixed_damage>5</fixed_damage>
+    <damage_type>BRUISE</damage_type>
+  </attack>
+  <attack idname="KNIFE">
+    <attack_description>lunges at</attack_description>
+    <sneak_attack_description>stabs</sneak_attack_description>
+    <hit_description>slashing</hit_description>
+    <skill>KNIFE</skill>
+    <strength_min>1</strength_min>
+    <strength_max>6</strength_max>
+    <random_damage>61</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>2</armorpiercing>
+    <number_attacks>3</number_attacks>
+    <successive_attacks_difficulty>4</successive_attacks_difficulty>
+    <damage_type>CUT</damage_type>
+    <flags>
+      <flag>CAUSE_BLEED</flag>
+      <flag>BACKSTAB</flag>
+    </flags>
+  </attack>  
+  <attack idname="SWORD">
+    <attack_description>swings at</attack_description>
+    <strength_min>6</strength_min>
+    <strength_max>12</strength_max>
+    <skill>SWORD</skill>
+    <random_damage>101</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>2</armorpiercing>
+    <severtype>CLEAN</severtype>
+    <damage_type>CUT</damage_type>
+    <flags>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="GUITAR">
+    <attack_description>plays protest songs at</attack_description>
+    <skill>MUSIC</skill>
+    <damage_type>MUSIC</damage_type>
+  </attack>
+  <attack idname="PITCHFORK">
+    <attack_description>stabs at</attack_description>
+    <strength_min>6</strength_min>
+    <strength_max>12</strength_max>
+    <skill>SWORD</skill>
+    <random_damage>61</random_damage>
+    <fixed_damage>10</fixed_damage>
+    <armorpiercing>1</armorpiercing>
+    <damage_type>CUT</damage_type>
+    <flags>
+      <flag>CAUSE_BLEED</flag>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+  <attack idname="TORCH">
+    <attack_description>swings at</attack_description>
+    <strength_min>1</strength_min>
+    <strength_max>1</strength_max>
+    <skill>CLUB</skill>
+    <random_damage>11</random_damage>
+    <fixed_damage>5</fixed_damage>
+    <damage_type>BURN</damage_type>
+    <flags>
+      <flag>DAMAGE_ARMOR</flag>
+    </flags>
+  </attack>
+</attackDefs>

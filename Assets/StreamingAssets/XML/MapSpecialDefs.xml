@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- NOTE: THIS IS AN EXPERIMENTAL FILE AND NOT CURRENTLY USED -->
+<specials>
+  <special idname="LAB_COSMETICS_CAGEDANIMALS">
+    <interact>
+      <prompt>
+        <text>You see fluffy white rabbits in a locked cage.\nFree them?</text>
+        <skillcheck>
+          <type>SECURITY</type>
+          <difficulty>VERYEASY</difficulty>
+          <effect>
+            <juice>3,100</juice>
+            <suspiciontime>20-29</suspiciontime>
+            <story>FREE_RABBITS</story>
+            <crime>VANDALISM</crime>
+            <sitecrime>1</sitecrime>
+          </effect>
+        </skillcheck>
+      </prompt>      
+    </interact>
+  </special>
+  <special idname="LAB_GENETIC_CAGEDANIMALS">
+    <interact>
+      <prompt>
+        <text>You see horrible misshapen creatures in a sealed cage.\nFree them?</text>
+        <skillcheck>
+          <type>SECURITY</type>
+          <difficulty>AVERAGE</difficulty>
+          <effect>
+            <juice>5,200</juice>
+            <suspiciontime>20-29</suspiciontime>
+            <story>FREE_BEASTS</story>
+            <crime>VANDALISM</crime>
+            <sitecrime>1</sitecrime>
+          </effect>
+          <effect chance="50">
+            <logtext>Uh, maybe that idea was Conservative in retrospect...</logtext>
+            <encounter>
+              <count>1-6</count>
+              <creature>GENETIC</creature>
+            </encounter>
+          </effect>
+        </skillcheck>
+      </prompt>      
+    </interact>
+  </special>
+  <special idname="POLICESTATION_LOCKUP">
+    <interact>
+      <prompt>
+        <text>You see prisoners in the detention room.\nFree them?</text>
+        <skillcheck>
+          <type>SECURITY</type>
+          <difficulty>FORMIDABLE</difficulty>
+          <effect>
+            <juice>50,1000</juice>
+            <suspiciontime>20-29</suspiciontime>
+            <story>POLICE_LOCKUP</story>
+            <crime>HELPESCAPE</crime>
+            <sitecrime>22</sitecrime>
+            <special>RESCUE_POLICE</special>
+            <encounter>
+              <count>2-9</count>
+              <!-- Might need special handling for this because "PRISONER" is not a real type -->
+              <creature>PRISONER</creature>
+            </encounter>
+          </effect>
+          <faileffect>
+            <sitecrime>2</sitecrime>
+            <story>POLICE_LOCKUP</story>
+            <crime>HELPESCAPE</crime>
+          </faileffect>
+        </skillcheck>
+      </prompt>      
+    </interact>
+  </special>  
+  <special idname="COURTHOUSE_LOCKUP">
+    <interact>
+      <prompt>
+        <text>You see prisoners in the Courthouse jail.\nFree them?</text>
+        <skillcheck>
+          <type>SECURITY</type>
+          <difficulty>FORMIDABLE</difficulty>
+          <effect>
+            <juice>50,1000</juice>
+            <suspiciontime>20-29</suspiciontime>
+            <story>COURTHOUSE_LOCKUP</story>
+            <crime>HELPESCAPE</crime>
+            <sitecrime>23</sitecrime>
+            <special>RESCUE_COURTHOUSE</special>
+            <encounter>
+              <count>2-9</count>
+              <!-- Might need special handling for this because "PRISONER" is not a real type -->
+              <creature>PRISONER</creature>
+            </encounter>
+          </effect>
+          <faileffect>
+            <sitecrime>3</sitecrime>
+            <story>COURTHOUSE_LOCKUP</story>
+            <crime>HELPESCAPE</crime>
+          </faileffect>
+        </skillcheck>
+      </prompt>      
+    </interact>
+  </special>
+  <special idname="COURTHOUSE_JURYROOM">
+    <entry>
+      <effect condition="VAR:alarmTriggered:=:true">
+        <logtext>It appears as if this room has been vacated in a hurry.</logtext>
+      </effect>
+      <prompt condition ="VAR:alarmTriggered:=:true">
+        <text>You've found a Jury in deliberations!\nAttempt to influence them?</text>
+        <skillcheck>
+          <type>INFLUENCE_JURY</type>
+        </skillcheck>
+      </prompt>
+    </entry>
+  </special>
+  <special idname="PRISON_CONTROL">
+  </special>
+  <special idname="PRISON_CONTROL_LOW">
+  </special>
+  <special idname="PRISON_CONTROL_MEDIUM">
+  </special>
+  <special idname="PRISON_CONTROL_HIGH">
+  </special>
+  <special idname="INTEL_SUPERCOMPUTER">
+  </special>
+  <special idname="SWEATSHOP_EQUIPMENT">
+  </special>
+  <special idname="POLLUTER_EQUIPMENT">
+  </special>
+  <special idname="NUCLEAR_ONOFF">
+  </special>
+  <special idname="HOUSE_PHOTOS">
+  </special>
+  <special idname="HOUSE_CEO">
+  </special>
+  <special idname="CORPORATE_FILES">
+  </special>
+  <special idname="RADIO_BROADCASTSTUDIO">
+  </special>
+  <special idname="NEWS_BROADCASTSTUDIO">
+  </special>
+  <special idname="APARTMENT_LANDLORD">
+  </special>
+  <special idname="SIGN_ONE">
+  </special>
+  <special idname="RESTAURANT_TABLE">
+  </special>
+  <special idname="CAFE_COMPUTER">
+  </special>
+  <special idname="PARK_BENCH">
+  </special>
+  <special idname="STAIRS_UP">
+  </special>
+  <special idname="STAIRS_DOWN">
+  </special>
+  <special idname="CLUB_BOUNCER">
+  </special>
+  <special idname="CLUB_BOUNCER_SECONDVISIT">
+  </special>
+  <special idname="ARMORY">
+  </special>
+  <special idname="DISPLAY_CASE">
+  </special>
+  <special idname="SIGN_TWO">
+  </special>
+  <special idname="SIGN_THREE">
+  </special>
+  <special idname="SECURITY_CHECKPOINT">
+  </special>
+  <special idname="SECURITY_METALDETECTORS">
+  </special>
+  <special idname="SECURITY_SECONDVISIT">
+  </special>
+  <special idname="BANK_VAULT">
+  </special>
+  <special idname="BANK_TELLER">
+  </special>
+  <special idname="BANK_MONEY">
+  </special>
+  <special idname="CCS_BOSS">
+  </special>
+</specials>

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5511145f7342b274ead93740449def10
+timeCreated: 1530160809
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - i_jail: {fileID: 21300000, guid: 7fd62a8bacabed042b167835c1c8ef62, type: 3}
+  - i_hospital: {fileID: 21300000, guid: 7954d9199d7ffc24eb95a94b8e8996d1, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
