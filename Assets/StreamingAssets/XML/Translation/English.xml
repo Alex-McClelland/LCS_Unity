@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- IMPORTANT NOTE: Keys are case sensitive, and must be globally unique -->
+<translations>
+  <!-- Global Terms -->
+  <!-- Gender -->
+  <translation key="GLOBAL_masculine_possessive" value="His"/>
+  <translation key="GLOBAL_feminine_possessive" value="Her"/>
+  <translation key="GLOBAL_neutral_possessive" value="Their"/>
+  <translation key="GLOBAL_masculine_object_pronoun" value="Him"/>
+  <translation key="GLOBAL_feminine_object_pronoun" value="Her"/>
+  <translation key="GLOBAL_neutral_object_pronoun" value="Them"/>
+  <translation key="GLOBAL_masculine_subject_pronoun" value="He"/>
+  <translation key="GLOBAL_feminine_subject_pronoun" value="She"/>
+  <translation key="GLOBAL_neutral_subject_pronoun" value="They"/>
+  <translation key="GLOBAL_masculine_gender_descriptor" value="Man"/>
+  <translation key="GLOBAL_feminine_gender_descriptor" value="Woman"/>
+  <translation key="GLOBAL_neutral_gender_descriptor" value="Person"/>
+  <!-- Title Screen - TITLE -->
+  <translation key="TITLE_main_title" value="LIBERAL CRIME SQUAD"/>
+  <translation key="TITLE_version" value="Version:"/>
+  <translation key="TITLE_newgame" value="(N)ew Game"/>
+  <translation key="TITLE_continue" value="(C)ontinue Game"/>
+  <translation key="TITLE_highscore" value="(H)igh Scores"/>
+  <translation key="TITLE_exitgame" value="Exit Game (esc)"/>
+</translations>

@@ -40,6 +40,8 @@ namespace LCS.Engine
         public Dictionary<string, PortraitPartDef> portraitPartList;
         public Dictionary<string, Sprite> portraitGraphicList;
 
+        public Dictionary<string, string> translationList;
+
         private static GameData data = null;
 
         private GameData()
@@ -72,6 +74,7 @@ namespace LCS.Engine
             locationGenList = new Dictionary<string, LocationGenDef>();
             portraitPartList = new Dictionary<string, PortraitPartDef>();
             portraitGraphicList = new Dictionary<string, Sprite>();
+            translationList = new Dictionary<string, string>();
 
             populateDictionaries();
         }
@@ -113,6 +116,7 @@ namespace LCS.Engine
             loadNewsDefs();
             loadLocationGenDefs();
             loadPortraitDefs();
+            loadTranslations();
         }
 
         private XmlDocument livingDoc;
@@ -1256,6 +1260,40 @@ namespace LCS.Engine
             catch (System.IO.FileNotFoundException)
             {
                 MasterController.GetMC().addErrorMessage("Error loading portraitdefs: PortraitDefs.xml not found");
+                return false;
+            }
+        }
+
+        private bool loadTranslations()
+        {
+            try
+            {
+                XmlReaderSettings readerSettings = new XmlReaderSettings();
+                readerSettings.IgnoreComments = true;
+                XmlReader reader = XmlReader.Create(XMLPath + "/Translation/" + globalVarsList["LANGUAGE"] + ".xml", readerSettings);
+
+                XmlDocument doc = new XmlDocument();
+                MasterController.GetMC().addDebugMessage("Loading Translations");
+                doc.Load(reader);
+
+                XmlNode root = doc.DocumentElement;
+
+                foreach (XmlNode node in root.ChildNodes)
+                {
+                    translationList.Add(node.Attributes["key"].Value, node.Attributes["value"].Value);
+                }
+
+                reader.Close();
+                return true;
+            }
+            catch (FileNotFoundException)
+            {
+                MasterController.GetMC().addErrorMessage("Error loading translations: " + globalVarsList["LANGUAGE"] + ".xml not found");
+                return false;
+            }
+            catch (KeyNotFoundException)
+            {
+                MasterController.GetMC().addErrorMessage("Error loading translations: LANGUAGE global variable not defined in BaseDefs.xml");
                 return false;
             }
         }

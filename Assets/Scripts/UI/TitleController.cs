@@ -34,7 +34,7 @@ public class TitleController : MonoBehaviour, TitlePage {
 
         b_NewGame.onClick.AddListener(() => { close(); this.actions.newGame(); });
         b_LoadGame.onClick.AddListener(() => { close(); this.actions.loadGame(); });
-        t_version.text = "Version: " + MasterController.CURRENT_VERSION;
+        t_version.text = MasterController.CURRENT_VERSION;
     }
 
     public void show()

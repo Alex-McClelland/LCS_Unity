@@ -2,6 +2,7 @@
 <definitions>
   <!-- Misc globals -->
   <vars>
+    <LANGUAGE>English</LANGUAGE>
     <MAXATTRIBUTE>99</MAXATTRIBUTE>
     <JUICEMIN>-50</JUICEMIN>
     <JUICEMAX>1000</JUICEMAX>

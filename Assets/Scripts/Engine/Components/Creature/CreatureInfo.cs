@@ -95,15 +95,17 @@ namespace LCS.Engine.Components.Creature
 
         public string hisHer()
         {
+            GameData data = GameData.getData();
+
             switch (genderLiberal)
             {
                 case CreatureGender.FEMALE:
-                    return "Her";
+                    return data.translationList["GLOBAL_feminine_possessive"];
                 case CreatureGender.MALE:
                 case CreatureGender.WHITEMALEPATRIARCH:
-                    return "His";
+                    return data.translationList["GLOBAL_masculine_possessive"];
                 case CreatureGender.NEUTRAL:
-                    return "Their";
+                    return data.translationList["GLOBAL_neutral_possessive"];
                 default:
                     return "NO GENDER DEFINED";
             }
@@ -111,15 +113,17 @@ namespace LCS.Engine.Components.Creature
 
         public string himHer()
         {
+            GameData data = GameData.getData();
+
             switch (genderLiberal)
             {
                 case CreatureGender.FEMALE:
-                    return "Her";
+                    return data.translationList["GLOBAL_feminine_object_pronoun"];
                 case CreatureGender.MALE:
                 case CreatureGender.WHITEMALEPATRIARCH:
-                    return "Him";
+                    return data.translationList["GLOBAL_masculine_object_pronoun"];
                 case CreatureGender.NEUTRAL:
-                    return "Them";
+                    return data.translationList["GLOBAL_neutral_object_pronoun"]; ;
                 default:
                     return "NO GENDER DEFINED";
             }
@@ -127,15 +131,17 @@ namespace LCS.Engine.Components.Creature
 
         public string heShe()
         {
+            GameData data = GameData.getData();
+
             switch (genderLiberal)
             {
                 case CreatureGender.FEMALE:
-                    return "She";
+                    return data.translationList["GLOBAL_feminine_subject_pronoun"];
                 case CreatureGender.MALE:
                 case CreatureGender.WHITEMALEPATRIARCH:
-                    return "He";
+                    return data.translationList["GLOBAL_masculine_subject_pronoun"];
                 case CreatureGender.NEUTRAL:
-                    return "They";
+                    return data.translationList["GLOBAL_neutral_subject_pronoun"];
                 default:
                     return "NO GENDER DEFINED";
             }
@@ -143,15 +149,17 @@ namespace LCS.Engine.Components.Creature
 
         public string manWoman()
         {
+            GameData data = GameData.getData();
+
             switch (genderLiberal)
             {
                 case CreatureGender.FEMALE:
-                    return "Woman";
+                    return data.translationList["GLOBAL_feminine_gender_descriptor"];
                 case CreatureGender.MALE:
                 case CreatureGender.WHITEMALEPATRIARCH:
-                    return "Man";
+                    return data.translationList["GLOBAL_masculine_gender_descriptor"];
                 case CreatureGender.NEUTRAL:
-                    return "Person";
+                    return data.translationList["GLOBAL_neutral_gender_descriptor"];
                 default:
                     return "NO GENDER DEFINED";
             }
