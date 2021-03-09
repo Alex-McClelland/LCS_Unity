@@ -1,25 +1,116 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<!-- IMPORTANT NOTE: Keys are case sensitive, and must be globally unique -->
+<!-- IMPORTANT NOTE: Keys are case sensitive, and must be unique within a set. The keys will be created based on the translation_set prefix + the specific key separated by an underscore.
+eg. the actual translation key that will be referenced by the game for "masculine_possessive" under the GENDER set is "GENDER_masculine_possessive"-->
 <translations>
   <!-- Global Terms -->
   <!-- Gender -->
-  <translation key="GLOBAL_masculine_possessive" value="His"/>
-  <translation key="GLOBAL_feminine_possessive" value="Her"/>
-  <translation key="GLOBAL_neutral_possessive" value="Their"/>
-  <translation key="GLOBAL_masculine_object_pronoun" value="Him"/>
-  <translation key="GLOBAL_feminine_object_pronoun" value="Her"/>
-  <translation key="GLOBAL_neutral_object_pronoun" value="Them"/>
-  <translation key="GLOBAL_masculine_subject_pronoun" value="He"/>
-  <translation key="GLOBAL_feminine_subject_pronoun" value="She"/>
-  <translation key="GLOBAL_neutral_subject_pronoun" value="They"/>
-  <translation key="GLOBAL_masculine_gender_descriptor" value="Man"/>
-  <translation key="GLOBAL_feminine_gender_descriptor" value="Woman"/>
-  <translation key="GLOBAL_neutral_gender_descriptor" value="Person"/>
-  <!-- Title Screen - TITLE -->
-  <translation key="TITLE_main_title" value="LIBERAL CRIME SQUAD"/>
-  <translation key="TITLE_version" value="Version:"/>
-  <translation key="TITLE_newgame" value="(N)ew Game"/>
-  <translation key="TITLE_continue" value="(C)ontinue Game"/>
-  <translation key="TITLE_highscore" value="(H)igh Scores"/>
-  <translation key="TITLE_exitgame" value="Exit Game (esc)"/>
+  <translation_set prefix="GENDER">
+    <translation key="masculine_possessive" value="His"/>
+    <translation key="feminine_possessive" value="Her"/>
+    <translation key="neutral_possessive" value="Their"/>
+    <translation key="masculine_object_pronoun" value="Him"/>
+    <translation key="feminine_object_pronoun" value="Her"/>
+    <translation key="neutral_object_pronoun" value="Them"/>
+    <translation key="masculine_subject_pronoun" value="He"/>
+    <translation key="feminine_subject_pronoun" value="She"/>
+    <translation key="neutral_subject_pronoun" value="They"/>
+    <translation key="masculine_gender_descriptor" value="Man"/>
+    <translation key="feminine_gender_descriptor" value="Woman"/>
+    <translation key="neutral_gender_descriptor" value="Person"/>
+  </translation_set>
+  <!-- Title Screen -->
+  <translation_set prefix="TITLE">
+    <translation key="main_title" value="LIBERAL CRIME SQUAD"/>
+    <translation key="version" value="Version:"/>
+    <translation key="newgame" value="(N)ew Game"/>
+    <translation key="continue" value="(C)ontinue Game"/>
+    <translation key="highscore" value="(H)igh Scores"/>
+    <translation key="exitgame" value="Exit Game (esc)"/>
+  </translation_set>
+  <!-- Founder Question screen -->
+  <translation_set prefix="QUESTIONS">
+    <translation key="title" value="The Founder of the Liberal Crime Squad"/>
+    <translation key="sex_text" value="The doctor said I was"/>
+    <translation key="name_text" value="My parents named me"/>
+    <translation key="alias_text" value="I would be known to the people as"/>
+    <translation key="skip_button" value="Skip Questions (esc)"/>
+    <translation key="optional_settings_label" value="Optional Settings"/>
+    <translation key="nightmare_mode" value="(N)ightmare Mode"/>
+    <translation key="strong_ccs" value="(W)e Didn't Start the Fire"/>
+    <translation key="no_ccs" value="Classic (M)ode"/>
+    <translation key="sex_male" value="a boy"/>
+    <translation key="sex_female" value="a girl"/>
+    <translation key="sex_neutral" value="intersex"/>
+    <!-- Founder questions-->
+    <!-- Question 1 -->
+    <translation key="q1_text" value="The day I was born in 1984..."/>
+    <translation key="q1_a" value="(A) the Polish priest Popieluszko was kidnapped by government agents"/>
+    <translation key="q1_b" value="(B) was the 3rd anniversary of the assassination attempt on Ronald Reagan"/>
+    <translation key="q1_c" value="(C) the Macintosh was introduced"/>
+    <translation key="q1_d" value="(D) the Nobel Peace Prize went to Desmond Tutu for opposition to apartheid"/>
+    <translation key="q1_e" value="(E) the Sandanista Front won the elections in Nicaragua"/>
+    <!-- Question 2 -->
+    <translation key="q2_text" value="When I was bad..."/>
+    <translation key="q2_a" value="(A) my parents grounded me and hid my toys, but I knew where they put them"/>
+    <translation key="q2_b" value="(B) my father beat me. I learned to take a punch earlier than most"/>
+    <translation key="q2_c" value="(C) I was sent to my room, where I studied quietly by myself, alone"/>
+    <translation key="q2_d" value="(D) my parents argued with each other about me, but I was never punished"/>
+    <translation key="q2_e" value="(E) my father lectured me endlessly, trying to make me think like him"/>
+    <!-- Question 3 -->
+    <translation key="q3_text" value="In elementary school..."/>
+    <translation key="q3_a" value="(A) I was mischievous, and always up to something"/>
+    <translation key="q3_b" value="(B) I had a lot of repressed anger. I hurt animals"/>
+    <translation key="q3_c" value="(C) I was at the head of the class, and I worked very hard"/>
+    <translation key="q3_d" value="(D) I was unruly and often fought with the other children"/>
+    <translation key="q3_e" value="(E) I was the class clown. I even had some friends"/>
+    <!-- Question 4 -->
+    <translation key="q4_text" value="When I turned 10..."/>
+    <translation key="q4_a" value="(A) my parents divorced. Whenever I talked, they argued, so I stayed quiet"/>
+    <translation key="q4_b" value="(B) my parents divorced. Violently"/>
+    <translation key="q4_c" value="(C) my parents divorced. Acrimoniously.  I once tripped over the paperwork!"/>
+    <translation key="q4_d" value="(D) my parents divorced. Mom slept with the divorce lawyer"/>
+    <translation key="q4_e" value="(E) my parents divorced. It still hurts to read my old diary"/>
+    <!-- Question 5 -->
+    <translation key="q5_text" value="In junior high school..."/>
+    <translation key="q5_a" value="(A) I was into chemistry. I wanted to know what made the world tick"/>
+    <translation key="q5_b" value="(B) I played guitar in a grunge band.  We sucked, but so did life"/>
+    <translation key="q5_c" value="(C) I drew things, a lot. I was drawing a world better than this"/>
+    <translation key="q5_d" value="(D) I played violent video games at home. I was a total outcast"/>
+    <translation key="q5_e" value="(E) I was obsessed with swords, and started lifting weights"/>
+    <!-- Question 6 -->
+    <translation key="q6_text" value="Things were getting really bad..."/>
+    <translation key="q6_a" value="(A) when I stole my first car. I got a few blocks before I totaled it"/>
+    <translation key="q6_b" value="(B) and I went to live with my dad. He had been in Nam and he still drank"/>
+    <translation key="q6_c" value="(C) and I went completely goth. I had no friends and made costumes by myself"/>
+    <translation key="q6_d" value="(D) when I was sent to religious counseling, just stressing me out more"/>
+    <translation key="q6_e" value="(E) and I tried being a teacher's assistant. It just made me a target"/>
+    <!-- Question 7 -->
+    <translation key="q7_text" value="I knew it had reached a crescendo when..."/>
+    <translation key="q7_a" value="(A) I stole a cop car when I was only 14. I went to juvie for 6 months"/>
+    <translation key="q7_b" value="(B) my step mom shot her ex-husband, my dad, with a shotgun. She got off"/>
+    <translation key="q7_c" value="(C) I tried wrestling for a quarter, desperate to fit in"/>
+    <translation key="q7_d" value="(D) I got caught making out, and now I needed to be 'cured' of homosexuality"/>
+    <translation key="q7_e" value="(E) I resorted to controlling people. Had my own clique of outcasts"/>
+    <!-- Question 8 -->
+    <translation key="q8_text" value="I was only 15 when I ran away, and..."/>
+    <translation key="q8_a" value="(A) I started robbing houses: rich people only. I was fed up with their crap"/>
+    <translation key="q8_b" value="(B) I hung out with thugs and beat the shit out of people"/>
+    <translation key="q8_c" value="(C) I got a horrible job working fast food, smiling as people fed the man"/>
+    <translation key="q8_d" value="(D) I let people pay me for sex. I needed the money to survive"/>
+    <translation key="q8_e" value="(E) I volunteered for a left-wing candidate. It wasn't *real*, though, you know?"/>
+    <!-- Question 9 -->
+    <translation key="q9_text" value="Life went on. On my 18th birthday..."/>
+    <translation key="q9_a" value="(A) I got my hands on a sports car. The owner must have been pissed"/>
+    <translation key="q9_b" value="(B) I bought myself an assault rifle"/>
+    <translation key="q9_c" value="(C) I celebrated. I'd saved a thousand bucks!"/>
+    <translation key="q9_d" value="(D) I went to a party and met a cool law student. We've been dating since"/>
+    <translation key="q9_e" value="(E) I managed to acquire secret maps of several major buildings downtown"/>
+    <!-- Question 10 -->
+    <translation key="q10_text" value="For the past decade, I've been..."/>
+    <translation key="q10_a" value="(A) stealing from Corporations. I know they're still keeping more secrets"/>
+    <translation key="q10_b" value="(B) a violent criminal. Nothing can change me, or stand in my way"/>
+    <translation key="q10_c" value="(C) taking college courses. I can see how much the country needs help"/>
+    <translation key="q10_d" value="(D) surviving alone, just like anyone. But we can't go on like this"/>
+    <translation key="q10_e" value="(E) writing my manifesto and refining my image. I'm ready to lead"/>
+  </translation_set>
 </translations>

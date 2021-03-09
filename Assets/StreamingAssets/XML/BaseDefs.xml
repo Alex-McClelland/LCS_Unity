@@ -2,6 +2,7 @@
 <definitions>
   <!-- Misc globals -->
   <vars>
+    <!-- The language setting will look for a matching xml file with this name in the Translation folder -->
     <LANGUAGE>English</LANGUAGE>
     <MAXATTRIBUTE>99</MAXATTRIBUTE>
     <JUICEMIN>-50</JUICEMIN>

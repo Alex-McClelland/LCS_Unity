@@ -1280,7 +1280,12 @@ namespace LCS.Engine
 
                 foreach (XmlNode node in root.ChildNodes)
                 {
-                    translationList.Add(node.Attributes["key"].Value, node.Attributes["value"].Value);
+                    string prefix = node.Attributes["prefix"].Value;
+
+                    foreach (XmlNode child in node.ChildNodes)
+                    {
+                        translationList.Add(prefix + "_" + child.Attributes["key"].Value, child.Attributes["value"].Value);
+                    }
                 }
 
                 reader.Close();

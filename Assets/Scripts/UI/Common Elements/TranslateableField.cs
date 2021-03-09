@@ -10,10 +10,15 @@ public class TranslateableField : MonoBehaviour
 
     void Awake()
     {
-        if(translationKey != "")
+        setTranslation();
+    }
+
+    public void setTranslation()
+    {
+        if (translationKey != "")
         {
             Text text = GetComponent<Text>();
-            if(text != null)
+            if (text != null)
             {
                 if (GameData.getData().translationList.ContainsKey(translationKey))
                 {

@@ -100,12 +100,12 @@ namespace LCS.Engine.Components.Creature
             switch (genderLiberal)
             {
                 case CreatureGender.FEMALE:
-                    return data.translationList["GLOBAL_feminine_possessive"];
+                    return data.translationList["GENDER_feminine_possessive"];
                 case CreatureGender.MALE:
                 case CreatureGender.WHITEMALEPATRIARCH:
-                    return data.translationList["GLOBAL_masculine_possessive"];
+                    return data.translationList["GENDER_masculine_possessive"];
                 case CreatureGender.NEUTRAL:
-                    return data.translationList["GLOBAL_neutral_possessive"];
+                    return data.translationList["GENDER_neutral_possessive"];
                 default:
                     return "NO GENDER DEFINED";
             }
@@ -118,12 +118,12 @@ namespace LCS.Engine.Components.Creature
             switch (genderLiberal)
             {
                 case CreatureGender.FEMALE:
-                    return data.translationList["GLOBAL_feminine_object_pronoun"];
+                    return data.translationList["GENDER_feminine_object_pronoun"];
                 case CreatureGender.MALE:
                 case CreatureGender.WHITEMALEPATRIARCH:
-                    return data.translationList["GLOBAL_masculine_object_pronoun"];
+                    return data.translationList["GENDER_masculine_object_pronoun"];
                 case CreatureGender.NEUTRAL:
-                    return data.translationList["GLOBAL_neutral_object_pronoun"]; ;
+                    return data.translationList["GENDER_neutral_object_pronoun"]; ;
                 default:
                     return "NO GENDER DEFINED";
             }
@@ -136,12 +136,12 @@ namespace LCS.Engine.Components.Creature
             switch (genderLiberal)
             {
                 case CreatureGender.FEMALE:
-                    return data.translationList["GLOBAL_feminine_subject_pronoun"];
+                    return data.translationList["GENDER_feminine_subject_pronoun"];
                 case CreatureGender.MALE:
                 case CreatureGender.WHITEMALEPATRIARCH:
-                    return data.translationList["GLOBAL_masculine_subject_pronoun"];
+                    return data.translationList["GENDER_masculine_subject_pronoun"];
                 case CreatureGender.NEUTRAL:
-                    return data.translationList["GLOBAL_neutral_subject_pronoun"];
+                    return data.translationList["GENDER_neutral_subject_pronoun"];
                 default:
                     return "NO GENDER DEFINED";
             }
@@ -154,12 +154,12 @@ namespace LCS.Engine.Components.Creature
             switch (genderLiberal)
             {
                 case CreatureGender.FEMALE:
-                    return data.translationList["GLOBAL_feminine_gender_descriptor"];
+                    return data.translationList["GENDER_feminine_gender_descriptor"];
                 case CreatureGender.MALE:
                 case CreatureGender.WHITEMALEPATRIARCH:
-                    return data.translationList["GLOBAL_masculine_gender_descriptor"];
+                    return data.translationList["GENDER_masculine_gender_descriptor"];
                 case CreatureGender.NEUTRAL:
-                    return data.translationList["GLOBAL_neutral_gender_descriptor"];
+                    return data.translationList["GENDER_neutral_gender_descriptor"];
                 default:
                     return "NO GENDER DEFINED";
             }
