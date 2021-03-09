@@ -113,4 +113,15 @@ eg. the actual translation key that will be referenced by the game for "masculin
     <translation key="q10_d" value="(D) surviving alone, just like anyone. But we can't go on like this"/>
     <translation key="q10_e" value="(E) writing my manifesto and refining my image. I'm ready to lead"/>
   </translation_set>
+  <translation_set prefix="HIGH_SCORE">
+    <translation key="universal_stats" value="UNIVERSAL LIBERAL STATISTICS"/>
+    <translation key="recruits" value="Recruits:"/>
+    <translation key="martyrs" value="Martyrs:"/>
+    <translation key="kills" value="Kills:"/>
+    <translation key="kidnappings" value="Kidnappings:"/>
+    <translation key="taxed" value="$ Taxed:"/>
+    <translation key="spent" value="$ Spent:"/>
+    <translation key="flags_bought" value="Flags Bought:"/>
+    <translation key="flags_burned" value="Flags Burned:"/>
+  </translation_set>
 </translations>

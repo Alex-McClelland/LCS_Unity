@@ -16,8 +16,6 @@ public class HighScoreEntry : MonoBehaviour {
     public Text flagBuyCount;
     public Text flagBurnCount;
 
-    public Text[] labels;
-
 	// Use this for initialization
 	void Start () {
 		
