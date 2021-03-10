@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!-- IMPORTANT NOTE: Keys are case sensitive, and must be unique within a set. The keys will be created based on the translation_set prefix + the specific key separated by an underscore.
-eg. the actual translation key that will be referenced by the game for "masculine_possessive" under the GENDER set is "GENDER_masculine_possessive"-->
+eg. the actual translation key that will be referenced by the game for "masculine_possessive" under the GENDER set is "GENDER_masculine_possessive"
+
+Strings inside the value attributes will be additionally processed by Unity's rich text markup (see reference here: https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/StyledText.html) -->
 <translations>
   <!-- Global Terms -->
   <!-- Gender -->
@@ -18,6 +20,15 @@ eg. the actual translation key that will be referenced by the game for "masculin
     <translation key="feminine_gender_descriptor" value="Woman"/>
     <translation key="neutral_gender_descriptor" value="Person"/>
   </translation_set>
+  <translation_set prefix="GOVERNMENT">
+    <translation key="president" value="President"/>
+    <translation key="vice_president" value="Vice President"/>
+    <translation key="secretary_of_state" value="Secretary of State"/>
+    <translation key="attorney_general" value="Attorney General"/>
+    <translation key="house" value="House"/>
+    <translation key="senate" value="Senate"/>
+  </translation_set>
+  <!-- Screen specific text -->
   <!-- Title Screen -->
   <translation_set prefix="TITLE">
     <translation key="main_title" value="LIBERAL CRIME SQUAD"/>
@@ -36,11 +47,15 @@ eg. the actual translation key that will be referenced by the game for "masculin
     <translation key="skip_button" value="Skip Questions (esc)"/>
     <translation key="optional_settings_label" value="Optional Settings"/>
     <translation key="nightmare_mode" value="(N)ightmare Mode"/>
+    <translation key="nightmare_mode_mouseover" value="Liberalism is forgotten. Is it too late to fight back?"/>
     <translation key="strong_ccs" value="(W)e Didn't Start the Fire"/>
+    <translation key="strong_ccs_mouseover" value="The CCS starts active and extremely strong"/>
     <translation key="no_ccs" value="Classic (M)ode"/>
+    <translation key="no_ccs_mouseover" value="No Conservative Crime Squad"/>
     <translation key="sex_male" value="a boy"/>
     <translation key="sex_female" value="a girl"/>
     <translation key="sex_neutral" value="intersex"/>
+    <translation key="alias" value="Alias"/>
     <!-- Founder questions-->
     <!-- Question 1 -->
     <translation key="q1_text" value="The day I was born in 1984..."/>
@@ -113,6 +128,7 @@ eg. the actual translation key that will be referenced by the game for "masculin
     <translation key="q10_d" value="(D) surviving alone, just like anyone. But we can't go on like this"/>
     <translation key="q10_e" value="(E) writing my manifesto and refining my image. I'm ready to lead"/>
   </translation_set>
+  <!-- High Score screen-->
   <translation_set prefix="HIGH_SCORE">
     <translation key="universal_stats" value="UNIVERSAL LIBERAL STATISTICS"/>
     <translation key="recruits" value="Recruits:"/>
@@ -123,5 +139,48 @@ eg. the actual translation key that will be referenced by the game for "masculin
     <translation key="spent" value="$ Spent:"/>
     <translation key="flags_bought" value="Flags Bought:"/>
     <translation key="flags_burned" value="Flags Burned:"/>
+  </translation_set>
+  <!-- Base screen -->
+  <translation_set prefix="BASE">
+    <translation key="slogan_placeholder" value="Enter Slogan..."/>
+    <translation key="money" value="Money:"/>
+    <translation key="manage_bases" value="Manage Safe (H)ouses"/>
+    <translation key="manage_bases_mouseover" value="View/upgrade safe houses"/>
+    <translation key="view_agenda" value="Liberal (A)genda"/>
+    <translation key="view_agenda_mouseover" value="View the status of the Liberal agenda"/>
+    <translation key="manage_liberals" value="Manage (L)iberals"/>
+    <translation key="manage_liberals_mouseover" value="View and manage Liberal organization"/>
+    <translation key="exit" value="EXIT"/>
+    <translation key="next_day" value="(W)ait a Day"/>
+    <translation key="no_squad" value="No Squad Selected"/>
+    <translation key="travel" value="(G)o Forth to Stop EVIL"/> <!-- note: the travel button space is extremely limited and should not exceed 23 characters-->
+    <translation key="need_car" value="(Need Car)"/> <!-- Displayed on districts in the travel menu that require a vehicle -->
+    <translation key="closed" value="Closed"/> <!-- Displayed on locations that have been closed due to liberal activity -->
+    <translation key="high_security" value="High Security"/> <!--Displayed on locations that are in high security due to liberay activity -->
+    <translation key="siege_cannot_wait" value="Cannot wait while under attack"/> <!-- Displayed as a mouseover tooltip when trying to wait while under siege -->
+    <translation key="under_siege" value="UNDER SIEGE"/> <!-- Displayed on the travel button when a squad is selected that is under siege -->
+    <!-- Liberal Agenda Screen -->
+    <translation key="term" value="term"/>
+    <translation key="supreme_court_label" value="S C\nU O\nP U\nR R\nE T\nM\nE"/> <!-- The need to print this vertically renders it awkward -->
+    <translation key="view_polls" value="(V)iew Latest Polls"/>
+    <translation key="view_laws" value="(V)iew Laws"/>
+    <translation key="view_map" value="View Political (M)ap"/>
+    <!-- Poll data -->
+    <translation key="no_issues" value="The public is not concerned with politics right now."/>
+    <translation key="top_issue" value="The people are most concerned about"/>
+    <translation key="issue_header" value="Issue"/>
+    <translation key="error_header" value="Error"/>
+    <translation key="public_interest_header" value="Public Interest"/>
+    <translation key="age_header" value="Age"/>
+    <translation key="poll_interest_unknown" value="Unknown"/>
+    <translation key="poll_error_na" value="N/A"/>
+    <translation key="poll_age_old" value="Old"/>
+    <translation key="poll_interest_very_high" value="Very High"/>
+    <translation key="poll_interest_high" value="High"/>
+    <translation key="poll_interest_moderate" value="Moderate"/>
+    <translation key="poll_interest_low" value="Low"/>
+    <translation key="poll_interest_none" value="None"/>
+    <translation key="presidential_approval" value="have a favorable opinion of"/> <!-- Displayed as part of the presidential approval text as "X% (presidential_approval) PresidentName"-->
+
   </translation_set>
 </translations>

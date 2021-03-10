@@ -31,6 +31,7 @@ public class PollDisplay : MonoBehaviour {
     public void Activate()
     {
         if (issues == null) issues = new Dictionary<string, PollIssue>();
+        GameData g = GameData.getData();
 
         foreach (Public.PollData data in MasterController.generalPublic.pollData.Values)
         {
@@ -65,32 +66,32 @@ public class PollDisplay : MonoBehaviour {
             {
                 viewColor = Color.gray;
                 
-                issue.t_PublicInterest.text = "Unknown";
+                issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_unknown"];
                 issue.t_Percent.text = "??%";
-                issue.t_Error.text = "N/A";
-                issue.t_Age.text = "old";
+                issue.t_Error.text = g.translationList["BASE_poll_error_na"];
+                issue.t_Age.text = g.translationList["BASE_poll_age_old"];
             }
             else
             {
                 switch (data.publicInterest)
                 {
                     case Public.PollData.PublicInterest.VERY_HIGH:
-                        issue.t_PublicInterest.text = "Very High";
+                        issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_very_high"];
                         break;
                     case Public.PollData.PublicInterest.HIGH:
-                        issue.t_PublicInterest.text = "High";
+                        issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_high"];
                         break;
                     case Public.PollData.PublicInterest.MODERATE:
-                        issue.t_PublicInterest.text = "High";
+                        issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_moderate"];
                         break;
                     case Public.PollData.PublicInterest.LOW:
-                        issue.t_PublicInterest.text = "Low";
+                        issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_low"];
                         break;
                     case Public.PollData.PublicInterest.NONE:
-                        issue.t_PublicInterest.text = "None";
+                        issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_none"];
                         break;
                     default:
-                        issue.t_PublicInterest.text = "Unknown";
+                        issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_unknown"];
                         break;
                 }
 
@@ -112,7 +113,7 @@ public class PollDisplay : MonoBehaviour {
             issue.t_Age.color = viewColor;
         }
 
-        t_PresidentialApproval.text = MasterController.generalPublic.PresidentApprovalRating/10 + "% have a favorable opinion of ";
+        t_PresidentialApproval.text = MasterController.generalPublic.PresidentApprovalRating/10 + "% " + g.translationList["BASE_presidential_approval"] +  " ";
 
         string colorString = "<color=white>";
 
@@ -135,7 +136,7 @@ public class PollDisplay : MonoBehaviour {
                 break;
         }
 
-        t_PresidentialApproval.text += colorString + "President " + MasterController.government.president.getComponent<CreatureInfo>().getName() + "</color>.";
+        t_PresidentialApproval.text += colorString + g.translationList["GOVERNMENT_president"] + " " + MasterController.government.president.getComponent<CreatureInfo>().getName() + "</color>.";
 
         string topIssue = "";
 
@@ -151,10 +152,10 @@ public class PollDisplay : MonoBehaviour {
             }
         }
 
-        if (topIssue == "") t_PublicTopIssue.text = "The public is not concerned with politics right now.";
+        if (topIssue == "") t_PublicTopIssue.text = g.translationList["BASE_no_issues"];
         else
         {
-            t_PublicTopIssue.text = "The people are most concerned about ";
+            t_PublicTopIssue.text = g.translationList["BASE_top_issue"] + " ";
             if (MasterController.generalPublic.PublicOpinion[topIssue] > 50)
             {
                 foreach (ConditionalName text in GameData.getData().viewList[topIssue].liberalText)

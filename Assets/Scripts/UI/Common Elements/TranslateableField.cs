@@ -7,6 +7,7 @@ using LCS.Engine;
 public class TranslateableField : MonoBehaviour
 {
     public string translationKey;
+    public bool ignoreTranslation = false;
 
     void Awake()
     {
@@ -15,10 +16,11 @@ public class TranslateableField : MonoBehaviour
 
     public void setTranslation()
     {
-        if (translationKey != "")
-        {
-            Text text = GetComponent<Text>();
-            if (text != null)
+        if (ignoreTranslation) return;
+
+        Text text = GetComponent<Text>();
+        if (text != null) {
+            if (translationKey != "")
             {
                 if (GameData.getData().translationList.ContainsKey(translationKey))
                 {
@@ -28,6 +30,10 @@ public class TranslateableField : MonoBehaviour
                 {
                     MasterController.GetMC().addDebugMessage("Missing translation reference " + translationKey);
                 }
+            }
+            else if (text.text != "")
+            {
+                text.text += " $$UNTRANSLATED$$";
             }
         }
     }

@@ -1284,7 +1284,17 @@ namespace LCS.Engine
 
                     foreach (XmlNode child in node.ChildNodes)
                     {
-                        translationList.Add(prefix + "_" + child.Attributes["key"].Value, child.Attributes["value"].Value);
+                        if (!translationList.ContainsKey(prefix + "_" + child.Attributes["key"].Value))
+                        {
+                            string value = child.Attributes["value"].Value;
+                            //Need to repace newlines since they are escaped by the parser, which we don't want
+                            value = value.Replace("\\n", "\n");
+                            translationList.Add(prefix + "_" + child.Attributes["key"].Value, value);
+                        }
+                        else
+                        {
+                            MasterController.GetMC().addErrorMessage("Duplicate translation key: " + prefix + "_" + child.Attributes["key"].Value + " found");
+                        }
                     }
                 }
 

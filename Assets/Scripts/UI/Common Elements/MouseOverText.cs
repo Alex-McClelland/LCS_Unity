@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using LCS.Engine;
 
 public class MouseOverText : MonoBehaviour {
 
     public string mouseOverText;
+    public string translationKey;
 
     void Awake()
     {
@@ -18,6 +21,7 @@ public class MouseOverText : MonoBehaviour {
         entry.eventID = EventTriggerType.PointerExit;
         entry.callback.AddListener((data) => { clearMouseOverText(); });
         trigger.triggers.Add(entry);
+        setTranslation();
     }
 
 	// Use this for initialization
@@ -38,5 +42,24 @@ public class MouseOverText : MonoBehaviour {
     public void clearMouseOverText()
     {
         UIControllerImpl.tooltip.setText("");
+    }
+
+    public void setTranslation()
+    {
+        if (translationKey != "")
+        {
+            if (GameData.getData().translationList.ContainsKey(translationKey))
+            {
+                mouseOverText = GameData.getData().translationList[translationKey];
+            }
+            else
+            {
+                MasterController.GetMC().addDebugMessage("Missing translation reference " + translationKey);
+            }
+        }
+        else if(mouseOverText != "")
+        {
+            mouseOverText += "$$UNTRANSLATED$$";
+        }
     }
 }

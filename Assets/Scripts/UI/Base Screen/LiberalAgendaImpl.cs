@@ -56,15 +56,17 @@ public class LiberalAgendaImpl : MonoBehaviour, LiberalAgenda {
 
     public void refresh()
     {
+        GameData data = GameData.getData();
+
         t_ExecutiveTitles.text = "";
         string presidentColor = getAlignmentColor(MasterController.government.president.getComponent<Politician>().alignment);
-        t_ExecutiveTitles.text += presidentColor + "PRESIDENT (" + MasterController.ordinal(MasterController.government.presidentTerm) + " term):</color>\n";
+        t_ExecutiveTitles.text += presidentColor + data.translationList["GOVERNMENT_president"] + " (" + MasterController.ordinal(MasterController.government.presidentTerm) + " " + data.translationList["BASE_term"] +"):</color>\n";
         string vpColor = getAlignmentColor(MasterController.government.vicePresident.getComponent<Politician>().alignment);
-        t_ExecutiveTitles.text += vpColor + "VICE PRESIDENT:</color>\n";
+        t_ExecutiveTitles.text += vpColor + data.translationList["GOVERNMENT_vice_president"] + ":</color>\n";
         string sosColor = getAlignmentColor(MasterController.government.secretaryOfState.getComponent<Politician>().alignment);
-        t_ExecutiveTitles.text += sosColor + "SECRETARY OF STATE:</color>\n";
+        t_ExecutiveTitles.text += sosColor + data.translationList["GOVERNMENT_secretary_of_state"] + ":</color>\n";
         string agColor = getAlignmentColor(MasterController.government.attorneyGeneral.getComponent<Politician>().alignment);
-        t_ExecutiveTitles.text += agColor + "ATTORNEY GENERAL:</color>";
+        t_ExecutiveTitles.text += agColor + data.translationList["GOVERNMENT_attorney_general"] + ":</color>";
 
         t_ExecutiveNames.text = "";
         t_ExecutiveNames.text += presidentColor + MasterController.government.president.getComponent<CreatureInfo>().getName() + "</color>\n";
@@ -165,7 +167,7 @@ public class LiberalAgendaImpl : MonoBehaviour, LiberalAgenda {
         else majorityColor = "<color=lime>";*/
 
         t_Congress.text = "";
-        t_Congress.text += majorityColor + "HOUSE:</color> ";
+        t_Congress.text += majorityColor + data.translationList["GOVERNMENT_house"] + ":</color> ";
         if (MasterController.government.houseWinCheck()) t_Congress.text += "</b>";
         t_Congress.text +=" <color=red>" + houseAlignments[0] + "</color> / ";
         t_Congress.text += "<color=magenta>" + houseAlignments[1] + "</color> / ";
@@ -219,7 +221,7 @@ public class LiberalAgendaImpl : MonoBehaviour, LiberalAgenda {
         else majorityColor = "<color=lime>";*/
 
         t_Congress.text += "\n";
-        t_Congress.text += majorityColor + "SENATE:</color>";
+        t_Congress.text += majorityColor + data.translationList["GOVERNMENT_senate"] + ":</color>";
         if (MasterController.government.senateWinCheck()) t_Congress.text += "</b>";
         t_Congress.text += " <color=red>" + senateAlignments[0] + "</color> / ";
         t_Congress.text += "<color=magenta>" + senateAlignments[1] + "</color> / ";
@@ -250,13 +252,13 @@ public class LiberalAgendaImpl : MonoBehaviour, LiberalAgenda {
     {
         if (pollsActive)
         {
-            b_ViewPolls.GetComponentInChildren<Text>().text = "(V)iew Latest Polls";
+            b_ViewPolls.GetComponentInChildren<Text>().text = GameData.getData().translationList["BASE_view_polls"];
             pollDisplay.gameObject.SetActive(false);
             pollsActive = false;
         }
         else
         {
-            b_ViewPolls.GetComponentInChildren<Text>().text = "(V)iew Laws";
+            b_ViewPolls.GetComponentInChildren<Text>().text = GameData.getData().translationList["BASE_view_laws"];
             pollDisplay.Activate();
             pollDisplay.gameObject.SetActive(true);
             pollsActive = true;
