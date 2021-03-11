@@ -290,7 +290,13 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="lean_conservative" value="Leans Conservative"/>
     <translation key="moderate_conservative" value="Moderately Conservative"/>
     <translation key="very_conservative" value="Very Conservative"/>
-    <translation key="disband_warning" value="Disbanding scatters the Liberal Crime Squad, sending all of its members into hiding, free to pursue their own lives. You will be able to observe the political situation in brief, and wait until a resolution is reached.\nIf at any time you determine that the Liberal Crime Squad will be needed again, you may return to the homeless shelter to restart the campaign.\nDo not make this decision lightly. If you do need to return to action, only the most devoted of your former members will return. &lt;b&gt;Disband the LCS?&lt;/b&gt;"/>
-  
+    <translation key="disband_warning" value="Disbanding scatters the Liberal Crime Squad, sending all of its members into hiding, free to pursue their own lives. You will be able to observe the political situation in brief, and wait until a resolution is reached.\nIf at any time you determine that the Liberal Crime Squad will be needed again, you may return to the homeless shelter to restart the campaign.\nDo not make this decision lightly. If you do need to return to action, only the most devoted of your former members will return. &lt;b&gt;Disband the LCS?&lt;/b&gt;"/>  
+  </translation_set>
+  <!-- Fast Advance after disbanding screen -->
+  <translation_set prefix="DISBAND">
+    <translation key="advance" value="(W)ait a Month"/>
+    <translation key="reactivate" value="(R)eactivate LCS"/>
+    <translation key="exit" value="EXIT"/>
+    <translation key="public_mood" value="PUBLIC MOOD"/>
   </translation_set>
 </translations>

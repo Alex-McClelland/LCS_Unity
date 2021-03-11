@@ -95,7 +95,7 @@ public class FastAdvanceController : MonoBehaviour, FastAdvanceUI {
             moodColor = "<color=cyan>";
         else
             moodColor = "<color=lime>";
-        t_PublicMood.text = "PUBLIC MOOD\n" + moodColor + MasterController.generalPublic.PublicMood + "</color>%";
+        t_PublicMood.text = GameData.getData().translationList["DISBAND_public_mood"] + "\n" + moodColor + MasterController.generalPublic.PublicMood + "</color>%";
         log.updateMessageLog();
     }
 
