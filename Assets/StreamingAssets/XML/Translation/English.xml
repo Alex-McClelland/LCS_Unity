@@ -2,10 +2,12 @@
 <!-- IMPORTANT NOTE: Keys are case sensitive, and must be unique within a set. The keys will be created based on the translation_set prefix + the specific key separated by an underscore.
 eg. the actual translation key that will be referenced by the game for "masculine_possessive" under the GENDER set is "GENDER_masculine_possessive"
 
-Strings inside the value attributes will be additionally processed by Unity's rich text markup (see reference here: https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/StyledText.html) -->
+Strings inside the value attributes will be additionally processed by Unity's rich text markup (see reference here: https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/StyledText.html) 
+
+Some strings will use special variables in the form of $VARIABLENAME, these are not universal and only apply to the specific string in which they are used. They are used to
+mark placeholders for values that need to be determined within the code based on the current game state -->
 <translations>
   <!-- Global Terms -->
-  <!-- Gender -->
   <translation_set prefix="GENDER">
     <translation key="masculine_possessive" value="His"/>
     <translation key="feminine_possessive" value="Her"/>
@@ -27,6 +29,17 @@ Strings inside the value attributes will be additionally processed by Unity's ri
     <translation key="attorney_general" value="Attorney General"/>
     <translation key="house" value="House"/>
     <translation key="senate" value="Senate"/>
+  </translation_set>
+  <translation_set prefix="ALIGNMENT">
+    <translation key="l+" value="Elite Liberal"/>
+    <translation key="l" value="Liberal"/>
+    <translation key="m" value="Moderate"/>
+    <translation key="c" value="Conservative"/>
+    <translation key="c+" value="Arch-Conservative"/>
+  </translation_set>
+  <translation_set prefix="TIME">
+    <translation key="day" value="Day"/>
+    <translation key="day_plural" value="Days"/>
   </translation_set>
   <!-- Screen specific text -->
   <!-- Title Screen -->
@@ -159,6 +172,8 @@ Strings inside the value attributes will be additionally processed by Unity's ri
     <translation key="high_security" value="High Security"/> <!--Displayed on locations that are in high security due to liberay activity -->
     <translation key="siege_cannot_wait" value="Cannot wait while under attack"/> <!-- Displayed as a mouseover tooltip when trying to wait while under siege -->
     <translation key="under_siege" value="UNDER SIEGE"/> <!-- Displayed on the travel button when a squad is selected that is under siege -->
+    <translation key="change_city" value="(T)RAVEL ($200 per person)"/>
+    <translation key="travel_cancel" value="Cancel (esc)"/>
     <!-- Liberal Agenda Screen -->
     <translation key="term" value="term"/>
     <translation key="supreme_court_label" value="S C\nU O\nP U\nR R\nE T\nM\nE"/> <!-- The need to print this vertically renders it awkward -->
@@ -180,7 +195,55 @@ Strings inside the value attributes will be additionally processed by Unity's ri
     <translation key="poll_interest_moderate" value="Moderate"/>
     <translation key="poll_interest_low" value="Low"/>
     <translation key="poll_interest_none" value="None"/>
-    <translation key="presidential_approval" value="have a favorable opinion of"/> <!-- Displayed as part of the presidential approval text as "X% (presidential_approval) PresidentName"-->
-
+    <translation key="presidential_approval" value="$APPROVAL% have a favorable opinion of $PRESIDENT"/> <!-- $APPROVAL will be replaced with the current approval rating. $PRESIDENT will be replaced with the current President's name"-->
+    <!-- Liberal Management screen -->
+    <translation key="quick_activity_button" value="(Q)uick Activity Menu"/>
+    <translation key="view_martyrs" value="View Liberal Martyrs"/>
+    <!-- Quick Activity Menu -->
+    <translation key="quick_activism" value="(1) Liberal Activism"/>
+    <translation key="quick_legal_fundraising" value="(2)  Legal Fundraising"/>
+    <translation key="quick_illegal_fundraising" value="(3) Illegal Fundraising"/>
+    <translation key="quick_check_polls" value="(4) Check Online Polls"/>
+    <translation key="quick_steal_cars" value="(5) Steal Cars"/>
+    <translation key="quick_community_service" value="(6) Community Service"/>
+    <translation key="quick_lay_low" value="(X) Lay Low"/>
+    <!-- Safehouse Management Screen -->
+    <translation key="food_string" value="Food: $FOODAMT rations\n$LIBAMT eating"/> <!-- $FOODAMT will be replaced with a number for how much food is in the safehouse. $LIBAMT will be replaced with a number for how many liberals are in the safehouse -->
+    <translation key="food_remaining" value="($DAYSLEFT days remaining)"/> <!-- $DAYSLEFT will be replaced with a number that represents how many days the food amount can feed the current number of based liberals -->
+    <translation key="heat" value="Heat"/>
+    <translation key="secrecy" value="Secrecy"/>
+    <translation key="buy_food" value="Buy (R)ations ($150)"/>
+    <translation key="buy_flag_button" value="Fly (F)lag ($20)"/>
+    <translation key="burn_flag_button" value="Burn (F)lag"/>
+    <translation key="upgrade_safehouse" value="(U)pgrade Safehouse"/>
+    <translation key="view_inventory" value="View Inventory"/>
+    <translation key="view_bodies" value="View Bodies"/>
+    <translation key="view_hostages" value="View Hostages"/>
+    <translation key="close_storage" value="Close (esc)"/>
+    <translation key="siege_escape" value="(E)scape/Engage"/>
+    <translation key="siege_surrender" value="(G)ive Up"/>
+    <translation key="upgrade_fortify" value="Fortify for (S)iege ($2000)"/>
+    <translation key="upgrade_fortify_installed" value="Compound Fortified"/>
+    <translation key="upgrade_cameras" value="Install (C)ameras ($2000)"/>
+    <translation key="upgrade_cameras_installed" value="Cameras Installed"/>
+    <translation key="upgrade_traps" value="Set (B)ooby Traps ($3000)"/>
+    <translation key="upgrade_traps_installed" value="Compound Trapped"/>
+    <translation key="upgrade_tank_traps" value="Lay (T)ank Traps ($3000)"/>
+    <translation key="upgrade_tank_traps_installed" value="Tank Traps Placed"/>
+    <translation key="upgrade_generator" value="Install (G)enerator ($3000)"/>
+    <translation key="upgrade_generator_installed" value="Generator Installed"/>
+    <translation key="upgrade_aagun" value="(I)nstall Concealed AA-Gun ($200,000)"/>
+    <translation key="upgrade_aagun_legal" value="(I)nstall Perfectly Legal AA-Gun ($35,000)"/>
+    <translation key="upgrade_aagun_installed" value="Anti-Aircraft Gun Installed"/>
+    <translation key="upgrade_printing_press" value="Buy Printing (P)ress ($3000)"/>
+    <translation key="upgrade_printing_press_installed" value="Printing Press Active"/>
+    <translation key="upgrade_front" value="Establish (B)usiness Front ($3000)"/>
+    <translation key="upgrade_front_installed" value="Business Front Operating"/>
+    <!-- Base inventory menu -->
+    <translation key="transfer_items" value="TRANSFER ITEMS:"/>
+    <translation key="inventory_back" value="Back (esc)"/>
+    <translation key="cancel_transfer" value="Cancel Transfer"/>
+    <translation key="shift_click_instruction" value="Shift + Click to transfer entire stack"/>
+    
   </translation_set>
 </translations>

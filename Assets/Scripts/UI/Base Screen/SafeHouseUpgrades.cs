@@ -32,102 +32,103 @@ public class SafeHouseUpgrades : MonoBehaviour {
     public void showButtons()
     {
         Entity safehouse = safeHouseManagement.selectedBase;
+        GameData data = GameData.getData();
 
         transform.parent.gameObject.SetActive(true);
 
         if((safehouse.getComponent<SafeHouse>().investments & SafeHouse.Investments.FORTIFIED) != 0)
         {
             b_Fortify.interactable = false;
-            b_Fortify.GetComponentInChildren<Text>().text = "Compound Fortified";
+            b_Fortify.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_fortify_installed"];
         }
         else
         {
             b_Fortify.interactable = true;
-            b_Fortify.GetComponentInChildren<Text>().text = "Fortify for (S)iege ($2000)";
+            b_Fortify.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_fortify"];
         }
 
         if ((safehouse.getComponent<SafeHouse>().investments & SafeHouse.Investments.CAMERAS) != 0)
         {
             b_Cameras.interactable = false;
-            b_Cameras.GetComponentInChildren<Text>().text = "Cameras Installed";
+            b_Cameras.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_cameras_installed"];
         }
         else
         {
             b_Cameras.interactable = true;
-            b_Cameras.GetComponentInChildren<Text>().text = "Install (C)ameras ($2000)";
+            b_Cameras.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_cameras"];
         }
 
         if ((safehouse.getComponent<SafeHouse>().investments & SafeHouse.Investments.TRAPS) != 0)
         {
             b_Traps.interactable = false;
-            b_Traps.GetComponentInChildren<Text>().text = "Compound Trapped";
+            b_Traps.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_traps_installed"];
         }
         else
         {
             b_Traps.interactable = true;
-            b_Traps.GetComponentInChildren<Text>().text = "Set (B)ooby Traps ($3000)";
+            b_Traps.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_traps"];
         }
 
         if ((safehouse.getComponent<SafeHouse>().investments & SafeHouse.Investments.TANK_TRAPS) != 0)
         {
             b_TankTraps.interactable = false;
-            b_TankTraps.GetComponentInChildren<Text>().text = "Tank Traps Placed";
+            b_TankTraps.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_tank_traps_installed"];
         }
         else
         {
             b_TankTraps.interactable = true;
-            b_TankTraps.GetComponentInChildren<Text>().text = "Lay (T)ank Traps ($3000)";
+            b_TankTraps.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_tank_traps"];
         }
 
         if ((safehouse.getComponent<SafeHouse>().investments & SafeHouse.Investments.GENERATOR) != 0)
         {
             b_Generator.interactable = false;
-            b_Generator.GetComponentInChildren<Text>().text = "Generator Installed";
+            b_Generator.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_generator_installed"];
         }
         else
         {
             b_Generator.interactable = true;
-            b_Generator.GetComponentInChildren<Text>().text = "Install (G)enerator ($3000)";
+            b_Generator.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_generator"];
         }
 
         if ((safehouse.getComponent<SafeHouse>().investments & SafeHouse.Investments.AAGUN) != 0)
         {
             b_AAGun.interactable = false;
-            b_AAGun.GetComponentInChildren<Text>().text = "Anti-Aircraft Gun Installed";
+            b_AAGun.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_aagun_installed"];
         }
         else
         {
             b_AAGun.interactable = true;
             if (MasterController.GetMC().testCondition("LAW:GUN_CONTROL:=:-2"))
             {
-                b_AAGun.GetComponentInChildren<Text>().text = "(I)nstall Perfectly Legal AA-Gun ($35,000)";
+                b_AAGun.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_aagun_legal"];
             }
             else
             {
-                b_AAGun.GetComponentInChildren<Text>().text = "(I)nstall Concealed AA-Gun ($200,000)";
+                b_AAGun.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_aagun"];
             }
         }
 
         if ((safehouse.getComponent<SafeHouse>().investments & SafeHouse.Investments.PRINTING_PRESS) != 0)
         {
             b_PrintingPress.interactable = false;
-            b_PrintingPress.GetComponentInChildren<Text>().text = "Printing Press Active";
+            b_PrintingPress.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_printing_press_installed"];
         }
         else
         {
             b_PrintingPress.interactable = true;
-            b_PrintingPress.GetComponentInChildren<Text>().text = "Buy Printing (P)ress ($3000)";
+            b_PrintingPress.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_printing_press"];
         }
 
         if ((safehouse.getComponent<SafeHouse>().investments & SafeHouse.Investments.BUSINESS_FRONT) != 0)
         {
             b_BusinessFront.interactable = false;
-            b_BusinessFront.GetComponentInChildren<Text>().text = "Business Front Operating";
+            b_BusinessFront.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_front_installed"];
         }
         else
         {
             b_BusinessFront.interactable = true;
-            b_BusinessFront.GetComponentInChildren<Text>().text = "(E)stablish Business Front ($3000)";
+            b_BusinessFront.GetComponentInChildren<Text>().text = data.translationList["BASE_upgrade_front"];
         }
 
         if (safehouse.getComponent<SafeHouse>().underSiege)

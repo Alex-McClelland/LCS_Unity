@@ -103,7 +103,7 @@ public class PollDisplay : MonoBehaviour {
 
                 issue.t_Percent.text = data.percent + "%";
                 issue.t_Error.text = "+/- " + data.noise;
-                issue.t_Age.text = data.age + (data.age>1?" days":" day");
+                issue.t_Age.text = data.age + " " + (data.age>1? GameData.getData().translationList["TIME_day_plural"].ToLower() : GameData.getData().translationList["TIME_day"].ToLower());
             }
 
             issue.t_Issue.color = viewColor;
@@ -112,9 +112,7 @@ public class PollDisplay : MonoBehaviour {
             issue.t_Error.color = viewColor;
             issue.t_Age.color = viewColor;
         }
-
-        t_PresidentialApproval.text = MasterController.generalPublic.PresidentApprovalRating/10 + "% " + g.translationList["BASE_presidential_approval"] +  " ";
-
+        
         string colorString = "<color=white>";
 
         switch (MasterController.government.president.getComponent<Politician>().alignment)
@@ -136,7 +134,10 @@ public class PollDisplay : MonoBehaviour {
                 break;
         }
 
-        t_PresidentialApproval.text += colorString + g.translationList["GOVERNMENT_president"] + " " + MasterController.government.president.getComponent<CreatureInfo>().getName() + "</color>.";
+        int approvalRating = MasterController.generalPublic.PresidentApprovalRating / 10;
+        string presidentName = colorString + g.translationList["GOVERNMENT_president"] + " " + MasterController.government.president.getComponent<CreatureInfo>().getName() + "</color>.";
+
+        t_PresidentialApproval.text = g.translationList["BASE_presidential_approval"].Replace("$APPROVAL",approvalRating.ToString()).Replace("$PRESIDENT", presidentName);
 
         string topIssue = "";
 

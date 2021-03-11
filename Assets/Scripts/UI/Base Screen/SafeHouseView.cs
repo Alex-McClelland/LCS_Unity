@@ -111,9 +111,19 @@ public class SafeHouseView : MonoBehaviour, SafeHouseManagement {
     public void buyFood()
     {
         actions.buyRations(selectedBase);
-        t_Food.text = "Food: " + selectedBase.getComponent<SafeHouse>().food + " rations\n" + selectedBase.getComponent<SafeHouse>().getBasedLiberals().Count + " eating";
+        refreshFood();
+    }
+
+    private void refreshFood()
+    {
+        int foodAmt = selectedBase.getComponent<SafeHouse>().food;
+        int libAmt = selectedBase.getComponent<SafeHouse>().getBasedLiberals().Count;
+        t_Food.text = GameData.getData().translationList["BASE_food_string"].Replace("$FOODAMT", foodAmt.ToString()).Replace("$LIBAMT", libAmt.ToString());
         if (selectedBase.getComponent<SafeHouse>().getBasedLiberals().Count > 0)
-            t_Food.text += " (" + selectedBase.getComponent<SafeHouse>().food / selectedBase.getComponent<SafeHouse>().getBasedLiberals().Count + " days remaining)";
+        {
+            int daysLeft = selectedBase.getComponent<SafeHouse>().food / selectedBase.getComponent<SafeHouse>().getBasedLiberals().Count;
+            t_Food.text += " " + GameData.getData().translationList["BASE_food_remaining"].Replace("$DAYSLEFT", daysLeft.ToString());
+        }
     }
 
     public void flagButton()
@@ -133,7 +143,7 @@ public class SafeHouseView : MonoBehaviour, SafeHouseManagement {
 
     public void refreshSecrecy()
     {
-        t_Secrecy.text = "Secrecy: " + selectedBase.getComponent<SafeHouse>().getSecrecy() + "%";
+        t_Secrecy.text = GameData.getData().translationList["BASE_secrecy"] + ": " + selectedBase.getComponent<SafeHouse>().getSecrecy() + "%";
     }
 
     public void showInventory()
@@ -174,11 +184,11 @@ public class SafeHouseView : MonoBehaviour, SafeHouseManagement {
     {
         if((selectedBase.getComponent<SafeHouse>().investments & SafeHouse.Investments.FLAG) != 0)
         {
-            b_Flag.GetComponentInChildren<Text>().text = "Burn (F)lag";
+            b_Flag.GetComponentInChildren<Text>().text = GameData.getData().translationList["BASE_burn_flag_button"];
         }
         else
         {
-            b_Flag.GetComponentInChildren<Text>().text = "Purchase (F)lag ($20)";
+            b_Flag.GetComponentInChildren<Text>().text = GameData.getData().translationList["BASE_buy_flag_button"];
             if (selectedBase.getComponent<SafeHouse>().underSiege)
             {
                 b_Flag.interactable = false;
@@ -198,11 +208,9 @@ public class SafeHouseView : MonoBehaviour, SafeHouseManagement {
         if (selectedBase.getComponent<SafeHouse>().heat > selectedBase.getComponent<SafeHouse>().getSecrecy()) heatColor = "<color=yellow>";
         if (selectedBase.getComponent<SafeHouse>().heat >= 100) heatColor = "<color=red>";
 
-        t_Heat.text = "Heat: " + heatColor + selectedBase.getComponent<SafeHouse>().heat + "%</color>";
+        t_Heat.text = GameData.getData().translationList["BASE_heat"] + ": " + heatColor + selectedBase.getComponent<SafeHouse>().heat + "%</color>";
         refreshSecrecy();
-        t_Food.text = "Food: " + selectedBase.getComponent<SafeHouse>().food + " rations\n" + selectedBase.getComponent<SafeHouse>().getBasedLiberals().Count + " eating";
-        if(selectedBase.getComponent<SafeHouse>().getBasedLiberals().Count > 0)
-            t_Food.text += " (" + selectedBase.getComponent<SafeHouse>().food/selectedBase.getComponent<SafeHouse>().getBasedLiberals().Count + " days remaining)";
+        refreshFood();
 
         if (selectedBase.getComponent<SafeHouse>().getBodies().Count == 0) b_Bodies.interactable = false;
         else b_Bodies.interactable = true;
