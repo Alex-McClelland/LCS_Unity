@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using LCS.Engine.UI;
+using LCS.Engine;
 
 public class PopupMessage : MonoBehaviour {
 
@@ -144,13 +145,13 @@ public class PopupMessage : MonoBehaviour {
         if (action1 != null)
         {
             option1.gameObject.SetActive(true);
-            option1.GetComponentInChildren<Text>().text = "(Y)es";
+            option1.GetComponentInChildren<Text>().text = GameData.getData().translationList["OPTION_yes_hotkey"];
             option1.onClick.AddListener(() => { uiController.doInput(() => {  optionPopup = false; yesNoPopup = false; closeWindow(); action1(); }); });
         }
         if (action2 != null)
         {
             option2.gameObject.SetActive(true);
-            option2.GetComponentInChildren<Text>().text = "(N)o";
+            option2.GetComponentInChildren<Text>().text = GameData.getData().translationList["OPTION_no_hotkey"];
             option2.onClick.AddListener(() => { uiController.doInput(() => { optionPopup = false; yesNoPopup = false; closeWindow(); action2(); }); });
         }
 

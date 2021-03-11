@@ -201,7 +201,7 @@ public class MapScreenController : MonoBehaviour, NationMap {
             t_ConservativePopVote.text = "0.00 %";
 
             electionTick = 0;
-            b_BeginElection.GetComponentInChildren<Text>().text = "WATCH ELECTION";
+            b_BeginElection.GetComponentInChildren<Text>().text = GameData.getData().translationList["MAP_watch_election"];
 
             t_ElectionTicker.text = "";
 
@@ -233,7 +233,7 @@ public class MapScreenController : MonoBehaviour, NationMap {
             buttons.gameObject.SetActive(false);
             b_Back.gameObject.SetActive(false);
             b_Disband.gameObject.SetActive(false);
-            b_BeginElection.GetComponentInChildren<Text>().text = "WATCH RATIFICATION";
+            b_BeginElection.GetComponentInChildren<Text>().text = GameData.getData().translationList["MAP_watch_ratification"];
             b_BeginElection.gameObject.SetActive(true);
             t_ElectionTicker.gameObject.SetActive(false);
             i_LibCandidate.gameObject.SetActive(false);
@@ -287,15 +287,17 @@ public class MapScreenController : MonoBehaviour, NationMap {
                 t_LiberalVotes.gameObject.SetActive(true);
                 t_ConservativeVotes.gameObject.SetActive(true);
 
-                t_LiberalVotes.text = "HOUSE";
-                t_LiberalCandidateName.text = "House Yea 0";
+                GameData data = GameData.getData();
+
+                t_LiberalVotes.text = data.translationList["GOVERNMENT_house"].ToUpper();
+                t_LiberalCandidateName.text = data.translationList["GOVERNMENT_house"] + " " + data.translationList["GOVERNMENT_yea"] + " 0";
                 houseYeaTotal = 0;
-                t_LiberalPopVote.text = "House Nay 0";
+                t_LiberalPopVote.text = data.translationList["GOVERNMENT_house"] + " " + data.translationList["GOVERNMENT_nay"] + " 0";
                 houseNayTotal = 0;
-                t_ConservativeVotes.text = "SENATE";
-                t_ConservativeCandidateName.text = "Senate Yea 0";
+                t_ConservativeVotes.text = data.translationList["GOVERNMENT_senate"].ToUpper();
+                t_ConservativeCandidateName.text = data.translationList["GOVERNMENT_senate"] + " " + data.translationList["GOVERNMENT_yea"] + " 0"; ;
                 senateYeaTotal = 0;
-                t_ConservativePopVote.text = "Senate Nay 0";
+                t_ConservativePopVote.text = data.translationList["GOVERNMENT_senate"] + " " + data.translationList["GOVERNMENT_nay"] + " 0"; ;
                 senateNayTotal = 0;
             }
             else
@@ -351,7 +353,7 @@ public class MapScreenController : MonoBehaviour, NationMap {
         electionResult = result;
         mapMode = MapMode.PRESIDENTIAL_ELECTION;
 
-        string primaryText = "After a long primary campaign, the people have rallied around two leaders...\n";
+        string primaryText = GameData.getData().translationList["MAP_primary_intro"] + "\n";
         string candidateColor = UIControllerImpl.getAlignmentColor(result.liberalCandidate.getComponent<Politician>().alignment);
         primaryText += candidateColor + result.liberalCandidateRunningName + "</color> vs. ";
         candidateColor = UIControllerImpl.getAlignmentColor(result.conservativeCandidate.getComponent<Politician>().alignment);
@@ -441,7 +443,7 @@ public class MapScreenController : MonoBehaviour, NationMap {
         nextResultTimer = longDelay;
         electionStarted = true;
         b_BeginElection.interactable = false;
-        b_BeginElection.GetComponentInChildren<Text>().text = "AWAITING RESULTS...";
+        b_BeginElection.GetComponentInChildren<Text>().text = GameData.getData().translationList["MAP_awaiting_results"];
 
         libVoteTotal = 0;
         conVoteTotal = 0;
@@ -468,17 +470,21 @@ public class MapScreenController : MonoBehaviour, NationMap {
     {
         if(libTiebreakerVotes > conTiebreakerVotes)
         {
-            t_ElectionTicker.text = UIControllerImpl.getAlignmentColor(electionResult.liberalCandidate.getComponent<Politician>().alignment) + electionResult.liberalCandidateRunningName + " declares victory!</color>";
-            t_ElectionTicker.text += "\n" + UIControllerImpl.getAlignmentColor(electionResult.VPwinnerAlignment) + electionResult.VPwinnerName + "</color> has been selected by the Senate as their Vice President.";
+            string winnerName = electionResult.liberalCandidateRunningName;
+            t_ElectionTicker.text = UIControllerImpl.getAlignmentColor(electionResult.liberalCandidate.getComponent<Politician>().alignment) + GameData.getData().translationList["MAP_declare_victory"].Replace("$PRESIDENT", winnerName) + "</color>";
+            string vpName = UIControllerImpl.getAlignmentColor(electionResult.VPwinnerAlignment) + electionResult.VPwinnerName + "</color>";
+            t_ElectionTicker.text += "\n" + GameData.getData().translationList["MAP_vp_selected"].Replace("$VP", vpName);
             b_BeginElection.interactable = true;
-            b_BeginElection.GetComponentInChildren<Text>().text = "Reflect on these changes";
+            b_BeginElection.GetComponentInChildren<Text>().text = GameData.getData().translationList["MAP_reflect_on_changes"];
         }
         else if(conTiebreakerVotes > libTiebreakerVotes)
         {
-            t_ElectionTicker.text = UIControllerImpl.getAlignmentColor(electionResult.conservativeCandidate.getComponent<Politician>().alignment) + electionResult.conservativeCandidateRunningName + " declares victory!</color>";
-            t_ElectionTicker.text += "\n" + UIControllerImpl.getAlignmentColor(electionResult.VPwinnerAlignment) + electionResult.VPwinnerName + "</color> has been selected by the Senate as their Vice President.";
+            string winnerName = electionResult.conservativeCandidateRunningName;
+            t_ElectionTicker.text = UIControllerImpl.getAlignmentColor(electionResult.conservativeCandidate.getComponent<Politician>().alignment) + GameData.getData().translationList["MAP_declare_victory"].Replace("$PRESIDENT", winnerName) + "</color>";
+            string vpName = UIControllerImpl.getAlignmentColor(electionResult.VPwinnerAlignment) + electionResult.VPwinnerName + "</color>";
+            t_ElectionTicker.text += "\n" + GameData.getData().translationList["MAP_vp_selected"].Replace("$VP", vpName);
             b_BeginElection.interactable = true;
-            b_BeginElection.GetComponentInChildren<Text>().text = "Reflect on these changes";
+            b_BeginElection.GetComponentInChildren<Text>().text = GameData.getData().translationList["MAP_reflect_on_changes"];
         }
         else
         {
@@ -486,9 +492,12 @@ public class MapScreenController : MonoBehaviour, NationMap {
             if (electionResult.liberalCandidateRunningName == electionResult.winnerName) winnerColor = UIControllerImpl.getAlignmentColor(electionResult.liberalCandidate.getComponent<Politician>().alignment);
             else winnerColor = UIControllerImpl.getAlignmentColor(electionResult.conservativeCandidate.getComponent<Politician>().alignment);
 
-            MasterController.GetMC().addMessage("After hours of deliberation and a few fist fights, congress has finally selected " + winnerColor + electionResult.winnerName + "</color> as the next President.\n" + UIControllerImpl.getAlignmentColor(electionResult.VPwinnerAlignment) + electionResult.VPwinnerName + "</color> has been selected by the Senate as their Vice President.", true);
+            string winnerName = winnerColor + electionResult.winnerName + "</color>";
+            string vpName = UIControllerImpl.getAlignmentColor(electionResult.VPwinnerAlignment) + electionResult.VPwinnerName + "</color>";
+
+            MasterController.GetMC().addMessage(GameData.getData().translationList["MAP_tied_tiebreaker_result"].Replace("$PRESIDENT", winnerName).Replace("$VP", vpName), true);
             b_BeginElection.interactable = true;
-            b_BeginElection.GetComponentInChildren<Text>().text = MasterController.GetMC().swearFilter("ARE YOU FUCKING KIDDING ME", "What a wonderful example of the democratic process");
+            b_BeginElection.GetComponentInChildren<Text>().text = MasterController.GetMC().swearFilter(GameData.getData().translationList["MAP_end_tied_tiebreaker"], GameData.getData().translationList["MAP_end_tied_tiebreaker_clean"]);
         }
 
         tiebreaker = false;
@@ -572,25 +581,27 @@ public class MapScreenController : MonoBehaviour, NationMap {
         {
             if(libVoteTotal > conVoteTotal)
             {
-                t_ElectionTicker.text = UIControllerImpl.getAlignmentColor(electionResult.liberalCandidate.getComponent<Politician>().alignment) + electionResult.liberalCandidateRunningName + " declares victory!</color>";
+                string winnerName = electionResult.liberalCandidateRunningName;
+                t_ElectionTicker.text = UIControllerImpl.getAlignmentColor(electionResult.liberalCandidate.getComponent<Politician>().alignment) + GameData.getData().translationList["MAP_declare_victory"].Replace("$PRESIDENT", winnerName) + "</color>";
             }
             else if(conVoteTotal > libVoteTotal)
             {
-                t_ElectionTicker.text = UIControllerImpl.getAlignmentColor(electionResult.conservativeCandidate.getComponent<Politician>().alignment) + electionResult.conservativeCandidateRunningName + " declares victory!</color>";
+                string winnerName = electionResult.conservativeCandidateRunningName;
+                t_ElectionTicker.text = UIControllerImpl.getAlignmentColor(electionResult.conservativeCandidate.getComponent<Politician>().alignment) + GameData.getData().translationList["MAP_declare_victory"].Replace("$PRESIDENT", winnerName) + "</color>";
             }
             else
             {
-                t_ElectionTicker.text = "With the electoral college deadlocked, it falls to Congress to select a new leader...\n";
+                t_ElectionTicker.text = GameData.getData().translationList["MAP_tied_electoral_college"] + "\n";
                 tiebreaker = true;
             }
 
             if (!tiebreaker)
             {
-                b_BeginElection.GetComponentInChildren<Text>().text = "Reflect on these changes";
+                b_BeginElection.GetComponentInChildren<Text>().text = GameData.getData().translationList["MAP_reflect_on_changes"];
             }
             else
             {
-                b_BeginElection.GetComponentInChildren<Text>().text = "WATCH TIEBREAKER";
+                b_BeginElection.GetComponentInChildren<Text>().text = GameData.getData().translationList["MAP_watch_tiebreaker_button"];
             }
 
             recounts = false;
@@ -603,7 +614,7 @@ public class MapScreenController : MonoBehaviour, NationMap {
             Color conCandidateColor = getCandidateColor(electionResult.conservativeCandidate.getComponent<Politician>().alignment);
             Color libCandidateColor = getCandidateColor(electionResult.liberalCandidate.getComponent<Politician>().alignment);
 
-            t_ElectionTicker.text = "With the election still undecided, it comes down to the recounts...\n";
+            t_ElectionTicker.text = GameData.getData().translationList["MAP_recount"] + "\n";
             recountText = "";
 
             foreach (NationDef.StateDef state in GameData.getData().nationList["USA"].states)
@@ -614,7 +625,7 @@ public class MapScreenController : MonoBehaviour, NationMap {
                     recounts = true;
                     nextResultTimer = longDelay;
                     electionResult.stateRecounts[state.name] = false;
-                    t_ElectionTicker.text += state.name + " recount reporting in!";
+                    t_ElectionTicker.text += GameData.getData().translationList["MAP_recount_report"].Replace("$STATE", state.name);
                     if (electionResult.stateResults[state.name] == Alignment.LIBERAL)
                     {
                         stateImageDict[state.shortname].color = libCandidateColor;
@@ -658,6 +669,8 @@ public class MapScreenController : MonoBehaviour, NationMap {
 
     private void doAmendmentTick()
     {
+        GameData data = GameData.getData();
+
         if(amendmentCongressStarted)
         {
             if(houseYeaTotal + houseNayTotal < MasterController.government.houseNum)
@@ -698,27 +711,27 @@ public class MapScreenController : MonoBehaviour, NationMap {
                 if (!amendmentResult.congressRatified)
                 {
                     amendmentStatesFinished = true;
-                    b_BeginElection.GetComponentInChildren<Text>().text = "REFLECT ON THIS";
+                    b_BeginElection.GetComponentInChildren<Text>().text = data.translationList["MAP_amendment_reflect"];
                 }
                 else
                 {
-                    b_BeginElection.GetComponentInChildren<Text>().text = "WATCH STATES";
+                    b_BeginElection.GetComponentInChildren<Text>().text = data.translationList["MAP_amendment_watch_states"];
                 }
 
                 b_BeginElection.interactable = true;
             }
             if (houseYeaTotal >= (MasterController.government.houseNum * 2) / 3)
                 t_LiberalCandidateName.fontStyle = FontStyle.Bold;
-            t_LiberalCandidateName.text = "House Yea " + houseYeaTotal;
+            t_LiberalCandidateName.text = data.translationList["GOVERNMENT_house"] + " " + data.translationList["GOVERNMENT_yea"] + " " + houseYeaTotal;
             if (houseNayTotal > (MasterController.government.houseNum) / 3)
                 t_LiberalPopVote.fontStyle = FontStyle.Bold;
-            t_LiberalPopVote.text = "House Nay " + houseNayTotal;
+            t_LiberalPopVote.text = data.translationList["GOVERNMENT_house"] + " " + data.translationList["GOVERNMENT_nay"] + " " + houseNayTotal;
             if (senateYeaTotal >= (MasterController.government.senateNum * 2) / 3)
                 t_ConservativeCandidateName.fontStyle = FontStyle.Bold;
-            t_ConservativeCandidateName.text = "Senate Yea " + senateYeaTotal;
+            t_ConservativeCandidateName.text = data.translationList["GOVERNMENT_senate"] + " " + data.translationList["GOVERNMENT_yea"] + " " + senateYeaTotal;
             if (senateNayTotal > (MasterController.government.senateNum) / 3)
                 t_ConservativePopVote.fontStyle = FontStyle.Bold;
-            t_ConservativePopVote.text = "Senate Nay " + senateNayTotal;
+            t_ConservativePopVote.text = data.translationList["GOVERNMENT_senate"] + " " + data.translationList["GOVERNMENT_nay"] + " " + senateNayTotal;
         }
         else if (amendmentStatesStarted)
         {
@@ -759,7 +772,7 @@ public class MapScreenController : MonoBehaviour, NationMap {
                 amendmentStatesStarted = false;
                 amendmentStatesFinished = true;
 
-                b_BeginElection.GetComponentInChildren<Text>().text = "REFLECT ON THIS";
+                b_BeginElection.GetComponentInChildren<Text>().text = data.translationList["MAP_amendment_reflect"];
                 b_BeginElection.interactable = true;
             }
         }
@@ -775,7 +788,7 @@ public class MapScreenController : MonoBehaviour, NationMap {
         bool allStatesReported = true;
 
         if (tick == 0)
-            t_ElectionTicker.text = "The first districts are reporting in...\n" + recountText;
+            t_ElectionTicker.text = GameData.getData().translationList["MAP_election_report_begin"] + "\n" + recountText;
         else
             t_ElectionTicker.text = "" + recountText;
 
@@ -789,7 +802,7 @@ public class MapScreenController : MonoBehaviour, NationMap {
 
                 if (electionResult.stateRecounts[state.name])
                 {
-                    recountText += "Recount needed in " + state.name + "!\n";
+                    recountText += GameData.getData().translationList["MAP_recount_needed"].Replace("$STATE", state.name) + "\n";
                     recounts = true;
                     reportedStates[state.name] = true;
                     break;
@@ -835,7 +848,8 @@ public class MapScreenController : MonoBehaviour, NationMap {
 
                     float independentVotes = 200 - electionResult.statePopularResults[state.name][0] - electionResult.statePopularResults[state.name][1];
 
-                    stateImageDict[state.shortname].GetComponent<MouseOverText>().mouseOverText = state.name + "\nLiberal Party: " + (electionResult.statePopularResults[state.name][0] / 200f).ToString("P1") + "\nConservative Party: " + (electionResult.statePopularResults[state.name][1] / 200f).ToString("P1") + (independentVotes > 0?"\nThird Parties: " + (independentVotes/200f).ToString("P1"):"");
+                    //TODO: Make party names reflect the alignment of the candidates running more directly?
+                    stateImageDict[state.shortname].GetComponent<MouseOverText>().mouseOverText = state.name + "\n" + GameData.getData().nationList["USA"].parties[Alignment.LIBERAL] + ": " + (electionResult.statePopularResults[state.name][0] / 200f).ToString("P1") + "\n" + GameData.getData().nationList["USA"].parties[Alignment.CONSERVATIVE] + ": " + (electionResult.statePopularResults[state.name][1] / 200f).ToString("P1") + (independentVotes > 0?"\n" + GameData.getData().translationList["MAP_third_parties"] +": " + (independentVotes/200f).ToString("P1"):"");
                     reportedStates[state.name] = true;
                     break;
                 }
@@ -914,7 +928,7 @@ public class MapScreenController : MonoBehaviour, NationMap {
                     }
                 }
 
-                tooltipText += "House: " + CC + " C+ / " + C + " C / " + M + " M / " + L + " L / " + LL + " L+\n";
+                tooltipText += GameData.getData().translationList["GOVERNMENT_house"] + ": " + CC + " C+ / " + C + " C / " + M + " M / " + L + " L / " + LL + " L+\n";
 
                 CC = 0;
                 C = 0;
@@ -944,21 +958,21 @@ public class MapScreenController : MonoBehaviour, NationMap {
                     }
                 }
 
-                tooltipText += "Senate: " + CC + " C+ / " + C + " C / " + M + " M / " + L + " L / " + LL + " L+\n";
+                tooltipText += GameData.getData().translationList["GOVERNMENT_senate"] + ": " + CC + " C+ / " + C + " C / " + M + " M / " + L + " L / " + LL + " L+\n";
             }
 
-            tooltipText += "Alignment: ";
+            tooltipText += GameData.getData().translationList["MAP_alignment"] + ": ";
 
-            if (state.alignment >= 4) tooltipText += "Very Liberal";
-            else if (state.alignment >= 2) tooltipText += "Moderately Liberal";
-            else if (state.alignment >= 1) tooltipText += "Leans Liberal";
-            else if (state.alignment >= 0) tooltipText += "Swing State";
-            else if (state.alignment >= -1) tooltipText += "Leans Conservative";
-            else if (state.alignment >= -3) tooltipText += "Moderately Conservative";
-            else tooltipText += "Very Conservative";
+            if (state.alignment >= 4) tooltipText += GameData.getData().translationList["MAP_very_liberal"];
+            else if (state.alignment >= 2) tooltipText += GameData.getData().translationList["MAP_moderate_liberal"];
+            else if (state.alignment >= 1) tooltipText += GameData.getData().translationList["MAP_lean_liberal"];
+            else if (state.alignment >= 0) tooltipText += GameData.getData().translationList["MAP_swing_state"];
+            else if (state.alignment >= -1) tooltipText += GameData.getData().translationList["MAP_lean_conservative"];
+            else if (state.alignment >= -3) tooltipText += GameData.getData().translationList["MAP_moderate_conservative"];
+            else tooltipText += GameData.getData().translationList["MAP_very_conservative"];
 
-            tooltipText += "\nEC Votes: " + state.electoralVotes;
-            if ((state.flags & NationDef.stateFlags.PROPORTIONAL_ELECTORAL_VOTES) != 0) tooltipText += " (Distributed proportionally)";
+            tooltipText += "\n" + GameData.getData().translationList["MAP_ec_votes"] +": " + state.electoralVotes;
+            if ((state.flags & NationDef.stateFlags.PROPORTIONAL_ELECTORAL_VOTES) != 0) tooltipText += " " + GameData.getData().translationList["MAP_ec_proportional"];
 
             stateImageDict[state.shortname].GetComponent<MouseOverText>().mouseOverText = tooltipText;
         }
@@ -1107,19 +1121,19 @@ public class MapScreenController : MonoBehaviour, NationMap {
 
     public void disbandButton()
     {
-        PopupOption yes = new PopupOption("Yes", () =>
+        PopupOption yes = new PopupOption(GameData.getData().translationList["OPTION_yes"], () =>
         {
             actions.disband();
         });
 
-        PopupOption no = new PopupOption("No", () => { });
+        PopupOption no = new PopupOption(GameData.getData().translationList["OPTION_no"], () => { });
 
         List<PopupOption> options = new List<PopupOption>();
 
         options.Add(yes);
         options.Add(no);
 
-        uiController.showYesNoPopup("Disbanding scatters the Liberal Crime Squad, sending all of its members into hiding, free to pursue their own lives. You will be able to observe the political situation in brief, and wait until a resolution is reached.\nIf at any time you determine that the Liberal Crime Squad will be needed again, you may return to the homeless shelter to restart the campaign.\nDo not make this decision lightly. If you do need to return to action, only the most devoted of your former members will return. <b>Disband the LCS?</b>", options);
+        uiController.showYesNoPopup(GameData.getData().translationList["MAP_disband_warning"], options);
     }
 
     private void deactivateSubstateImages(string state)

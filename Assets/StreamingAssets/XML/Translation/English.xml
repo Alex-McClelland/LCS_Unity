@@ -29,6 +29,8 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="attorney_general" value="Attorney General"/>
     <translation key="house" value="House"/>
     <translation key="senate" value="Senate"/>
+    <translation key="yea" value="Yea"/> <!-- Affirmative government vote -->
+    <translation key="nay" value="Nay"/> <!-- Negative government vote -->
   </translation_set>
   <translation_set prefix="ALIGNMENT">
     <translation key="l+" value="Elite Liberal"/>
@@ -40,6 +42,12 @@ mark placeholders for values that need to be determined within the code based on
   <translation_set prefix="TIME">
     <translation key="day" value="Day"/>
     <translation key="day_plural" value="Days"/>
+  </translation_set>
+  <translation_set prefix="OPTION">
+    <translation key="yes" value="Yes"/>
+    <translation key="yes_hotkey" value="(Y)es"/>
+    <translation key="no" value="No"/>
+    <translation key="no_hotkey" value="(N)o"/>
   </translation_set>
   <!-- Screen specific text -->
   <!-- Title Screen -->
@@ -241,9 +249,48 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="upgrade_front_installed" value="Business Front Operating"/>
     <!-- Base inventory menu -->
     <translation key="transfer_items" value="TRANSFER ITEMS:"/>
-    <translation key="inventory_back" value="Back (esc)"/>
+    <translation key="back" value="Back (esc)"/>
     <translation key="cancel_transfer" value="Cancel Transfer"/>
     <translation key="shift_click_instruction" value="Shift + Click to transfer entire stack"/>
-    
+  </translation_set>
+  <!-- Country Map Screen -->
+  <translation_set prefix="MAP">
+    <translation key="back" value="Back (esc)"/>
+    <translation key="house_button" value="(1) View House Reps"/>
+    <translation key="senate_button" value="(2) View Senators"/>
+    <translation key="alignment_button" value="(3) View State Alignments"/>
+    <translation key="watch_election" value="WATCH ELECTION"/>
+    <translation key="watch_ratification" value="WATCH RATIFICATION"/>
+    <translation key="disband_button" value="Disband and Wait"/>
+    <translation key="primary_intro" value="After a long primary campaign, the people have rallied around two leaders..."/>
+    <translation key="awaiting_results" value="AWAITING RESULTS..."/>
+    <translation key="reflect_on_changes" value="Reflect on these changes"/>
+    <translation key="end_tied_tiebreaker" value="ARE YOU FUCKING KIDDING ME"/>
+    <translation key="end_tied_tiebreaker_clean" value="What a wonderful example of the democratic process"/>
+    <translation key="declare_victory" value="$PRESIDENT declares victory!"/> <!-- $PRESIDENT will be replaced with the name of the election winner -->
+    <translation key="vp_selected" value="$VP has been selected by the Senate as their Vice President."/> <!-- Only comes up in the event of a tied electoral college -->
+    <translation key="tied_tiebreaker_result" value="After hours of deliberation and a few fist fights, congress has finally selected $PRESIDENT as the next President.\n$VP has been selected by the Senate as their Vice President."/> <!-- $PRESIDENT will be the name of the election winner, $VP will be the name of VP tiebreaker winner-->
+    <translation key="tied_electoral_college" value="With the electoral college deadlocked, it falls to Congress to select a new leader..."/>
+    <translation key="watch_tiebreaker_button" value="WATCH TIEBREAKER"/>
+    <translation key="recount" value="With the election still undecided, it comes down to the recounts..."/>
+    <translation key="recount_report" value="$STATE recount reporting in!"/> <!-- $STATE will be the name of the state reporting recount data -->
+    <translation key="amendment_reflect" value="REFLECT ON THIS"/>
+    <translation key="amendment_watch_states" value="WATCH STATES"/>
+    <translation key="election_report_begin" value="The first districts are reporting in..."/>
+    <translation key="recount_needed" value="Recount needed in $STATE!"/> <!-- $STATE will be replaced with the name of the state that is tied -->
+    <translation key="third_parties" value="Third Parties"/>
+    <translation key="ec_votes" value="EC Votes"/>
+    <translation key="ec_proportional" value="(Distributed proportionally)"/>
+    <!-- State alignment descriptions -->
+    <translation key="alignment" value="Alignment"/>
+    <translation key="very_liberal" value="Very Liberal"/>
+    <translation key="moderate_liberal" value="Moderately Liberal"/>
+    <translation key="lean_liberal" value="Leans Liberal"/>
+    <translation key="swing_state" value="Swing State"/>
+    <translation key="lean_conservative" value="Leans Conservative"/>
+    <translation key="moderate_conservative" value="Moderately Conservative"/>
+    <translation key="very_conservative" value="Very Conservative"/>
+    <translation key="disband_warning" value="Disbanding scatters the Liberal Crime Squad, sending all of its members into hiding, free to pursue their own lives. You will be able to observe the political situation in brief, and wait until a resolution is reached.\nIf at any time you determine that the Liberal Crime Squad will be needed again, you may return to the homeless shelter to restart the campaign.\nDo not make this decision lightly. If you do need to return to action, only the most devoted of your former members will return. &lt;b&gt;Disband the LCS?&lt;/b&gt;"/>
+  
   </translation_set>
 </translations>
