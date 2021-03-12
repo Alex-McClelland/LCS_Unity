@@ -29,6 +29,7 @@ public class TranslateableField : MonoBehaviour
                 else
                 {
                     MasterController.GetMC().addDebugMessage("Missing translation reference " + translationKey);
+                    text.text += " $$UNTRANSLATED$$";
                 }
             }
             else if (text.text != "")

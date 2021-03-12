@@ -195,7 +195,7 @@
       <variant condition="LAW:FLAG_BURNING:=:-1">
         <name>Flag Burning</name>
         <severity>0</severity>
-        <degree>MISDEMEANOR</degree>
+        <degree>FELONY</degree>
         <sentence>36</sentence>
       </variant>
       <variant condition="LAW:FLAG_BURNING:=:-2">

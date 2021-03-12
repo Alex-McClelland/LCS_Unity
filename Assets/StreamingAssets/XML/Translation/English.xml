@@ -9,6 +9,9 @@ mark placeholders for values that need to be determined within the code based on
 <translations>
   <!-- Global Terms -->
   <translation_set prefix="GENDER">
+    <translation key="male" value="Male"/>
+    <translation key="female" value="Female"/>
+    <translation key="neutral" value="Non-Binary"/>
     <translation key="masculine_possessive" value="His"/>
     <translation key="feminine_possessive" value="Her"/>
     <translation key="neutral_possessive" value="Their"/>
@@ -298,5 +301,162 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="reactivate" value="(R)eactivate LCS"/>
     <translation key="exit" value="EXIT"/>
     <translation key="public_mood" value="PUBLIC MOOD"/>
+  </translation_set>
+  <!-- Character info screen -->
+  <translation_set prefix="INFO">
+    <translation key="alias_placeholder" value="Alias"/>
+    <translation key="view_criminal_record" value="View (C)riminal Record"/>
+    <translation key="back" value="Back (esc)"/>
+    <translation key="reload_weapon" value="Reload"/>
+    <translation key="no_squad_button" value="No Squad"/>
+    <translation key="new_squad_placeholder" value="New Squad..."/>
+    <translation key="cancel" value="Cancel"/>
+    <translation key="skill_header_activism" value="POLITICAL ACTIVISM"/>
+    <translation key="skill_header_infiltration" value="INFILTRATION"/>
+    <translation key="skill_header_combat" value="URBAN WARFARE"/>
+    <translation key="crime_header_treason" value="TREASON"/>
+    <translation key="crime_header_felony" value="FELONY"/>
+    <translation key="crime_header_misdemeanor" value="MISDEMEANOR"/>
+    <translatoin key="make_clothing_note" value="Half cost if you have Cloth"/>
+    <translation key="mouseover_juice" value="Juice"/>
+    <translation key="mouseover_followers" value="Followers"/>
+    <translation key="mouseover_lovers" value="Romantic Interests"/>
+    <translation key="enlightened_warning" value="Enlightened Can't Recruit"/>
+    <translation key="mouseover_base" value="Assign a new Safe House to this Liberal"/>
+    <!-- Learning at University menu-->
+    <translation key="learn_persuasion" value="Public Policy"/>
+    <translation key="learn_persuasion_mouseover" value="Learn Pesuasion"/>
+    <translation key="learn_business" value="Economics"/>
+    <translation key="learn_business_mouseover" value="Learn Business"/>
+    <translation key="learn_psychology" value="Psychology"/>
+    <translation key="learn_psychology_mouseover" value="Learn Psychology"/>
+    <translation key="learn_law" value="Criminal Law"/>
+    <translation key="learn_law_mouseover" value="Learn Law"/>
+    <translation key="learn_science" value="Physics"/>
+    <translation key="learn_science_mouseover" value="Learn Science"/>
+    <translation key="learn_driving" value="Driver's Ed"/>
+    <translation key="learn_driving_mouseover" value="Learn Driving"/>
+    <translation key="learn_first_aid" value="First Aid"/>
+    <translation key="learn_first_aid_mouseover" value="Learn First Aid"/>
+    <translation key="learn_art" value="Painting"/>
+    <translation key="learn_art_mouseover" value="Learn Art"/>
+    <translation key="learn_disguise" value="Theatre"/>
+    <translation key="learn_disguise_mouseover" value="Learn Disguise"/>
+    <translation key="learn_martial_arts" value="Kung Fu"/>
+    <translation key="learn_martial_arts_mouseover" value="Learn Martial Arts"/>
+    <translation key="learn_dodge" value="Gymnastics"/>
+    <translation key="learn_dodge_mouseover" value="Learn Dodging"/>
+    <translation key="learn_writing" value="Writing"/>
+    <translation key="learn_writing_mouseover" value="Learn Writing"/>
+    <translation key="learn_teaching" value="Education"/>
+    <translation key="learn_teaching_mouseover" value="Learn Teaching"/>
+    <translation key="learn_music" value="Music"/>
+    <translation key="learn_music_mouseover" value="Learn Music"/>
+    <translation key="learn_security" value="Locksmithing"/>
+    <translation key="learn_security_mouseover" value="Learn Security"/>
+    <!-- Activity Menu -->
+    <translation key="activity_activism" value="Liberal (A)ctivism"/>
+    <translation key="activity_activism_mouseover" value="Engage in Liberal Activism"/>
+    <translation key="activity_fundraising" value="(F)undraising"/>
+    <translation key="activity_fundraising_mouseover" value="Raise Liberal funds"/>
+    <translation key="activity_acquire" value="Ac(q)uire"/>
+    <translation key="activity_acquire_mouseover" value=""/>
+    <translation key="activity_teaching" value="(T)eaching Others"/>
+    <translation key="activity_teaching_mouseover" value="Trains all Liberals staying in this Safe House"/>
+    <translation key="activity_healing" value="(H)ealing/First Aid"/>
+    <translation key="activity_healing_mouseover" value="Tend to wounds"/>
+    <translation key="activity_learning" value="(L)earn at University"/>
+    <translation key="activity_learning_mouseover" value="Attend classes in the University District for $60 a day"/>
+    <translation key="activity_interrogate" value="(I)nterrogate Hostage"/>
+    <translation key="activity_interrogate_mouseover" value=""/>
+    <translation key="activity_dispose" value="Dispose of Bodies (Z)"/>
+    <translation key="activity_dispose_mouseover" value=""/>
+    <translation key="activity_release_liberal" value="(R)elease Liberal"/>
+    <translation key="activity_release_liberal_mouseover" value=""/>
+    <translation key="activity_none" value="Lay Low (X)"/>
+    <translation key="activity_none_mouseover" value=""/>
+    <!-- Activism Menu -->
+    <translation key="activism_community_service" value="Community Service (1)"/>
+    <translation key="activism_community_service_mouseover" value="Perform Community Service to improve public opinion of the LCS. Will also help keep the heat off this Liberal"/>
+    <translation key="activism_protest" value="Liberal Disobedience (2)"/>
+    <translation key="activism_protest_mouseover" value="Stage public demonstrations to raise awareness of Liberal Issues"/>
+    <translation key="activism_graffiti" value="Spray Graffiti (3)"/>
+    <translation key="activism_graffiti_mouseover" value="Spray LCS tags and paint murals to raise awareness of Liberal Issues"/>
+    <translation key="activism_polls" value="Search Opinion Polls (4)"/>
+    <translation key="activism_polls_mouseover" value="Search online for the latest opinion polls"/>
+    <translation key="activism_hacking" value="Hacking (5)"/>
+    <translation key="activism_hacking_mouseover" value="Deface Conservative websites and infiltrate Conservative networks to steal information"/>
+    <translation key="activism_write_newspaper" value="Write to Newspapers (6)"/>
+    <translation key="activism_write_newspaper_mouseover" value="Write letters to the editor to raise awareness of Liberal Issues"/>
+    <translation key="activism_write_guardian" value="Write in Liberal Guardian (7)"/>
+    <translation key="activism_write_guardian_mouseover" value="Write columns and editorials for the Liberal Guardian"/>
+    <!-- Fundraising Menu -->
+    <translation key="fund_donations" value="Solicit Donations (1)"/>
+    <translation key="fund_donations_mouseover" value="Solicit donations from the general public"/>
+    <translation key="fund_shirts" value="Sell T-Shirts (2)"/>
+    <translation key="fund_shirts_mouseover" value="Sell homemade clothing to raise Liberal funds"/>
+    <translation key="fund_art" value="Sell Artwork (3)"/>
+    <translation key="fund_art_mouseover" value="Sell artwork to raise Liberal funds"/>
+    <translation key="fund_music" value="Sell Street Music (4)"/>
+    <translation key="fund_music_mouseover" value="Perform street music to raise Liberal funds"/>
+    <translation key="fund_brownies" value="Sell Brownies (5)"/>
+    <translation key="fund_brownies_mouseover" value="Sell special adult brownies that open magical shimmering doorways to the adamantium pits."/>
+    <translation key="fund_prostitution" value="Prostitution (6)"/>
+    <translation key="fund_prostitution_mouseover" value="Go on the game and trade sex for money"/>
+    <translation key="fund_fraud" value="Credit Card Fraud (7)"/>
+    <translation key="fund_fraud_mouseover" value="Go online and steal credit card numbers"/>
+    <!-- Acquisition Menu -->
+    <translation key="acquire_mend" value="Mend Clothing (1)"/>
+    <translation key="acquire_mend_mouseover" value="Repair and clean clothing and armor"/>
+    <translation key="acquire_make" value="Make Clothing (2)"/>
+    <translation key="acquire_make_mouseover" value=""/>
+    <translation key="acquire_steal_car" value="Steal Vehicle (3)"/>
+    <translation key="acquire_steal_car_mouseover" value="Search for a vehicle to liberate for the Liberal Cause"/>
+    <translation key="acquire_wheelchair" value="Acquire Wheelchair (4)"/>
+    <translation key="acquire_wheelchair_mouseover" value="Obtain a wheelchair"/>
+    <!-- Teaching Menu -->
+    <translation key="teach_activism" value="Political Activism (1)"/>
+    <translation key="teach_activism_mouseover" value="Trains Art, Business, Law, Music, Persuasion, Religion, Science, Street Sense, Writing, costs up to $20 per day"/>
+    <translation key="teach_infiltration" value="Infiltration (2)"/>
+    <translation key="teach_infiltration_mouseover" value="Trains Computers, Disguise, Driving, Psychology, Security, Seduction, Stealth, Tailoring, costs up to $60 per day"/>
+    <translation key="teach_combat" value="Urban Warfare (3)"/>
+    <translation key="teach_combat_mouseover" value="Trains all Weapon skills, Martial Arts, Dodge, First Aid, costs up to $100 per day"/>
+    <!-- Healing Menu -->
+    <translation key="heal_first_aid" value="Heal Liberals (1)"/>
+    <translation key="heal_first_aid_mouseover" value="Use First Aid to heal Liberals"/>
+    <translation key="heal_clinic" value="Move to Free Clinic (2)"/>
+    <translation key="heal_clinic_mouseover" value="Move to recover at the Free Clinic"/>
+    <!-- Sleeper Menu -->
+    <translation key="sleeper_advocate" value="(L)iberal Advocacy"/>
+    <translation key="sleeper_advocate_mouseover" value=""/>
+    <translation key="sleeper_espionage" value="(E)spionage"/>
+    <translation key="sleeper_espionage_mouseover" value=""/>
+    <translation key="sleeper_join" value="(J)oin Active LCS"/>
+    <translation key="sleeper_join_mouseover" value=""/>
+    <translation key="sleeper_lay_low" value="Lay Low (1)"/>
+    <translation key="sleeper_lay_low_mouseover" value=""/>
+    <translation key="sleeper_promote_liberalism" value="Promote Liberalism (2)"/>
+    <translation key="sleeper_promote_liberalism_mouseover" value=""/>
+    <translation key="sleeper_expand_network" value="Expand Network (3)"/>
+    <translation key="sleeper_expand_network_mouseover" value=""/>
+    <translation key="sleeper_snoop" value="Uncover Secrets(1)"/>
+    <translation key="sleeper_snoop_mouseover" value=""/>
+    <translation key="sleeper_embezzle" value="Embezzle Funds (2)"/>
+    <translation key="sleeper_embezzle_mouseover" value=""/>
+    <translation key="sleeper_steal" value="Steal Equipment (3)"/>
+    <translation key="sleeper_steal_mouseover" value=""/>
+    <!-- Interrogation Menu -->
+    <translation key="interrogate_convert" value="Attempt to Convert (1)"/>
+    <translation key="interrogate_convert_mouseover" value=""/>
+    <translation key="interrogate_restrain" value="Physical Restraints (2)"/>
+    <translation key="interrogate_restrain_mouseover" value=""/>
+    <translation key="interrogate_assault" value="Violently Beaten (3)"/>
+    <translation key="interrogate_assault_mouseover" value=""/>
+    <translation key="interrogate_props" value="Use Props ($250) (4)"/>
+    <translation key="interrogate_props_mouseover" value=""/>
+    <translation key="interrogate_drugs" value="Hallucinogenics ($50) (5)"/>
+    <translation key="interrogate_drugs_mouseover" value=""/>
+    <translation key="interrogate_kill" value="KILL HOSTAGE"/>
+    <translation key="interrogate_kill_mouseover" value=""/>
   </translation_set>
 </translations>

@@ -523,17 +523,6 @@ namespace LCS.Engine
                 messageLog.Add(message);
             }
 
-            //Clear the debug log before loading from the file to clear out redundant "Loading (definition)" messages
-            debugLog.Clear();
-
-            foreach (XmlNode node in root.SelectSingleNode("debugLog").ChildNodes)
-            {
-                LogMessage message = new LogMessage(node.InnerText, bool.Parse(node.Attributes["priority"].Value));
-                message.age = int.Parse(node.Attributes["age"].Value);
-                message.read = bool.Parse(node.Attributes["read"].Value);
-                debugLog.Add(message);
-            }
-
             Dictionary<long, Entity> loadEntities = new Dictionary<long, Entity>();
 
             XmlNode worldNode = null;

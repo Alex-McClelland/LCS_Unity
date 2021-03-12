@@ -55,6 +55,7 @@ public class MouseOverText : MonoBehaviour {
             else
             {
                 MasterController.GetMC().addDebugMessage("Missing translation reference " + translationKey);
+                mouseOverText += "$$UNTRANSLATED$$";
             }
         }
         else if(mouseOverText != "")

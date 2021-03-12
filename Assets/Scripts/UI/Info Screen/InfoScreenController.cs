@@ -252,14 +252,14 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
         switch (info.genderLiberal)
         {
             case CreatureInfo.CreatureGender.FEMALE:
-                b_Gender.GetComponentInChildren<Text>().text = "Female";
+                b_Gender.GetComponentInChildren<Text>().text = GameData.getData().translationList["GENDER_female"];
                 break;
             case CreatureInfo.CreatureGender.MALE:
             case CreatureInfo.CreatureGender.WHITEMALEPATRIARCH:
-                b_Gender.GetComponentInChildren<Text>().text = "Male";
+                b_Gender.GetComponentInChildren<Text>().text = GameData.getData().translationList["GENDER_male"];
                 break;
             case CreatureInfo.CreatureGender.NEUTRAL:
-                b_Gender.GetComponentInChildren<Text>().text = "Non-binary";
+                b_Gender.GetComponentInChildren<Text>().text = GameData.getData().translationList["GENDER_neutral"];
                 break;
         }
 
@@ -909,13 +909,13 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
         {
             case CreatureInfo.CreatureGender.MALE:
             case CreatureInfo.CreatureGender.WHITEMALEPATRIARCH:
-                b_Gender.GetComponentInChildren<Text>().text = "Male";
+                b_Gender.GetComponentInChildren<Text>().text = GameData.getData().translationList["GENDER_male"];
                 break;
             case CreatureInfo.CreatureGender.NEUTRAL:
-                b_Gender.GetComponentInChildren<Text>().text = "Non-binary";
+                b_Gender.GetComponentInChildren<Text>().text = GameData.getData().translationList["GENDER_neutral"];
                 break;
             case CreatureInfo.CreatureGender.FEMALE:
-                b_Gender.GetComponentInChildren<Text>().text = "Female";
+                b_Gender.GetComponentInChildren<Text>().text = GameData.getData().translationList["GENDER_female"];
                 break;
         }
     }
@@ -923,13 +923,13 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
     public void fireLiberal()
     {
         List<PopupOption> options = new List<PopupOption>();
-        options.Add(new PopupOption("Yes", () =>
+        options.Add(new PopupOption(GameData.getData().translationList["OPTION_yes"], () =>
         {
             actions.fireLiberal(selectedChar);
             back();
         }));
 
-        options.Add(new PopupOption("No", () =>
+        options.Add(new PopupOption(GameData.getData().translationList["OPTION_no"], () =>
         {
             //Do Nothing
         }));
