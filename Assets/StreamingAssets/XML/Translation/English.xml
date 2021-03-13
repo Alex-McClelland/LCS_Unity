@@ -45,6 +45,10 @@ mark placeholders for values that need to be determined within the code based on
   <translation_set prefix="TIME">
     <translation key="day" value="Day"/>
     <translation key="day_plural" value="Days"/>
+    <translation key="month" value="Month"/>
+    <translation key="month_plural" value="Months"/>
+    <translation key="year" value="Year"/>
+    <translation key="year_plural" value="Years"/>
   </translation_set>
   <translation_set prefix="OPTION">
     <translation key="yes" value="Yes"/>
@@ -193,7 +197,7 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="view_map" value="View Political (M)ap"/>
     <!-- Poll data -->
     <translation key="no_issues" value="The public is not concerned with politics right now."/>
-    <translation key="top_issue" value="The people are most concerned about"/>
+    <translation key="top_issue" value="The people are most concerned about $TOPISSUE"/> <!-- $TOPISSUE will be the text describing the current top issue as derived from the issue definition in LawDefs.xml-->
     <translation key="issue_header" value="Issue"/>
     <translation key="error_header" value="Error"/>
     <translation key="public_interest_header" value="Public Interest"/>
@@ -320,9 +324,60 @@ mark placeholders for values that need to be determined within the code based on
     <translatoin key="make_clothing_note" value="Half cost if you have Cloth"/>
     <translation key="mouseover_juice" value="Juice"/>
     <translation key="mouseover_followers" value="Followers"/>
+    <translation key="follower_enlightened" value="(Enlightened)"/> <!-- Displayed next to the name of a follower if they have been brainwashed -->
     <translation key="mouseover_lovers" value="Romantic Interests"/>
+    <translation key="lover_master" value="(Master)"/> <!-- Displayed next to the name of this liberal's leader in the Lovers tooltip, if they are a love slave -->
     <translation key="enlightened_warning" value="Enlightened Can't Recruit"/>
     <translation key="mouseover_base" value="Assign a new Safe House to this Liberal"/>
+    <translation key="mouseover_base_squad" value="Travel to another safe house with your squad to rebase this Liberal"/>
+    <translation key="mouseover_base_sleeper" value="Sleepers need to stay in their designated workplace"/>
+    <translation key="mouseover_base_siege" value="Cannot travel while under siege"/>
+    <translation key="full_age" value="Born $DATE (Age $AGE)"/> <!-- $DATE will be replaced with the character's birthday, $AGE will be replaced by their age in years -->
+    <translation key="rough_age" value="Age: $ROUGHAGE"/> <!-- $ROUGHAGE will be replaced with a rounded number based on the character's age-->
+    <translation key="very_old" value="Very Old"/>
+    <translation key="joined_on" value="Joined on $JOINDATE"/> <!-- $JOINDATE will be replaced by the date the liberal joined the LCS-->
+    <translation key="sleeper_infiltration" value="Effectiveness: $INFILTRATION%"/> <!-- $INFILTRATION will be replaced by the sleeper's infiltration level -->
+    <translation key="healing_time_left" value="Healing ($TIME $MONTHS left)"/> <!-- $TIME will be replaced with the number of months left to heal. $MONTHS will be replaced by the singular or plural form of the word "month" as defined in the TIME set-->
+    <translation key="in_police_custody" value="Being Interrogated"/>
+    <translation key="awaiting_trial" value="Awaiting Trial"/>
+    <translation key="in_prison" value="Doing Hard Time"/>
+    <translation key="release_liberal_confirmation" value="Do you want to permanently release this squad member from the LCS? If they have low heart, they may go to the police."/>
+    <translation key="away_squad_mouseover" value="Cannot change squads while away from Safe House"/>
+    <translation key="away_base_mouseover" value="Cannot change home while away from Safe House"/>
+    <translation key="away_activity_mouseover" value="Cannot set activity while away from Safe House"/>
+    <translation key="injured_activity_mouseover" value="$NAME is too badly hurt and needs professional care"/> <!-- $NAME will be replaced by the current selected character's name-->
+    <translation key="wheelchair_squad_mouseover" value="This Liberal needs a wheelchair before they can go out again"/>
+    <!-- Mouseover text for dead liberals--> <!-- $NAME in the following entries will be replaced by the current selected character's name -->
+    <translation key="dead_lib_squad_mouseover" value="$NAME is in no condition to join a squad!"/>
+    <translation key="dead_lib_base_mouseover" value="$NAME is in no condition to travel!"/>
+    <translation key="dead_lib_activity_mouseover" value="is in no condition to be activated!"/>
+    <!-- Non-liberal text -->
+    <translation key="nonlib_squad_button" value="The Masses"/>
+    <translation key="nonlib_activity" value="Mindless Consumerism"/>
+    <translation key="nonlib_liberal_mouseover" value="This Liberal has not yet been motivated to direct action"/>
+    <translation key="nonlib_other_mouseover" value="You can't give orders to non-Liberals!"/>
+    <translation key="nonlib_hostage_move" value="Moving this hostage would be too risky"/>
+    <!-- Interrogation Info --> <!-- For all of the following entries, $INTERROGATOR will be replaced by the current lead interrogator -->
+    <translation key="time_in_captivity" value="$TIME $DAYS in Captivity"/> <!-- $TIME will be replaced with the number of days they have been in captivity. $DAYS will be replaced by either the singular or plural form of the word "day" as defined in the TIME set-->
+    <translation key="no_interrogator" value="Not Being Interrogated"/>
+    <translation key="lead_interrogator" value="Lead Interrogator: $INTERROGATOR"/>
+    <translation key="rapport_no_interrogator" value="The Conservative is sitting alone in the dark."/>
+    <translation key="rapport_none" value="The Conservative has not yet developed a relationship with $INTERROGATOR."/>
+    <translation key="rapport_devoted" value="The Conservative clings helplessly to $INTERROGATOR as its only friend."/>
+    <translation key="rapport_likes" value="The Conservative likes $INTERROGATOR."/>
+    <translation key="rapport_neutral" value="The Conservative is uncooperative toward $INTERROGATOR."/>
+    <translation key="rapport_hates" value="The Conservative hates $INTERROGATOR"/>
+    <translation key="rapport_murder" value="The Conservative would like to murder $INTERROGATOR"/>
+    <!-- Criminal Record -->
+    <translation key="crime_current_sentence" value="Current Sentence: "/> <!-- note the space at the end of this value, as this is part of a compound string with the below keys -->
+    <translation key="crime_standard_sentence" value="$LENGTH $MONTHSYEARS"/> <!-- $LENGTH will be replaced with the number of months/years lefts in the sentence. $MONTHSYEARS will be replaced with the appropriate term drawn from the translations in the TIME set, depending on the length of the sentence (>36 months will use years) -->
+    <translation key="crime_life_sentence_singular" value="LIFE"/>
+    <translation key="crime_life_sentence_multiple" value="$COUNT LIFE SENTENCES"/> <!-- $COUNT will be replaced by the number of life sentences this character has accrued -->
+    <translation key="crime_sentence_death" value="&lt;color=RED&gt;&lt;b&gt;DEATH!!!&lt;/b&gt;&lt;/color&gt; ($TIMELEFT $MONTH until execution)"/> <!-- $TIMELEFT will be the number of months remaining before execution. $MONTH will be replaced by the appropriate singular or plural form of the word "month" as defined in the TIME set-->
+    <translation key="crime_time_served" value="Total Time Served: $LENGTH $MONTHSYEARS"/> <!-- $LENGTH and $MONTHSYEARS follow the same logic as crime_standard_sentence, except for the amount of time already served rather than time remaining -->
+    <translation key="crime_wanted_for" value="WANTED FOR $CRIME"/> <!-- $CRIME will be replaced by the crime they are most wanted for -->
+    <translation key="crime_rehabilitation" value="REHABILITATION"/> <!-- When a character has been brainwashed -->
+    <translation key="crime_deportation" value="DEPORTATION"/> <!-- When a character is an illegal immigrant and immigration laws are below L+-->
     <!-- Learning at University menu-->
     <translation key="learn_persuasion" value="Public Policy"/>
     <translation key="learn_persuasion_mouseover" value="Learn Pesuasion"/>
@@ -389,6 +444,7 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="activism_write_newspaper" value="Write to Newspapers (6)"/>
     <translation key="activism_write_newspaper_mouseover" value="Write letters to the editor to raise awareness of Liberal Issues"/>
     <translation key="activism_write_guardian" value="Write in Liberal Guardian (7)"/>
+    <translation key="activism_write_guardian_no_press_mouseover" value="Buy a Printing Press to write for the Liberal Guardian"/>
     <translation key="activism_write_guardian_mouseover" value="Write columns and editorials for the Liberal Guardian"/>
     <!-- Fundraising Menu -->
     <translation key="fund_donations" value="Solicit Donations (1)"/>
@@ -439,6 +495,8 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="sleeper_promote_liberalism_mouseover" value=""/>
     <translation key="sleeper_expand_network" value="Expand Network (3)"/>
     <translation key="sleeper_expand_network_mouseover" value=""/>
+    <translation key="sleeper_expand_network_mouseover_no_juice" value="Need more Juice to recruit"/>
+    <translation key="sleeper_expand_network_mouseover_invalid_location" value="Can't recruit from this location"/>
     <translation key="sleeper_snoop" value="Uncover Secrets(1)"/>
     <translation key="sleeper_snoop_mouseover" value=""/>
     <translation key="sleeper_embezzle" value="Embezzle Funds (2)"/>
@@ -446,6 +504,7 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="sleeper_steal" value="Steal Equipment (3)"/>
     <translation key="sleeper_steal_mouseover" value=""/>
     <!-- Interrogation Menu -->
+    <translation key="interrogate_tactics" value="Interrogation Tactics (A)"/>
     <translation key="interrogate_convert" value="Attempt to Convert (1)"/>
     <translation key="interrogate_convert_mouseover" value=""/>
     <translation key="interrogate_restrain" value="Physical Restraints (2)"/>
@@ -458,5 +517,17 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="interrogate_drugs_mouseover" value=""/>
     <translation key="interrogate_kill" value="KILL HOSTAGE"/>
     <translation key="interrogate_kill_mouseover" value=""/>
+    <!-- Make Clothing Difficulty Ratings -->
+    <translation key="make_simple" value="Simple"/>
+    <translation key="make_very_easy" value="Very Easy"/>
+    <translation key="make_easy" value="Easy"/>
+    <translation key="make_below_average" value="Below Average"/>
+    <translation key="make_average" value="Average"/>
+    <translation key="make_above_average" value="Above Average"/>
+    <translation key="make_hard" value="Hard"/>
+    <translation key="make_very_hard" value="Very Hard"/>
+    <translation key="make_extremely_difficult" value="Extremely Difficult"/>
+    <translation key="make_nearly_impossible" value="Nearly Impossible"/>
+    <translation key="make_impossible" value="Impossible"/>
   </translation_set>
 </translations>

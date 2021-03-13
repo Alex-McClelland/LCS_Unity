@@ -5,6 +5,7 @@ using LCS.Engine.UI;
 using LCS.Engine.UI.UIEvents;
 using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class UIControllerImpl : MonoBehaviour, UIController {
     public SquadUIImpl squadUIImpl;
@@ -162,6 +163,39 @@ public class UIControllerImpl : MonoBehaviour, UIController {
     void OnApplicationQuit()
     {
         GameData.getData().saveToDisk();
+    }
+
+    public void generateTranslations()
+    {
+        foreach(TranslateableField f in FindObjectsOfTypeAll<TranslateableField>())
+        {
+            f.setTranslation();
+        }
+
+        foreach(MouseOverText m in FindObjectsOfTypeAll<MouseOverText>())
+        {
+            m.setTranslation();
+        }
+    }
+
+    /** Gets all objects of the named type, whether active or inactive */
+    public static List<T> FindObjectsOfTypeAll<T>()
+    {
+        List<T> results = new List<T>();
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            var s = SceneManager.GetSceneAt(i);
+            if (s.isLoaded)
+            {
+                var allGameObjects = s.GetRootGameObjects();
+                for (int j = 0; j < allGameObjects.Length; j++)
+                {
+                    var go = allGameObjects[j];
+                    results.AddRange(go.GetComponentsInChildren<T>(true));
+                }
+            }
+        }
+        return results;
     }
 
     public void ExitGame(bool save = true)

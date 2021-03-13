@@ -95,17 +95,17 @@ namespace LCS.Engine.Components.Creature
 
         public string hisHer()
         {
-            GameData data = GameData.getData();
+            MasterController mc = MasterController.GetMC();
 
             switch (genderLiberal)
             {
                 case CreatureGender.FEMALE:
-                    return data.translationList["GENDER_feminine_possessive"];
+                    return mc.getTranslation("GENDER_feminine_possessive");
                 case CreatureGender.MALE:
                 case CreatureGender.WHITEMALEPATRIARCH:
-                    return data.translationList["GENDER_masculine_possessive"];
+                    return mc.getTranslation("GENDER_masculine_possessive");
                 case CreatureGender.NEUTRAL:
-                    return data.translationList["GENDER_neutral_possessive"];
+                    return mc.getTranslation("GENDER_neutral_possessive");
                 default:
                     return "NO GENDER DEFINED";
             }
@@ -113,17 +113,17 @@ namespace LCS.Engine.Components.Creature
 
         public string himHer()
         {
-            GameData data = GameData.getData();
+            MasterController mc = MasterController.GetMC();
 
             switch (genderLiberal)
             {
                 case CreatureGender.FEMALE:
-                    return data.translationList["GENDER_feminine_object_pronoun"];
+                    return mc.getTranslation("GENDER_feminine_object_pronoun");
                 case CreatureGender.MALE:
                 case CreatureGender.WHITEMALEPATRIARCH:
-                    return data.translationList["GENDER_masculine_object_pronoun"];
+                    return mc.getTranslation("GENDER_masculine_object_pronoun");
                 case CreatureGender.NEUTRAL:
-                    return data.translationList["GENDER_neutral_object_pronoun"]; ;
+                    return mc.getTranslation("GENDER_neutral_object_pronoun"); ;
                 default:
                     return "NO GENDER DEFINED";
             }
@@ -131,17 +131,17 @@ namespace LCS.Engine.Components.Creature
 
         public string heShe()
         {
-            GameData data = GameData.getData();
+            MasterController mc = MasterController.GetMC();
 
             switch (genderLiberal)
             {
                 case CreatureGender.FEMALE:
-                    return data.translationList["GENDER_feminine_subject_pronoun"];
+                    return mc.getTranslation("GENDER_feminine_subject_pronoun");
                 case CreatureGender.MALE:
                 case CreatureGender.WHITEMALEPATRIARCH:
-                    return data.translationList["GENDER_masculine_subject_pronoun"];
+                    return mc.getTranslation("GENDER_masculine_subject_pronoun");
                 case CreatureGender.NEUTRAL:
-                    return data.translationList["GENDER_neutral_subject_pronoun"];
+                    return mc.getTranslation("GENDER_neutral_subject_pronoun");
                 default:
                     return "NO GENDER DEFINED";
             }
@@ -149,17 +149,17 @@ namespace LCS.Engine.Components.Creature
 
         public string manWoman()
         {
-            GameData data = GameData.getData();
+            MasterController mc = MasterController.GetMC();
 
             switch (genderLiberal)
             {
                 case CreatureGender.FEMALE:
-                    return data.translationList["GENDER_feminine_gender_descriptor"];
+                    return mc.getTranslation("GENDER_feminine_gender_descriptor");
                 case CreatureGender.MALE:
                 case CreatureGender.WHITEMALEPATRIARCH:
-                    return data.translationList["GENDER_masculine_gender_descriptor"];
+                    return mc.getTranslation("GENDER_masculine_gender_descriptor");
                 case CreatureGender.NEUTRAL:
-                    return data.translationList["GENDER_neutral_gender_descriptor"];
+                    return mc.getTranslation("GENDER_neutral_gender_descriptor");
                 default:
                     return "NO GENDER DEFINED";
             }

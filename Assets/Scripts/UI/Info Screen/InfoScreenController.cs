@@ -171,7 +171,7 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
         i_Portrait.buildPortrait(selectedChar);
 
         b_Squad.GetComponent<MouseOverText>().mouseOverText = "";
-        b_Base.GetComponent<MouseOverText>().mouseOverText = "Assign a new Safe House to this Liberal";
+        b_Base.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("INFO_mouseover_base");
         b_Activity.GetComponent<MouseOverText>().mouseOverText = "";
 
         populateInfo();
@@ -246,20 +246,22 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
 
     private void populateInfo()
     {
+        MasterController mc = MasterController.GetMC();
+
         CreatureInfo info = selectedChar.getComponent<CreatureInfo>();
         t_Name.text = info.givenName + " " + info.surname;
         t_Alias.text = info.alias;
         switch (info.genderLiberal)
         {
             case CreatureInfo.CreatureGender.FEMALE:
-                b_Gender.GetComponentInChildren<Text>().text = GameData.getData().translationList["GENDER_female"];
+                b_Gender.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("GENDER_female");
                 break;
             case CreatureInfo.CreatureGender.MALE:
             case CreatureInfo.CreatureGender.WHITEMALEPATRIARCH:
-                b_Gender.GetComponentInChildren<Text>().text = GameData.getData().translationList["GENDER_male"];
+                b_Gender.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("GENDER_male");
                 break;
             case CreatureInfo.CreatureGender.NEUTRAL:
-                b_Gender.GetComponentInChildren<Text>().text = GameData.getData().translationList["GENDER_neutral"];
+                b_Gender.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("GENDER_neutral");
                 break;
         }
 
@@ -315,39 +317,41 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
             switch (difficulty)
             {
                 case 0:
-                    line.t_Difficulty.text = "<color=lime>Simple</color>";
+                    line.t_Difficulty.text = "<color=lime>" + mc.getTranslation("INFO_make_simple");
                     break;
                 case 1:
-                    line.t_Difficulty.text = "<color=cyan>Very Easy</color>";
+                    line.t_Difficulty.text = "<color=cyan>" + mc.getTranslation("INFO_make_very_easy");
                     break;
                 case 2:
-                    line.t_Difficulty.text = "<color=teal>Easy</color>";
+                    line.t_Difficulty.text = "<color=teal>" + mc.getTranslation("INFO_make_easy");
                     break;
                 case 3:
-                    line.t_Difficulty.text = "<color=blue>Below Average</color>";
+                    line.t_Difficulty.text = "<color=blue>" + mc.getTranslation("INFO_make_below_average");
                     break;
                 case 4:
-                    line.t_Difficulty.text = "Average";
+                    line.t_Difficulty.text = "<color=white>" + mc.getTranslation("INFO_make_average");
                     break;
                 case 5:
-                    line.t_Difficulty.text = "<color=grey>Above Average</color>";
+                    line.t_Difficulty.text = "<color=grey>" + mc.getTranslation("INFO_make_above_average");
                     break;
                 case 6:
-                    line.t_Difficulty.text = "<color=yellow>Hard</color>";
+                    line.t_Difficulty.text = "<color=yellow>" + mc.getTranslation("INFO_make_hard");
                     break;
                 case 7:
-                    line.t_Difficulty.text = "<color=purple>Very Hard</color>";
+                    line.t_Difficulty.text = "<color=purple>" + mc.getTranslation("INFO_make_very_hard");
                     break;
                 case 8:
-                    line.t_Difficulty.text = "<color=magenta>Extremely Difficult</color>";
+                    line.t_Difficulty.text = "<color=magenta>" + mc.getTranslation("INFO_extremely_difficult");
                     break;
                 case 9:
-                    line.t_Difficulty.text = "<color=maroon>Nearly Impossible</color>";
+                    line.t_Difficulty.text = "<color=maroon>" + mc.getTranslation("INFO_make_nearly_impossible");
                     break;
                 default:
-                    line.t_Difficulty.text = "<color=red>Impossible</color>";
+                    line.t_Difficulty.text = "<color=red>" + mc.getTranslation("INFO_make_impossible");
                     break;
             }
+
+            line.t_Difficulty.text += "</color>";
         }
 
         skills.Sort(delegate (CreatureBase.Skill a, CreatureBase.Skill b)
@@ -473,15 +477,16 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
         else
         {
             t_Sentence.gameObject.SetActive(true);
-            t_Sentence.text = "Current Sentence: ";
-            if (record.deathPenalty) t_Sentence.text += "<color=RED><b>DEATH!!!</b></color> (" + record.CurrentSentence + (record.CurrentSentence > 1 ? " months" : " month") + " until execution)";
-            else if (record.LifeSentences > 0) t_Sentence.text += (record.LifeSentences > 1 ? record.LifeSentences + " LIFE SENTENCES" : "LIFE");
+            t_Sentence.text = mc.getTranslation("INFO_crime_current_sentence");
+            if (record.deathPenalty) t_Sentence.text += mc.getTranslation("INFO_crime_death_sentence").Replace("$TIMELEFT", record.CurrentSentence.ToString()).Replace("$MONTH", record.CurrentSentence > 1 ? mc.getTranslation("TIME_month_plural") : mc.getTranslation("TIME_month"));
+            else if (record.LifeSentences > 0)
+                t_Sentence.text += (record.LifeSentences > 1 ? mc.getTranslation("INFO_crime_life_sentence_multiple").Replace("$COUNT", record.LifeSentences.ToString()) : mc.getTranslation("INFO_crime_life_sentence"));
             else
             {
-                if(record.CurrentSentence < 36)
-                    t_Sentence.text += record.CurrentSentence + (record.CurrentSentence > 1 ? " Months" : " Month");
+                if (record.CurrentSentence < 36)
+                    t_Sentence.text += mc.getTranslation("INFO_crime_standard_sentence").Replace("$LENGTH", record.CurrentSentence.ToString()).Replace("$MONTHSYEARS", record.CurrentSentence > 1 ? mc.getTranslation("TIME_month_plural") : mc.getTranslation("TIME_month"));
                 else
-                    t_Sentence.text += record.CurrentSentence/12 + " Years";
+                    t_Sentence.text += mc.getTranslation("INFO_crime_standard_sentence").Replace("$LENGTH", (record.CurrentSentence/12).ToString()).Replace("$MONTHSYEARS", mc.getTranslation("TIME_year_plural"));
             }
         }
 
@@ -489,19 +494,18 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
         else
         {
             t_TimeServed.gameObject.SetActive(true);
-            t_TimeServed.text = "Total Time Served: ";
             if (record.TotalTimeServed < 36)
-                t_TimeServed.text += record.TotalTimeServed + (record.TotalTimeServed > 1 ? " Months" : " Month");
+                t_TimeServed.text = mc.getTranslation("INFO_crime_time_served").Replace("$LENGTH", record.TotalTimeServed.ToString()).Replace("$MONTHSYEARS", record.TotalTimeServed > 1 ? mc.getTranslation("TIME_month_plural") : mc.getTranslation("TIME_month"));
             else
-                t_TimeServed.text += record.TotalTimeServed / 12 + " Years";
+                t_TimeServed.text = mc.getTranslation("INFO_crime_time_served").Replace("$LENGTH", (record.TotalTimeServed / 12).ToString()).Replace("$MONTHSYEARS", mc.getTranslation("TIME_year_plural"));
         }
 
         if ((selectedChar.getComponent<CreatureInfo>().flags & CreatureInfo.CreatureFlag.MISSING) != 0)
-            t_Wanted.text = "WANTED FOR REHABILITATION";
+            t_Wanted.text = mc.getTranslation("INFO_crime_wanted_for").Replace("$CRIME", mc.getTranslation("INFO_crime_rehabilitation"));
         else if ((selectedChar.getComponent<CreatureInfo>().flags & CreatureInfo.CreatureFlag.ILLEGAL_IMMIGRANT) != 0)
-            t_Wanted.text = "WANTED FOR DEPORTATION";
+            t_Wanted.text = mc.getTranslation("INFO_crime_wanted_for").Replace("$CRIME", mc.getTranslation("INFO_crime_deportation"));
         else if (mostWantedCrime != null)
-            t_Wanted.text = "WANTED FOR " + mostWantedCrime.name.ToUpper();
+            t_Wanted.text = mc.getTranslation("INFO_crime_wanted_for").Replace("$CRIME", mostWantedCrime.name.ToUpper());
         else
             t_Wanted.text = "";
 
@@ -510,13 +514,13 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
         if (selectedChar.hasComponent<Liberal>())
         {
             t_TypeName.text = cBase.getRankName() + " (" + info.type_name + ")";
-            t_Birthday.text = "Born " + age.birthday.ToString("MMMM dd, yyyy") + " (Age " + age.getAge() + ")";
+            t_Birthday.text = mc.getTranslation("INFO_full_age").Replace("$DATE", age.birthday.ToString("MMMM dd, yyyy")).Replace("$AGE", age.getAge().ToString());
         }
         else
         {
             //Encounter name instead of type name here so that CCS/Professional Thief won't be revealed by inspection
             t_TypeName.text = cBase.getRankName() + " (" + info.encounterName + ")";
-            t_Birthday.text = "Age: " + age.getRoughAge();
+            t_Birthday.text = mc.getTranslation("INFO_rough_age").Replace("$ROUGHAGE", age.getRoughAge());
         }
 
         int juiceBreakPoint = 0;
@@ -594,36 +598,38 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
             t_Rapport.gameObject.SetActive(true);
             t_Interrogator.gameObject.SetActive(true);
             t_DaysCaptive.gameObject.SetActive(true);
-            b_Activity.GetComponentInChildren<Text>().text = "Interrogation Tactics (A)";
-            t_DaysCaptive.text = selectedChar.getComponent<Hostage>().timeInCaptivity + (selectedChar.getComponent<Hostage>().timeInCaptivity > 1?" Days":" Day") + " in Captivity";
+            b_Activity.GetComponentInChildren<Text>().text = mc.getTranslation("INFO_interrogate_tactics");
+            t_DaysCaptive.text = mc.getTranslation("INFO_time_in_captivity").Replace("$TIME", selectedChar.getComponent<Hostage>().timeInCaptivity.ToString()).Replace("$DAYS", selectedChar.getComponent<Hostage>().timeInCaptivity > 1 ? mc.getTranslation("TIME_day_plural") : mc.getTranslation("TIME_day"));
 
             refreshInterrogationTactics();
 
             if (selectedChar.getComponent<Hostage>().leadInterrogator != null)
             {
-                t_Interrogator.text = "Lead Interrogator: " + selectedChar.getComponent<Hostage>().leadInterrogator.getComponent<CreatureInfo>().getName();
+                string leadInterrogatorName = selectedChar.getComponent<Hostage>().leadInterrogator.getComponent<CreatureInfo>().getName();
+
+                t_Interrogator.text = mc.getTranslation("INFO_lead_interrogator").Replace("$INTERROGATOR", leadInterrogatorName);
                 if (!selectedChar.getComponent<Hostage>().rapport.ContainsKey(selectedChar.getComponent<Hostage>().leadInterrogator))
                 {
-                    t_Rapport.text = "The Conservative has not yet developed a relationship with " + selectedChar.getComponent<Hostage>().leadInterrogator.getComponent<CreatureInfo>().getName();
+                    t_Rapport.text = mc.getTranslation("INFO_rapport_none").Replace("$INTERROGATOR", leadInterrogatorName);
                 }
                 else
                 {
                     if(selectedChar.getComponent<Hostage>().rapport[selectedChar.getComponent<Hostage>().leadInterrogator] > 3)
-                        t_Rapport.text = "The Conservative clings helplessly to " + selectedChar.getComponent<Hostage>().leadInterrogator.getComponent<CreatureInfo>().getName() + " as its only friend.";
+                        t_Rapport.text = mc.getTranslation("INFO_rapport_devoted").Replace("$INTERROGATOR", leadInterrogatorName);
                     else if(selectedChar.getComponent<Hostage>().rapport[selectedChar.getComponent<Hostage>().leadInterrogator] > 1)
-                        t_Rapport.text = "The Conservative likes " + selectedChar.getComponent<Hostage>().leadInterrogator.getComponent<CreatureInfo>().getName() + ".";
+                        t_Rapport.text = mc.getTranslation("INFO_rapport_likes").Replace("$INTERROGATOR", leadInterrogatorName);
                     else if (selectedChar.getComponent<Hostage>().rapport[selectedChar.getComponent<Hostage>().leadInterrogator] > -1)
-                        t_Rapport.text = "The Conservative is uncooperative toward " + selectedChar.getComponent<Hostage>().leadInterrogator.getComponent<CreatureInfo>().getName() + ".";
+                        t_Rapport.text = mc.getTranslation("INFO_rapport_neutral").Replace("$INTERROGATOR", leadInterrogatorName);
                     else if (selectedChar.getComponent<Hostage>().rapport[selectedChar.getComponent<Hostage>().leadInterrogator] > -4)
-                        t_Rapport.text = "The Conservative hates " + selectedChar.getComponent<Hostage>().leadInterrogator.getComponent<CreatureInfo>().getName() + ".";
+                        t_Rapport.text = mc.getTranslation("INFO_rapport_hates").Replace("$INTERROGATOR", leadInterrogatorName);
                     else
-                        t_Rapport.text = "The Conservative would like to murder " + selectedChar.getComponent<Hostage>().leadInterrogator.getComponent<CreatureInfo>().getName() + ".";
+                        t_Rapport.text = mc.getTranslation("INFO_rapport_murder").Replace("$INTERROGATOR", leadInterrogatorName); ;
                 }
             }
             else
             {
-                t_Interrogator.text = "Not Being Interrogated";
-                t_Rapport.text = "The Conservative is sitting alone in the dark.";
+                t_Interrogator.text = mc.getTranslation("INFO_no_interrogator");
+                t_Rapport.text = mc.getTranslation("INFO_rapport_no_interrogator");
             }
         }
         else
@@ -781,15 +787,16 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
 
     private void populateLiberalInfo()
     {
+        MasterController mc = MasterController.GetMC();
         Liberal lib = selectedChar.getComponent<Liberal>();
         CreatureBase cBase = selectedChar.getComponent<CreatureBase>();
         Body body = selectedChar.getComponent<Body>();
-        t_JoinDate.text = "Joined on " + lib.joinDate.ToString("MMMM dd, yyyy");
+        t_JoinDate.text = mc.getTranslation("INFO_joined_on").Replace("$JOINDATE", lib.joinDate.ToString("MMMM dd, yyyy"));
 
         if (lib.status == Liberal.Status.SLEEPER)
         {
             t_SleeperInfiltration.gameObject.SetActive(true);
-            t_SleeperInfiltration.text = "Effectiveness: " + lib.infiltration + "%";
+            t_SleeperInfiltration.text = mc.getTranslation("INFO_sleeper_infiltration").Replace("$INFILTRATION", lib.infiltration.ToString());
         }
         else
         {
@@ -807,14 +814,14 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
             EnlightenedBox.SetActive(false);
             FollowerBox.GetComponentInChildren<Text>().text = lib.getNormalSubordinateCount() + "/" + lib.getSubordinateLimit();
 
-            FollowerBox.GetComponent<MouseOverText>().mouseOverText = "Followers" + (lib.subordinates.Count > 0 ? ":" : "");
+            FollowerBox.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_mouseover_followers") + (lib.subordinates.Count > 0 ? ":" : "");
 
             foreach (Entity e in lib.subordinates)
             {
                 if(e.getComponent<Liberal>().recruitType != Liberal.RecruitType.LOVE_SLAVE)
                     FollowerBox.GetComponent<MouseOverText>().mouseOverText += "\n" + e.getComponent<CreatureInfo>().getName();
                 if (e.getComponent<Liberal>().recruitType == Liberal.RecruitType.ENLIGHTENED)
-                    FollowerBox.GetComponent<MouseOverText>().mouseOverText += " (Enlightened)";
+                    FollowerBox.GetComponent<MouseOverText>().mouseOverText += " " + mc.getTranslation("INFO_follower_enlightened");
             }
         }
 
@@ -827,7 +834,7 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
             LoverBox.SetActive(true);
             LoverBox.GetComponentInChildren<Text>().text = "" + lib.getLoverCount();
 
-            LoverBox.GetComponent<MouseOverText>().mouseOverText = "Lovers:";
+            LoverBox.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_mouseover_lovers") + ":";
 
             foreach (Entity e in lib.subordinates)
             {
@@ -837,11 +844,11 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
 
             if(lib.recruitType == Liberal.RecruitType.LOVE_SLAVE)
             {
-                LoverBox.GetComponent<MouseOverText>().mouseOverText += "\n" + lib.leader.getComponent<CreatureInfo>().getName() + " (Master)";
+                LoverBox.GetComponent<MouseOverText>().mouseOverText += "\n" + lib.leader.getComponent<CreatureInfo>().getName() + " " + mc.getTranslation("INFO_lover_master");
             }
         }
 
-        b_Squad.GetComponentInChildren<Text>().text = lib.squad != null ? lib.squad.name : "No Squad";
+        b_Squad.GetComponentInChildren<Text>().text = lib.squad != null ? lib.squad.name : mc.getTranslation("INFO_no_squad_button");
         b_Activity.GetComponentInChildren<Text>().text = lib.getActivityName() + " (A)";
         setBaseButtonText();
 
@@ -860,37 +867,37 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
             if ((lib.homeBase.getComponent<SafeHouse>().investments & SafeHouse.Investments.PRINTING_PRESS) == 0)
             {
                 b_LiberalGuardian.interactable = false;
-                b_LiberalGuardian.GetComponent<MouseOverText>().mouseOverText = "Buy a Printing Press to write for the Liberal Guardian";
+                b_LiberalGuardian.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_activism_write_guardian_no_press_mouseover");
             }
             else
             {
                 b_LiberalGuardian.interactable = true;
-                b_LiberalGuardian.GetComponent<MouseOverText>().mouseOverText = "Write columns and editorials for the Liberal Guardian";
+                b_LiberalGuardian.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_activism_write_guardian_mouseover");
             }
         }
 
         if (lib.status == Liberal.Status.HOSPITAL)
         {
             b_Base.GetComponentInChildren<Text>().text = cBase.Location.getComponent<SiteBase>().getCurrentName();
-            b_Activity.GetComponentInChildren<Text>().text = "Healing (" + body.HospitalTime + (body.HospitalTime > 1 ? " months remaining" : "month remains") + ")";
+            b_Activity.GetComponentInChildren<Text>().text = mc.getTranslation("INFO_healing_time_left").Replace("$TIME",body.HospitalTime.ToString()).Replace("$MONTHS", body.HospitalTime > 1 ? mc.getTranslation("TIME_month_plural") : mc.getTranslation("TIME_month")) + ")";
         }
 
         if (lib.status == Liberal.Status.JAIL_POLICE_CUSTODY)
         {
             b_Base.GetComponentInChildren<Text>().text = cBase.Location.getComponent<SiteBase>().getCurrentName();
-            b_Activity.GetComponentInChildren<Text>().text = "Being Interrogated";
+            b_Activity.GetComponentInChildren<Text>().text = mc.getTranslation("INFO_in_police_custody");
         }
 
         if (lib.status == Liberal.Status.JAIL_COURT)
         {
             b_Base.GetComponentInChildren<Text>().text = cBase.Location.getComponent<SiteBase>().getCurrentName();
-            b_Activity.GetComponentInChildren<Text>().text = "Awaiting Trial";
+            b_Activity.GetComponentInChildren<Text>().text = mc.getTranslation("INFO_awaiting_trial");
         }
 
         if (lib.status == Liberal.Status.JAIL_PRISON)
         {
             b_Base.GetComponentInChildren<Text>().text = cBase.Location.getComponent<SiteBase>().getCurrentName();
-            b_Activity.GetComponentInChildren<Text>().text = "Doing Hard Time";
+            b_Activity.GetComponentInChildren<Text>().text = mc.getTranslation("INFO_in_prison");
         }
     }
 
@@ -909,13 +916,13 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
         {
             case CreatureInfo.CreatureGender.MALE:
             case CreatureInfo.CreatureGender.WHITEMALEPATRIARCH:
-                b_Gender.GetComponentInChildren<Text>().text = GameData.getData().translationList["GENDER_male"];
+                b_Gender.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("GENDER_male");
                 break;
             case CreatureInfo.CreatureGender.NEUTRAL:
-                b_Gender.GetComponentInChildren<Text>().text = GameData.getData().translationList["GENDER_neutral"];
+                b_Gender.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("GENDER_neutral");
                 break;
             case CreatureInfo.CreatureGender.FEMALE:
-                b_Gender.GetComponentInChildren<Text>().text = GameData.getData().translationList["GENDER_female"];
+                b_Gender.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("GENDER_female");
                 break;
         }
     }
@@ -923,18 +930,18 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
     public void fireLiberal()
     {
         List<PopupOption> options = new List<PopupOption>();
-        options.Add(new PopupOption(GameData.getData().translationList["OPTION_yes"], () =>
+        options.Add(new PopupOption(MasterController.GetMC().getTranslation("OPTION_yes"), () =>
         {
             actions.fireLiberal(selectedChar);
             back();
         }));
 
-        options.Add(new PopupOption(GameData.getData().translationList["OPTION_no"], () =>
+        options.Add(new PopupOption(MasterController.GetMC().getTranslation("OPTION_no"), () =>
         {
             //Do Nothing
         }));
 
-        MasterController.GetMC().uiController.showYesNoPopup("Do you want to permanently release this squad member from the LCS? If they have low heart, they may go to the police.", options);
+        MasterController.GetMC().uiController.showYesNoPopup(MasterController.GetMC().getTranslation("INFO_release_liberal_confirmation"), options);
     }
 
     public void selectActivity(string activity)
@@ -1019,7 +1026,7 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
         actions.setSquad(selectedChar, newSquad);
         hideAllMenus();
 
-        b_Squad.GetComponentInChildren<Text>().text = newSquad != null ? newSquad.name : "No Squad";
+        b_Squad.GetComponentInChildren<Text>().text = newSquad != null ? newSquad.name : MasterController.GetMC().getTranslation("INFO_no_squad_button");
         setBaseButtonText();
         buildSquadMenu();
         setButtonInteractivity();
@@ -1254,27 +1261,27 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
             b_Reload.interactable = false;
             t_SleeperInfiltration.gameObject.SetActive(false);
 
-            b_Squad.GetComponentInChildren<Text>().text = "The Masses";
+            b_Squad.GetComponentInChildren<Text>().text = mc.getTranslation("INFO_nonlib_squad_button");
             if(MasterController.GetMC().phase == MasterController.Phase.TROUBLE)
                 b_Base.GetComponentInChildren<Text>().text = selectedChar.getComponent<CreatureBase>().Location.getComponent<SiteBase>().getCurrentName();
             else
                 b_Base.GetComponentInChildren<Text>().text = selectedChar.getComponent<CreatureInfo>().workLocation.getComponent<SiteBase>().getCurrentName();
             if (selectedChar.hasComponent<Hostage>())
-                b_Activity.GetComponentInChildren<Text>().text = "(A) Interrogation Tactics";
+                b_Activity.GetComponentInChildren<Text>().text = mc.getTranslation("INFO_interrogate_tactics");
             else
-                b_Activity.GetComponentInChildren<Text>().text = "Mindless Consermerism";
+                b_Activity.GetComponentInChildren<Text>().text = mc.getTranslation("INFO_nonlib_activity");
 
             if (selectedChar.getComponent<CreatureInfo>().alignment != Alignment.LIBERAL)
             {
-                b_Squad.GetComponent<MouseOverText>().mouseOverText = "You can't give orders to non-Liberals!";
-                b_Base.GetComponent<MouseOverText>().mouseOverText = "You can't give orders to non-Liberals!";
-                b_Activity.GetComponent<MouseOverText>().mouseOverText = "You can't give orders to non-Liberals!";
+                b_Squad.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_nonlib_other_mouseover");
+                b_Base.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_nonlib_other_mouseover");
+                b_Activity.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_nonlib_other_mouseover");
             }
             else
             {
-                b_Squad.GetComponent<MouseOverText>().mouseOverText = "This Liberal has not yet been motivated to direct action";
-                b_Base.GetComponent<MouseOverText>().mouseOverText = "This Liberal has not yet been motivated to direct action";
-                b_Activity.GetComponent<MouseOverText>().mouseOverText = "This Liberal has not yet been motivated to direct action";
+                b_Squad.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_nonlib_liberal_mouseover");
+                b_Base.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_nonlib_liberal_mouseover"); ;
+                b_Activity.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_nonlib_liberal_mouseover"); ;
             }
 
             if (selectedChar.hasComponent<Hostage>())
@@ -1287,7 +1294,7 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
                 b_Reload.gameObject.SetActive(false);
                 SkillList.gameObject.SetActive(false);
                 t_Wanted.gameObject.SetActive(false);
-                b_Base.GetComponent<MouseOverText>().mouseOverText = "Moving this hostage would be too risky";
+                b_Base.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_nonlib_hostage_move");
                 b_Activity.GetComponent<MouseOverText>().mouseOverText = "";
 
                 b_Activity.interactable = true;
@@ -1309,9 +1316,9 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
 
             string name = selectedChar.getComponent<CreatureInfo>().alias == "" ? selectedChar.getComponent<CreatureInfo>().givenName : selectedChar.getComponent<CreatureInfo>().alias;
 
-            b_Squad.GetComponent<MouseOverText>().mouseOverText = name + " is in no condition to join a squad!";
-            b_Base.GetComponent<MouseOverText>().mouseOverText = name + " is in no condition to travel!";
-            b_Activity.GetComponent<MouseOverText>().mouseOverText = name + " is in no condition to be activated!";
+            b_Squad.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_dead_lib_squad_mouseover").Replace("$NAME",name);
+            b_Base.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_dead_lib_base_mouseover").Replace("$NAME", name);
+            b_Activity.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_dead_lib_activity_mouseover").Replace("$NAME", name);
 
             return;
         }
@@ -1319,11 +1326,11 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
         if (mc.phase != MasterController.Phase.BASE || !(lib.status == Liberal.Status.ACTIVE || lib.status == Liberal.Status.SLEEPER))
         {
             b_Squad.interactable = false;
-            b_Squad.GetComponent<MouseOverText>().mouseOverText = "Cannot change squads while away from Safe House";
+            b_Squad.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_away_squad_mouseover");
             b_Base.interactable = false;
-            b_Base.GetComponent<MouseOverText>().mouseOverText = "Cannot change home while away from Safe House";
+            b_Base.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_away_base_mouseover");
             b_Activity.interactable = false;
-            b_Activity.GetComponent<MouseOverText>().mouseOverText = "Cannot set activity while away from Safe House";
+            b_Activity.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_away_activity_mouseover");
 
             b_Vehicle.button.interactable = false;
             if (mc.phase != MasterController.Phase.TROUBLE)
@@ -1369,15 +1376,15 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
                 if (lib.getNormalSubordinateCount() < lib.getSubordinateLimit() && lib.homeBase.hasComponent<TroubleSpot>())
                 {
                     b_SleeperRecruit.interactable = true;
-                    b_SleeperRecruit.GetComponent<MouseOverText>().mouseOverText = "";
+                    b_SleeperRecruit.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_sleeper_expand_network_mouseover");
                 }
                 else
                 {
                     b_SleeperRecruit.interactable = false;
                     if(lib.homeBase.hasComponent<TroubleSpot>())
-                        b_SleeperRecruit.GetComponent<MouseOverText>().mouseOverText = "Need more Juice to recruit";
+                        b_SleeperRecruit.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_sleeper_expand_network_mouseover_no_juice");
                     else
-                        b_SleeperRecruit.GetComponent<MouseOverText>().mouseOverText = "Can't recruit from this location";
+                        b_SleeperRecruit.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_sleeper_expand_network_mouseover_invalid_location");
                 }
             }
             else
@@ -1388,27 +1395,27 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
             if (lib.status == Liberal.Status.SLEEPER) b_Base.interactable = false;
             if (b_Base.interactable)
             {
-                b_Base.GetComponent<MouseOverText>().mouseOverText = "Assign a new safe house to this Liberal";
+                b_Base.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_mouseover_base");
             }
             else
             {
                 if (lib.status != Liberal.Status.SLEEPER)
-                    b_Base.GetComponent<MouseOverText>().mouseOverText = "Travel to another safe house with your squad to rebase this Liberal";
+                    b_Base.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_mouseover_base_squad");
                 else
-                    b_Base.GetComponent<MouseOverText>().mouseOverText = "Sleepers need to stay in their designated workplace";
+                    b_Base.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_mouseover_base_sleeper");
             }
 
             if (selectedChar.getComponent<Liberal>().status == Liberal.Status.ACTIVE &&
                 selectedChar.getComponent<Liberal>().homeBase.getComponent<SafeHouse>().underSiege)
             {
                 b_Base.interactable = false;
-                b_Base.GetComponent<MouseOverText>().mouseOverText = "Cannot travel while under siege";
+                b_Base.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_mouseover_base_siege");
             }
 
             if (selectedChar.getComponent<Body>().BadlyHurt)
             {
                 b_Activity.interactable = false;
-                b_Activity.GetComponent<MouseOverText>().mouseOverText = selectedChar.getComponent<CreatureInfo>().getName() + " is too badly hurt and needs professional care";
+                b_Activity.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_injured_activity_mouseover").Replace("$NAME", selectedChar.getComponent<CreatureInfo>().getName());
             }
             else
             {
@@ -1420,7 +1427,7 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
             {
                 b_Wheelchair.gameObject.SetActive(true);
                 b_Squad.interactable = false;
-                b_Squad.GetComponent<MouseOverText>().mouseOverText = "This Liberal needs a wheelchair before they can go out again";
+                b_Squad.GetComponent<MouseOverText>().mouseOverText = mc.getTranslation("INFO_wheelchair_squad_mouseover");
             }
         }
     }

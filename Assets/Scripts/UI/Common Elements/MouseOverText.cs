@@ -21,7 +21,6 @@ public class MouseOverText : MonoBehaviour {
         entry.eventID = EventTriggerType.PointerExit;
         entry.callback.AddListener((data) => { clearMouseOverText(); });
         trigger.triggers.Add(entry);
-        setTranslation();
     }
 
 	// Use this for initialization

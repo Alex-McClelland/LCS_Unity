@@ -9,11 +9,6 @@ public class TranslateableField : MonoBehaviour
     public string translationKey;
     public bool ignoreTranslation = false;
 
-    void Awake()
-    {
-        setTranslation();
-    }
-
     public void setTranslation()
     {
         if (ignoreTranslation) return;

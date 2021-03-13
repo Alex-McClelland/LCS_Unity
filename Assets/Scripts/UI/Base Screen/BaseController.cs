@@ -392,7 +392,7 @@ public class BaseController : MonoBehaviour, BaseMode {
 
                     if(districtDef.name == district)
                     {
-                        districtText += " " + GameData.getData().translationList["BASE_need_car"];
+                        districtText += " " + MasterController.GetMC().getTranslation("BASE_need_car");
                         break;
                     }
                 }
@@ -438,12 +438,12 @@ public class BaseController : MonoBehaviour, BaseMode {
                             if (lb.location.getComponent<TroubleSpot>().closed > 0)
                             {
                                 lb.button.image.color = locationClosed;
-                                lb.button.GetComponent<MouseOverText>().mouseOverText = GameData.getData().translationList["BASE_closed"];
+                                lb.button.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("BASE_closed");
                             }
                             else if (lb.location.getComponent<TroubleSpot>().highSecurity > 0)
                             {
                                 lb.button.image.color = locationHighSec;
-                                lb.button.GetComponent<MouseOverText>().mouseOverText = GameData.getData().translationList["BASE_high_security"];
+                                lb.button.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("BASE_high_security");
                             }
                             else
                             {
@@ -485,12 +485,12 @@ public class BaseController : MonoBehaviour, BaseMode {
                         if (location.getComponent<TroubleSpot>().closed > 0)
                         {
                             button.image.color = locationClosed;
-                            button.GetComponent<MouseOverText>().mouseOverText = GameData.getData().translationList["BASE_closed"];
+                            button.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("BASE_closed");
                         }
                         else if (location.getComponent<TroubleSpot>().highSecurity > 0)
                         {
                             button.image.color = locationHighSec;
-                            button.GetComponent<MouseOverText>().mouseOverText = GameData.getData().translationList["BASE_high_security"];
+                            button.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("BASE_high_security");
                         }
                         else
                         {
@@ -606,7 +606,7 @@ public class BaseController : MonoBehaviour, BaseMode {
         if (underAttack)
         {
             b_Wait.interactable = false;
-            b_Wait.GetComponent<MouseOverText>().mouseOverText = GameData.getData().translationList["BASE_siege_cannot_wait"];
+            b_Wait.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("BASE_siege_cannot_wait");
         }
         else
         {
@@ -623,19 +623,19 @@ public class BaseController : MonoBehaviour, BaseMode {
         {
             b_Travel.interactable = true;
             b_SquadButton.GetComponentInChildren<Text>().text = MasterController.lcs.activeSquad.name;
-            b_Travel.GetComponentInChildren<Text>().text = MasterController.lcs.activeSquad.target!=null? "(G) " + MasterController.lcs.activeSquad.target.getComponent<SiteBase>().getCurrentName(true) :GameData.getData().translationList["BASE_travel"];
+            b_Travel.GetComponentInChildren<Text>().text = MasterController.lcs.activeSquad.target!=null? "(G) " + MasterController.lcs.activeSquad.target.getComponent<SiteBase>().getCurrentName(true) :MasterController.GetMC().getTranslation("BASE_travel");
 
             if (MasterController.lcs.activeSquad.homeBase.getComponent<SafeHouse>().underSiege)
             {
                 b_Travel.interactable = false;
-                b_Travel.GetComponentInChildren<Text>().text = GameData.getData().translationList["BASE_under_siege"];
+                b_Travel.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("BASE_under_siege");
             }
         }
         else
         {
             b_Travel.interactable = false;
-            b_SquadButton.GetComponentInChildren<Text>().text = GameData.getData().translationList["BASE_no_squad"];
-            b_Travel.GetComponentInChildren<Text>().text = GameData.getData().translationList["BASE_travel"];
+            b_SquadButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("BASE_no_squad");
+            b_Travel.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("BASE_travel");
             b_SquadButton.interactable = MasterController.lcs.squads.Count == 0 ? false : true;
         }
     }

@@ -145,13 +145,13 @@ public class PopupMessage : MonoBehaviour {
         if (action1 != null)
         {
             option1.gameObject.SetActive(true);
-            option1.GetComponentInChildren<Text>().text = GameData.getData().translationList["OPTION_yes_hotkey"];
+            option1.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("OPTION_yes_hotkey");
             option1.onClick.AddListener(() => { uiController.doInput(() => {  optionPopup = false; yesNoPopup = false; closeWindow(); action1(); }); });
         }
         if (action2 != null)
         {
             option2.gameObject.SetActive(true);
-            option2.GetComponentInChildren<Text>().text = GameData.getData().translationList["OPTION_no_hotkey"];
+            option2.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("OPTION_no_hotkey");
             option2.onClick.AddListener(() => { uiController.doInput(() => { optionPopup = false; yesNoPopup = false; closeWindow(); action2(); }); });
         }
 

@@ -191,7 +191,7 @@ namespace LCS.Engine.Components.Creature
                 else if (age < 90)
                     return "80s";
                 else
-                    return "Very Old";
+                    return MasterController.GetMC().getTranslation("INFO_very_old");
             }
         }
     }

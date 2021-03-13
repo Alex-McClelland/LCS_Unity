@@ -118,11 +118,11 @@ public class SafeHouseView : MonoBehaviour, SafeHouseManagement {
     {
         int foodAmt = selectedBase.getComponent<SafeHouse>().food;
         int libAmt = selectedBase.getComponent<SafeHouse>().getBasedLiberals().Count;
-        t_Food.text = GameData.getData().translationList["BASE_food_string"].Replace("$FOODAMT", foodAmt.ToString()).Replace("$LIBAMT", libAmt.ToString());
+        t_Food.text = MasterController.GetMC().getTranslation("BASE_food_string").Replace("$FOODAMT", foodAmt.ToString()).Replace("$LIBAMT", libAmt.ToString());
         if (selectedBase.getComponent<SafeHouse>().getBasedLiberals().Count > 0)
         {
             int daysLeft = selectedBase.getComponent<SafeHouse>().food / selectedBase.getComponent<SafeHouse>().getBasedLiberals().Count;
-            t_Food.text += " " + GameData.getData().translationList["BASE_food_remaining"].Replace("$DAYSLEFT", daysLeft.ToString());
+            t_Food.text += " " + MasterController.GetMC().getTranslation("BASE_food_remaining").Replace("$DAYSLEFT", daysLeft.ToString());
         }
     }
 
@@ -143,7 +143,7 @@ public class SafeHouseView : MonoBehaviour, SafeHouseManagement {
 
     public void refreshSecrecy()
     {
-        t_Secrecy.text = GameData.getData().translationList["BASE_secrecy"] + ": " + selectedBase.getComponent<SafeHouse>().getSecrecy() + "%";
+        t_Secrecy.text = MasterController.GetMC().getTranslation("BASE_secrecy") + ": " + selectedBase.getComponent<SafeHouse>().getSecrecy() + "%";
     }
 
     public void showInventory()
@@ -184,11 +184,11 @@ public class SafeHouseView : MonoBehaviour, SafeHouseManagement {
     {
         if((selectedBase.getComponent<SafeHouse>().investments & SafeHouse.Investments.FLAG) != 0)
         {
-            b_Flag.GetComponentInChildren<Text>().text = GameData.getData().translationList["BASE_burn_flag_button"];
+            b_Flag.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("BASE_burn_flag_button");
         }
         else
         {
-            b_Flag.GetComponentInChildren<Text>().text = GameData.getData().translationList["BASE_buy_flag_button"];
+            b_Flag.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("BASE_buy_flag_button");
             if (selectedBase.getComponent<SafeHouse>().underSiege)
             {
                 b_Flag.interactable = false;
@@ -208,7 +208,7 @@ public class SafeHouseView : MonoBehaviour, SafeHouseManagement {
         if (selectedBase.getComponent<SafeHouse>().heat > selectedBase.getComponent<SafeHouse>().getSecrecy()) heatColor = "<color=yellow>";
         if (selectedBase.getComponent<SafeHouse>().heat >= 100) heatColor = "<color=red>";
 
-        t_Heat.text = GameData.getData().translationList["BASE_heat"] + ": " + heatColor + selectedBase.getComponent<SafeHouse>().heat + "%</color>";
+        t_Heat.text = MasterController.GetMC().getTranslation("BASE_heat") + ": " + heatColor + selectedBase.getComponent<SafeHouse>().heat + "%</color>";
         refreshSecrecy();
         refreshFood();
 

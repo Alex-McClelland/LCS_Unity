@@ -483,6 +483,9 @@ namespace LCS.Engine
             FastAdvanceActions fastAdvanceActions = new FastAdvanceActions();
             fastAdvanceActions.reform = () => { uiController.doInput(() => { lcs.reform(); }); };
             uiController.fastAdvance.init(fastAdvanceActions);
+
+            //Generate translations on all translateable fields
+            uiController.generateTranslations();
         }        
         #endregion
 
@@ -2188,6 +2191,22 @@ namespace LCS.Engine
         {
             if (worldState.getComponent<Government>().laws["FREE_SPEECH"].alignment == Alignment.ARCHCONSERVATIVE) return "[" + replacement + "]";
             else return badWords;
+        }
+
+        public string getTranslation(string key)
+        {
+            string translation = key;
+
+            if (GameData.getData().translationList.ContainsKey(key))
+            {
+                translation = GameData.getData().translationList[key];
+            }
+            else
+            {
+                addDebugMessage("Missing translation reference: " + key);
+            }
+
+            return translation;
         }
 
         public static bool stringToOperator(string op, int x, int y)

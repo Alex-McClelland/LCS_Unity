@@ -108,18 +108,18 @@ public class FounderQuestionsImpl : MonoBehaviour, FounderQuestions {
 
     private void setSexText()
     {
-        GameData data = GameData.getData();
+        MasterController mc = MasterController.GetMC();
 
         switch (founder.getComponent<CreatureInfo>().genderConservative)
         {
             case CreatureInfo.CreatureGender.FEMALE:
-                b_sex.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_sex_female"];
+                b_sex.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_sex_female");
                 break;
             case CreatureInfo.CreatureGender.MALE:
-                b_sex.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_sex_male"];
+                b_sex.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_sex_male");
                 break;
             case CreatureInfo.CreatureGender.NEUTRAL:
-                b_sex.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_sex_neutral"];
+                b_sex.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_sex_neutral");
                 break;
         }
         changeFirstName();
@@ -218,90 +218,90 @@ public class FounderQuestionsImpl : MonoBehaviour, FounderQuestions {
 
     public void nextQuestion()
     {
-        GameData data = GameData.getData();
+        MasterController mc = MasterController.GetMC();
 
         questionNum++;
         switch (questionNum)
         {
             case 0:
-                t_questionText.text = data.translationList["QUESTIONS_q1_text"];
-                b_answerA.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q1_a"];
-                b_answerB.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q1_b"];
-                b_answerC.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q1_c"];
-                b_answerD.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q1_d"];
-                b_answerE.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q1_e"];
+                t_questionText.text = mc.getTranslation("QUESTIONS_q1_text");
+                b_answerA.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q1_a");
+                b_answerB.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q1_b");
+                b_answerC.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q1_c");
+                b_answerD.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q1_d");
+                b_answerE.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q1_e");
                 break;
             case 1:
-                t_questionText.text = data.translationList["QUESTIONS_q2_text"];
-                b_answerA.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q2_a"];
-                b_answerB.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q2_b"];
-                b_answerC.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q2_c"];
-                b_answerD.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q2_d"];
-                b_answerE.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q2_e"];
+                t_questionText.text = mc.getTranslation("QUESTIONS_q2_text");
+                b_answerA.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q2_a");
+                b_answerB.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q2_b");
+                b_answerC.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q2_c");
+                b_answerD.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q2_d");
+                b_answerE.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q2_e");
                 break;
             case 2:
-                t_questionText.text = data.translationList["QUESTIONS_q3_text"];
-                b_answerA.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q3_a"];
-                b_answerB.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q3_b"];
-                b_answerC.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q3_c"];
-                b_answerD.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q3_d"];
-                b_answerE.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q3_e"];
+                t_questionText.text = mc.getTranslation("QUESTIONS_q3_text");
+                b_answerA.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q3_a");
+                b_answerB.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q3_b");
+                b_answerC.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q3_c");
+                b_answerD.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q3_d");
+                b_answerE.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q3_e");
                 break;
             case 3:
-                t_questionText.text = data.translationList["QUESTIONS_q4_text"];
-                b_answerA.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q4_a"];
-                b_answerB.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q4_b"];
-                b_answerC.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q4_c"];
-                b_answerD.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q4_d"];
-                b_answerE.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q4_e"];
+                t_questionText.text = mc.getTranslation("QUESTIONS_q4_text");
+                b_answerA.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q4_a");
+                b_answerB.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q4_b");
+                b_answerC.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q4_c");
+                b_answerD.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q4_d");
+                b_answerE.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q4_e");
                 break;
             case 4:
-                t_questionText.text = data.translationList["QUESTIONS_q5_text"];
-                b_answerA.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q5_a"];
-                b_answerB.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q5_b"];
-                b_answerC.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q5_c"];
-                b_answerD.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q5_d"];
-                b_answerE.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q5_e"];
+                t_questionText.text = mc.getTranslation("QUESTIONS_q5_text");
+                b_answerA.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q5_a");
+                b_answerB.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q5_b");
+                b_answerC.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q5_c");
+                b_answerD.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q5_d");
+                b_answerE.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q5_e");
                 break;
             case 5:
-                t_questionText.text = data.translationList["QUESTIONS_q6_text"];
-                b_answerA.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q6_a"];
-                b_answerB.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q6_b"];
-                b_answerC.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q6_c"];
-                b_answerD.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q6_d"];
-                b_answerE.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q6_e"];
+                t_questionText.text = mc.getTranslation("QUESTIONS_q6_text");
+                b_answerA.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q6_a");
+                b_answerB.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q6_b");
+                b_answerC.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q6_c");
+                b_answerD.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q6_d");
+                b_answerE.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q6_e");
                 break;
             case 6:
-                t_questionText.text = data.translationList["QUESTIONS_q7_text"];
-                b_answerA.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q7_a"];
-                b_answerB.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q7_b"];
-                b_answerC.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q7_c"];
-                b_answerD.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q7_d"];
-                b_answerE.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q7_e"];
+                t_questionText.text = mc.getTranslation("QUESTIONS_q7_text");
+                b_answerA.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q7_a");
+                b_answerB.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q7_b");
+                b_answerC.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q7_c");
+                b_answerD.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q7_d");
+                b_answerE.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q7_e");
                 break;
             case 7:
-                t_questionText.text = data.translationList["QUESTIONS_q8_text"];
-                b_answerA.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q8_a"];
-                b_answerB.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q8_b"];
-                b_answerC.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q8_c"];
-                b_answerD.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q8_d"];
-                b_answerE.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q8_e"];
+                t_questionText.text = mc.getTranslation("QUESTIONS_q8_text");
+                b_answerA.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q8_a");
+                b_answerB.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q8_b");
+                b_answerC.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q8_c");
+                b_answerD.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q8_d");
+                b_answerE.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q8_e");
                 break;
             case 8:
-                t_questionText.text = data.translationList["QUESTIONS_q9_text"];
-                b_answerA.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q9_a"];
-                b_answerB.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q9_b"];
-                b_answerC.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q9_c"];
-                b_answerD.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q9_d"];
-                b_answerE.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q9_e"];
+                t_questionText.text = mc.getTranslation("QUESTIONS_q9_text");
+                b_answerA.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q9_a");
+                b_answerB.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q9_b");
+                b_answerC.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q9_c");
+                b_answerD.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q9_d");
+                b_answerE.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q9_e");
                 break;
             case 9:
-                t_questionText.text = data.translationList["QUESTIONS_q10_text"];
-                b_answerA.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q10_a"];
-                b_answerB.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q10_b"];
-                b_answerC.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q10_c"];
-                b_answerD.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q10_d"];
-                b_answerE.GetComponentInChildren<Text>().text = data.translationList["QUESTIONS_q10_e"];
+                t_questionText.text = mc.getTranslation("QUESTIONS_q10_text");
+                b_answerA.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q10_a");
+                b_answerB.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q10_b");
+                b_answerC.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q10_c");
+                b_answerD.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q10_d");
+                b_answerE.GetComponentInChildren<Text>().text = mc.getTranslation("QUESTIONS_q10_e");
                 break;
             case 10:
                 close();

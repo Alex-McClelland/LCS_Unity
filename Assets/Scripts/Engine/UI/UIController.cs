@@ -43,6 +43,7 @@ namespace LCS.Engine.UI
         void ExitGame(bool save = true);
         void GameOver();
         void updateDebugLog();
+        void generateTranslations();
 
         void doInput(Action action);
 

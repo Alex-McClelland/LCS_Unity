@@ -31,7 +31,7 @@ public class PollDisplay : MonoBehaviour {
     public void Activate()
     {
         if (issues == null) issues = new Dictionary<string, PollIssue>();
-        GameData g = GameData.getData();
+        MasterController mc = MasterController.GetMC();
 
         foreach (Public.PollData data in MasterController.generalPublic.pollData.Values)
         {
@@ -66,32 +66,32 @@ public class PollDisplay : MonoBehaviour {
             {
                 viewColor = Color.gray;
                 
-                issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_unknown"];
+                issue.t_PublicInterest.text = mc.getTranslation("BASE_poll_interest_unknown");
                 issue.t_Percent.text = "??%";
-                issue.t_Error.text = g.translationList["BASE_poll_error_na"];
-                issue.t_Age.text = g.translationList["BASE_poll_age_old"];
+                issue.t_Error.text = mc.getTranslation("BASE_poll_error_na");
+                issue.t_Age.text = mc.getTranslation("BASE_poll_age_old");
             }
             else
             {
                 switch (data.publicInterest)
                 {
                     case Public.PollData.PublicInterest.VERY_HIGH:
-                        issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_very_high"];
+                        issue.t_PublicInterest.text = mc.getTranslation("BASE_poll_interest_very_high");
                         break;
                     case Public.PollData.PublicInterest.HIGH:
-                        issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_high"];
+                        issue.t_PublicInterest.text = mc.getTranslation("BASE_poll_interest_high");
                         break;
                     case Public.PollData.PublicInterest.MODERATE:
-                        issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_moderate"];
+                        issue.t_PublicInterest.text = mc.getTranslation("BASE_poll_interest_moderate");
                         break;
                     case Public.PollData.PublicInterest.LOW:
-                        issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_low"];
+                        issue.t_PublicInterest.text = mc.getTranslation("BASE_poll_interest_low");
                         break;
                     case Public.PollData.PublicInterest.NONE:
-                        issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_none"];
+                        issue.t_PublicInterest.text = mc.getTranslation("BASE_poll_interest_none");
                         break;
                     default:
-                        issue.t_PublicInterest.text = g.translationList["BASE_poll_interest_unknown"];
+                        issue.t_PublicInterest.text = mc.getTranslation("BASE_poll_interest_unknown");
                         break;
                 }
 
@@ -103,7 +103,7 @@ public class PollDisplay : MonoBehaviour {
 
                 issue.t_Percent.text = data.percent + "%";
                 issue.t_Error.text = "+/- " + data.noise;
-                issue.t_Age.text = data.age + " " + (data.age>1? GameData.getData().translationList["TIME_day_plural"].ToLower() : GameData.getData().translationList["TIME_day"].ToLower());
+                issue.t_Age.text = data.age + " " + (data.age>1? MasterController.GetMC().getTranslation("TIME_day_plural").ToLower() : MasterController.GetMC().getTranslation("TIME_day").ToLower());
             }
 
             issue.t_Issue.color = viewColor;
@@ -135,9 +135,9 @@ public class PollDisplay : MonoBehaviour {
         }
 
         int approvalRating = MasterController.generalPublic.PresidentApprovalRating / 10;
-        string presidentName = colorString + g.translationList["GOVERNMENT_president"] + " " + MasterController.government.president.getComponent<CreatureInfo>().getName() + "</color>.";
+        string presidentName = colorString + mc.getTranslation("GOVERNMENT_president") + " " + MasterController.government.president.getComponent<CreatureInfo>().getName() + "</color>.";
 
-        t_PresidentialApproval.text = g.translationList["BASE_presidential_approval"].Replace("$APPROVAL",approvalRating.ToString()).Replace("$PRESIDENT", presidentName);
+        t_PresidentialApproval.text = mc.getTranslation("BASE_presidential_approval").Replace("$APPROVAL",approvalRating.ToString()).Replace("$PRESIDENT", presidentName);
 
         string topIssue = "";
 
@@ -153,17 +153,18 @@ public class PollDisplay : MonoBehaviour {
             }
         }
 
-        if (topIssue == "") t_PublicTopIssue.text = g.translationList["BASE_no_issues"];
+        if (topIssue == "") t_PublicTopIssue.text = mc.getTranslation("BASE_no_issues");
         else
         {
-            t_PublicTopIssue.text = g.translationList["BASE_top_issue"] + " ";
+            string topIssueText = "";
+
             if (MasterController.generalPublic.PublicOpinion[topIssue] > 50)
             {
                 foreach (ConditionalName text in GameData.getData().viewList[topIssue].liberalText)
                 {
                     if (MasterController.GetMC().testCondition(text.condition))
                     {
-                        t_PublicTopIssue.text += text.name;
+                        topIssueText = text.name;
                         break;
                     }
                 }
@@ -174,11 +175,13 @@ public class PollDisplay : MonoBehaviour {
                 {
                     if (MasterController.GetMC().testCondition(text.condition))
                     {
-                        t_PublicTopIssue.text += text.name;
+                        topIssueText = text.name;
                         break;
                     }
                 }
             }
+
+            t_PublicTopIssue.text = mc.getTranslation("BASE_top_issue").Replace("$TOPISSUE", topIssueText);
         }
     }
 }
