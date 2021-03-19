@@ -341,7 +341,7 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
                     line.t_Difficulty.text = "<color=purple>" + mc.getTranslation("INFO_make_very_hard");
                     break;
                 case 8:
-                    line.t_Difficulty.text = "<color=magenta>" + mc.getTranslation("INFO_extremely_difficult");
+                    line.t_Difficulty.text = "<color=magenta>" + mc.getTranslation("INFO_make_extremely_difficult");
                     break;
                 case 9:
                     line.t_Difficulty.text = "<color=maroon>" + mc.getTranslation("INFO_make_nearly_impossible");

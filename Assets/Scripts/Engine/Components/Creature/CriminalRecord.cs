@@ -623,7 +623,7 @@ namespace LCS.Engine.Components.Creature
             }
             else if(getComponent<Liberal>().status == Liberal.Status.JAIL_COURT)
             {
-                mc.addMessage(owner.getComponent<CreatureInfo>().getName() + " is standing trial.", true);
+                mc.addMessage(mc.getTranslation("TRIAL_intro").Replace("$NAME", owner.getComponent<CreatureInfo>().getName()), true);
 
                 trialActionQueue = mc.createSubQueue(() => 
                 {                    
@@ -1010,7 +1010,7 @@ namespace LCS.Engine.Components.Creature
 
             trial.show(owner);
             
-            trial.printTitle(owner.getComponent<CreatureInfo>().getName() + " is standing trial.");
+            trial.printTitle(mc.getTranslation("TRIAL_intro").Replace("$NAME", owner.getComponent<CreatureInfo>().getName()));
             trial.clearText();
 
             sleeperJudge = null;
@@ -1032,11 +1032,11 @@ namespace LCS.Engine.Components.Creature
 
             if (sleeperJudge != null)
             {
-                trialActionQueue.Add(() => { trial.printText("Sleeper " + sleeperJudge.getComponent<CreatureInfo>().getName() + " reads the charges, trying to hide a smile:\n\n"); }, "print trial text");
+                trialActionQueue.Add(() => { trial.printText(mc.getTranslation("TRIAL_judge_intro").Replace("$SLEEPERNAME", sleeperJudge.getComponent<CreatureInfo>().getName()) + "\n\n"); }, "print trial text");
             }
             else
             {
-                trialActionQueue.Add(() => { trial.printText("The judge reads the charges:\n\n"); }, "print trial text");
+                trialActionQueue.Add(() => { trial.printText(mc.getTranslation("TRIAL_judge_intro") + "\n\n"); }, "print trial text");
             }
 
             int uniqueCrimes = 0;
@@ -1051,11 +1051,11 @@ namespace LCS.Engine.Components.Creature
             {
                 if (CrimesWanted[crime] > 0)
                 {
-                    string crimeText = totalUniqueCrimes == uniqueCrimes ? "<color=red>The defendant " + getComponent<CreatureInfo>().givenName + " " + owner.getComponent<CreatureInfo>().surname + " is charged with " : "<color=red>";
+                    string crimeText = totalUniqueCrimes == uniqueCrimes ? "<color=red>" + mc.getTranslation("TRIAL_defendant_intro").Replace("$NAME", getComponent<CreatureInfo>().givenName + " " + owner.getComponent<CreatureInfo>().surname) + " " : "<color=red>";
 
                     if (CrimesWanted[crime] > 1 && !(crime == "RACKETEERING" || crime == "HIRE_ILLEGAL"))
                     {
-                        crimeText += MasterController.NumberToWords(CrimesWanted[crime]).ToLower() + " counts of ";
+                        crimeText +=  mc.getTranslation("TRIAL_counts_of").Replace("$COUNT", MasterController.NumberToWords(CrimesWanted[crime]).ToLower()) + " ";
                     }
 
                     crimeText += getCrimeName(crime).ToLower();
@@ -1063,7 +1063,7 @@ namespace LCS.Engine.Components.Creature
                     uniqueCrimes--;
 
                     if (uniqueCrimes > 1) crimeText += ", ";
-                    else if (uniqueCrimes == 1) crimeText += " and ";
+                    else if (uniqueCrimes == 1) crimeText += " " + mc.getTranslation("COMMON_and").ToLower() + " ";
                     else crimeText += ".";
 
                     crimeText += "</color>";
@@ -1077,18 +1077,18 @@ namespace LCS.Engine.Components.Creature
                 string witnessText = "<color=yellow>";
 
                 if (Confessions > 1)
-                    witnessText += "\n\n" + MasterController.NumberToWords(Confessions) + " former LCS members will testify against ";
+                    witnessText += "\n\n" + mc.getTranslation("TRIAL_rat_many").Replace("$COUNT", MasterController.NumberToWords(Confessions)).Replace("$NAME", getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname);
                 else
-                    witnessText += "\n\nA former LCS member will testify against ";
+                    witnessText += "\n\n" + mc.getTranslation("TRIAL_rat_one").Replace("$NAME", getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname);
 
-                witnessText += getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname + ".</color>";
+                witnessText +=  "</color>";
 
                 trialActionQueue.Add(() => { trial.printText(witnessText); }, "print trial text");
             }
 
             trialActionQueue.Add(() => 
             {
-                trial.printText("\n\nHow does " + getComponent<CreatureInfo>().getName() + " conduct " + getComponent<CreatureInfo>().hisHer().ToLower() + " defense?");
+                trial.printText("\n\n" + mc.getTranslation("TRIAL_defense_prompt").Replace("$NAME", getComponent<CreatureInfo>().getName()).Replace("$HISHER", getComponent<CreatureInfo>().hisHer().ToLower()));
                 selectionMode = true;                
                 trial.generateTrialButtons();
             }, "generate trial buttons");
@@ -1112,7 +1112,7 @@ namespace LCS.Engine.Components.Creature
 
             if (selection != TrialActions.TrialSelection.PLEAD_GUILTY)
             {
-                trial.printText("The trial proceeds.  Jury selection is first.\n\n");
+                trial.printText(mc.getTranslation("TRIAL_jury_intro") + "\n\n");
 
                 jury = mc.LCSRandom(61) - (60 * MasterController.generalPublic.PublicMood) / 100;
                 int prosecution = 0;
@@ -1129,13 +1129,13 @@ namespace LCS.Engine.Components.Creature
 
                     if (mc.LCSRandom(10) != 0)
                     {
-                        juryText = aceAttorneyName + " ensures the jury is stacked in " + getComponent<CreatureInfo>().getName() + "'s favor!";
+                        juryText = mc.getTranslation("TRIAL_jury_ace_stacked").Replace("$LAWYERNAME", aceAttorneyName).Replace("$NAME", getComponent<CreatureInfo>().getName());
                         if (jury > 0) jury = 0;
                         jury -= 30;
                     }
                     else
                     {
-                        juryText = "<color=red>" + aceAttorneyName + "'s CONSERVATIVE ARCH-NEMESIS will represent the prosecution!!!</color>";
+                        juryText = "<color=red>" + mc.getTranslation("TRIAL_ace_archrival").Replace("$LAWYERNAME", aceAttorneyName) + "</color>";
                         jury = 0;
                         prosecution = 100;
                     }
@@ -1146,40 +1146,40 @@ namespace LCS.Engine.Components.Creature
                     switch (mc.LCSRandom(4))
                     {
                         case 0:
-                            juryText += getComponent<CreatureInfo>().getName() + "'s best friend from childhood is a juror.";
+                            juryText += mc.getTranslation("TRIAL_jury_L+_1").Replace("$NAME", getComponent<CreatureInfo>().getName());
                             break;
                         case 1:
-                            juryText += "The jury is Flaming Liberal.";
+                            juryText += mc.getTranslation("TRIAL_jury_L+_2");
                             break;
                         case 2:
-                            juryText += "A few of the jurors are closet Socialists.";
+                            juryText += mc.getTranslation("TRIAL_jury_L+_3");
                             break;
                         case 3:
-                            juryText += "One of the jurors flashes a SECRET LIBERAL HAND SIGNAL when no one is looking.";
+                            juryText += mc.getTranslation("TRIAL_jury_L+_4");
                             break;
                     }
 
                     juryText += "</color>";
                 }
-                else if (jury <= -15) juryText = "The jury is fairly Liberal.";
-                else if (jury < 15) juryText = "The jury is quite moderate.";
-                else if (jury < 29) juryText = "The jury is a bit Conservative.";
+                else if (jury <= -15) juryText = mc.getTranslation("TRIAL_jury_L");
+                else if (jury < 15) juryText = mc.getTranslation("TRIAL_jury_M");
+                else if (jury < 29) juryText = mc.getTranslation("TRIAL_jury_C");
                 else
                 {
                     juryText = "<color=red>";
                     switch (mc.LCSRandom(4))
                     {
                         case 0:
-                            juryText += "Such a collection of Conservative jurors has never before been assembled.";
+                            juryText += mc.getTranslation("TRIAL_jury_C+_1");
                             break;
                         case 1:
-                            juryText += "One of the accepted jurors is a Conservative activist.";
+                            juryText += mc.getTranslation("TRIAL_jury_C+_2");
                             break;
                         case 2:
-                            juryText += "A few of the jurors are members of the KKK.";
+                            juryText += mc.getTranslation("TRIAL_jury_C+_3");
                             break;
                         case 3:
-                            juryText += "The jury is frighteningly Conservative.";
+                            juryText += mc.getTranslation("TRIAL_jury_C+_4");
                             break;
                     }
 
@@ -1194,17 +1194,17 @@ namespace LCS.Engine.Components.Creature
 
                 if (autoconvict)
                 {
-                    trialActionQueue.Add(() => { trial.printText("There is no question of " + getComponent<CreatureInfo>().getName() + "'s guilt."); }, "print trial text");
+                    trialActionQueue.Add(() => { trial.printText(mc.getTranslation("TRIAL_prosecution_autoconvict").Replace("$NAME", getComponent<CreatureInfo>().getName())); }, "print trial text");
                 }
                 else
                 {
                     string prosecutionText = "";
 
-                    if (prosecution <= 50) prosecutionText = "The prosecution's presentation is terrible.";
-                    else if (prosecution <= 75) prosecutionText = "The prosecution gives a standard presentation.";
-                    else if (prosecution <= 125) prosecutionText = "The prosecution's case is solid.";
-                    else if (prosecution <= 175) prosecutionText = "The prosecution makes an airtight case.";
-                    else prosecutionText = "The prosecution is incredibly strong.";
+                    if (prosecution <= 50) prosecutionText = mc.getTranslation("TRIAL_prosecution_terrible");
+                    else if (prosecution <= 75) prosecutionText = mc.getTranslation("TRIAL_prosecution_bad");
+                    else if (prosecution <= 125) prosecutionText = mc.getTranslation("TRIAL_prosecution_neutral");
+                    else if (prosecution <= 175) prosecutionText = mc.getTranslation("TRIAL_prosecution_good");
+                    else prosecutionText = mc.getTranslation("TRIAL_prosecution_excellent");
 
                     if (mc.DebugMode) prosecutionText += " (Prosecution=" + prosecution + ")";
                     prosecutionText += "\n\n";
@@ -1222,7 +1222,7 @@ namespace LCS.Engine.Components.Creature
 
                 if (selection != TrialActions.TrialSelection.DEFEND_SELF)
                 {
-                    if (autoconvict) defenseText = "The defense makes a noble attempt, but the outcome is inevitable.";
+                    if (autoconvict) defenseText = mc.getTranslation("TRIAL_defense_autoconvict");
                     else
                     {
                         if (selection == TrialActions.TrialSelection.PUBLIC_DEFENDER) defensepower = mc.LCSRandom(71);    // Court-appointed attorney
@@ -1237,27 +1237,27 @@ namespace LCS.Engine.Components.Creature
                         }
                     }
 
-                    if (defensepower <= 5) defenseText = "The defense attorney rarely showed up.";
-                    else if (defensepower <= 15) defenseText = "The defense attorney accidentally said \"My client is GUILTY!\" during closing.";
-                    else if (defensepower <= 25) defenseText = "The defense is totally lame.";
-                    else if (defensepower <= 50) defenseText = "The defense was lackluster.";
-                    else if (defensepower <= 75) defenseText = "Defense arguments were pretty good.";
-                    else if (defensepower <= 100) defenseText = "The defense was really slick.";
+                    if (defensepower <= 5) defenseText = mc.getTranslation("TRIAL_defense_noshow");
+                    else if (defensepower <= 15) defenseText = mc.getTranslation("TRIAL_defense_terrible");
+                    else if (defensepower <= 25) defenseText = mc.getTranslation("TRIAL_defense_bad");
+                    else if (defensepower <= 50) defenseText = mc.getTranslation("TRIAL_defense_neutral");
+                    else if (defensepower <= 75) defenseText = mc.getTranslation("TRIAL_defense_good");
+                    else if (defensepower <= 100) defenseText = mc.getTranslation("TRIAL_defense_very_good");
                     else if (defensepower <= 145)
                     {
-                        if (prosecution < 100) defenseText = "The defense makes the prosecution look like amateurs.";
-                        else defenseText = "The defense is extremely compelling.";
+                        if (prosecution < 100) defenseText = mc.getTranslation("TRIAL_defense_excellent_beat_prosecutor");
+                        else defenseText = mc.getTranslation("TRIAL_defense_excellent");
                     }
                     else
                     {
                         if (prosecution < 100)
                         {
-                            defenseText = attorneyName + "'s arguments made several of the jurors stand up and shout \"NOT GUILTY!\" before deliberations even began.";
+                            defenseText = mc.getTranslation("TRIAL_defense_legendary_beat_prosecutor").Replace("$LAWYERNAME", attorneyName);
                             if (selection == TrialActions.TrialSelection.SLEEPER_ATTORNEY) sleeperLawyer.getComponent<CreatureBase>().juiceMe(10, 500); // Bow please
                         }
                         else
                         {
-                            defenseText = attorneyName + " conducts an incredible defense.";
+                            defenseText = mc.getTranslation("TRIAL_defense_legendary").Replace("$LAWYERNAME", attorneyName);
                         }
                     }
                 }
@@ -1268,33 +1268,33 @@ namespace LCS.Engine.Components.Creature
                     getComponent<CreatureBase>().Skills["PERSUASION"].addExperience(50);
                     getComponent<CreatureBase>().Skills["LAW"].addExperience(50);
 
-                    defenseText = getComponent<CreatureInfo>().getName();
+                    defenseText = "";
                     if (defensepower <= 0)
                     {
                         switch (mc.LCSRandom(3))
                         {
                             case 0:
-                                defenseText += " makes one horrible mistake after another.";
+                                defenseText += mc.getTranslation("TRIAL_defense_self_idiot_1").Replace("$NAME", getComponent<CreatureInfo>().getName());
                                 break;
                             case 1:
-                                defenseText += " forgot where " + getComponent<CreatureInfo>().heShe().ToLower() + " was and shouted \"DEATH TO THE PATRIARCHY\" at the judge.";
+                                defenseText += mc.getTranslation("TRIAL_defense_self_idiot_2").Replace("$NAME", getComponent<CreatureInfo>().getName()).Replace("$HESHE", getComponent<CreatureInfo>().heShe().ToLower());
                                 getComponent<CreatureBase>().juiceMe(1, 50);
                                 break;
                             case 2:
-                                defenseText += " accidentally flips off the judge and jury multiple times.";
+                                defenseText += mc.getTranslation("TRIAL_defense_self_idiot_3").Replace("$NAME", getComponent<CreatureInfo>().getName());
                                 break;
                         }
 
                         getComponent<CreatureBase>().juiceMe(-10, -50); // You should be ashamed
                     }
-                    else if (defensepower <= 25) defenseText += "'s case really sucked.";
-                    else if (defensepower <= 50) defenseText += " did all right, but made some mistakes.";
-                    else if (defensepower <= 75) defenseText += "'s arguments were pretty good.";
-                    else if (defensepower <= 100) defenseText += " worked the jury very well.";
-                    else if (defensepower <= 150) defenseText += " made a very powerful case.";
+                    else if (defensepower <= 25) defenseText += mc.getTranslation("TRIAL_defense_self_terrible").Replace("$NAME", getComponent<CreatureInfo>().getName());
+                    else if (defensepower <= 50) defenseText += mc.getTranslation("TRIAL_defense_self_bad").Replace("$NAME", getComponent<CreatureInfo>().getName());
+                    else if (defensepower <= 75) defenseText += mc.getTranslation("TRIAL_defense_self_neutral").Replace("$NAME", getComponent<CreatureInfo>().getName());
+                    else if (defensepower <= 100) defenseText += mc.getTranslation("TRIAL_defense_self_good").Replace("$NAME", getComponent<CreatureInfo>().getName());
+                    else if (defensepower <= 150) defenseText += mc.getTranslation("TRIAL_defense_self_excellent").Replace("$NAME", getComponent<CreatureInfo>().getName());
                     else
                     {
-                        defenseText += " had the jury, judge, and prosecution crying for freedom.";
+                        defenseText += mc.getTranslation("TRIAL_defense_self_legendary").Replace("$NAME", getComponent<CreatureInfo>().getName()); ;
                         getComponent<CreatureBase>().juiceMe(50, 1000); // That shit is legend
                     }
                 }
@@ -1303,13 +1303,13 @@ namespace LCS.Engine.Components.Creature
                 defenseText += "\n\n";
                 trialActionQueue.Add(() => { trial.printText(defenseText); }, "print trial text");
 
-                trialActionQueue.Add(() => { trial.printText("The jury leaves to consider the case.\n\n"); }, "print trial text");
+                trialActionQueue.Add(() => { trial.printText(mc.getTranslation("TRIAL_jury_begin_deliberation") + "\n\n"); }, "print trial text");
 
                 verdict();
             }
             else
             {
-                trial.printText("The court accepts the plea.\n\n");
+                trial.printText(mc.getTranslation("TRIAL_accept_guilty_plea" + "\n\n"));
 
                 if (sleeperJudge != null || mc.LCSRandom(2) == 0) sentence(true);
                 else sentence(false);
@@ -1323,45 +1323,45 @@ namespace LCS.Engine.Components.Creature
             trialActionQueue.Add(() =>
             {
                 trial.clearText();
-                trial.printText("The jury has returned from deliberations.\n\n");
+                trial.printText(mc.getTranslation("TRIAL_jury_finish_deliberation") +"\n\n");
             }, "print trial text");
 
             //Hung Jury
             if (jury == defensepower)
             {
-                trialActionQueue.Add(() => { trial.printText("<color=yellow>But they can't reach a verdict!</color>\n"); }, "print trial text");
+                trialActionQueue.Add(() => { trial.printText("<color=yellow>" + mc.getTranslation("TRIAL_jury_hung") +"</color>\n"); }, "print trial text");
 
                 //Re-try
                 if (mc.LCSRandom(2) == 0 || getScareFactor() >= 10 || Confessions > 0)
                 {
-                    trialActionQueue.Add(() => { trial.printText("The case will be re-tried next month."); }, "print trial text");
+                    trialActionQueue.Add(() => { trial.printText(mc.getTranslation("jury_hung_retrial")); }, "print trial text");
                     return;
                 }
                 else
                 {
-                    trialActionQueue.Add(() => { trial.printText("The prosecution declines to re-try the case.\n\n"); }, "print trial text");
+                    trialActionQueue.Add(() => { trial.printText(mc.getTranslation("jury_hung_drop_case") + "\n\n"); }, "print trial text");
                     if (CurrentSentence == 0)
                     {
-                        trialActionQueue.Add(() => { trial.printText("<color=lime>" + getComponent<CreatureInfo>().getName() + " is free!</color>"); }, "print trial text");
+                        trialActionQueue.Add(() => { trial.printText("<color=lime>" + mc.getTranslation("TRIAL_acquitted").Replace("$NAME", getComponent<CreatureInfo>().getName()) + "</color>"); }, "print trial text");
                         acquit();
                         return;
                     }
                     else
                     {
-                        string prisonText = getComponent<CreatureInfo>().getName() + " will be returned to prison to resume an earlier sentence";
+                        string prisonText =  mc.getTranslation("TRIAL_resume_sentence").Replace("$NAME", getComponent<CreatureInfo>().getName());
 
                         if (!deathPenalty && CurrentSentence > 1 &&
                             (mc.LCSRandom(2) == 0 || sleeperJudge != null))
                         {
                             CurrentSentence--;
-                            prisonText += ", less a month for time already served.";
+                            prisonText += mc.getTranslation("TRIAL_resume_sentence_time_served");
                         }
                         else prisonText += ".";
 
                         if (deathPenalty)
                         {
                             CurrentSentence = 3;
-                            prisonText += " The Execution is scheduled to occur three months from now.";
+                            prisonText += " " + mc.getTranslation("TRIAL_execution");
                         }
 
                         trialActionQueue.Add(() => { trial.printText(prisonText); }, "print trial text");
@@ -1370,30 +1370,30 @@ namespace LCS.Engine.Components.Creature
             }
             else if (defensepower > jury)
             {
-                trialActionQueue.Add(() => { trial.printText("<b><color=lime>NOT GUILTY!</color></b>\n\n"); }, "print trial text");
+                trialActionQueue.Add(() => { trial.printText("<b><color=lime>" + mc.getTranslation("TRIAL_jury_not_guilty") +"</color></b>\n\n"); }, "print trial text");
                 if (CurrentSentence == 0)
                 {
-                    trialActionQueue.Add(() => { trial.printText("<color=lime>" + getComponent<CreatureInfo>().getName() + " is free!</color>"); }, "print trial text");
-                    mc.addMessage(getComponent<CreatureInfo>().getName() + " is free!");
+                    trialActionQueue.Add(() => { trial.printText("<color=lime>" + mc.getTranslation("TRIAL_acquitted").Replace("$NAME", getComponent<CreatureInfo>().getName()) + "</color>"); }, "print trial text");
+                    mc.addMessage(mc.getTranslation("TRIAL_acquitted").Replace("$NAME", getComponent<CreatureInfo>().getName()));
                     acquit();
                     return;
                 }
                 else
                 {
-                    string prisonText = getComponent<CreatureInfo>().getName() + " will be returned to prison to resume an earlier sentence";
+                    string prisonText = mc.getTranslation("TRIAL_resume_sentence").Replace("$NAME", getComponent<CreatureInfo>().getName());
 
                     if (!deathPenalty && CurrentSentence > 1 &&
                         (mc.LCSRandom(2) == 0 || sleeperJudge != null))
                     {
                         CurrentSentence--;
-                        prisonText += ", less a month for time already served.";
+                        prisonText += mc.getTranslation("TRIAL_resume_sentence_time_served");
                     }
                     else prisonText += ".";
 
                     if (deathPenalty)
                     {
                         CurrentSentence = 3;
-                        prisonText += " The Execution is scheduled to occur three months from now.";
+                        prisonText += " " + mc.getTranslation("TRIAL_execution");
                     }
 
                     trialActionQueue.Add(() => { trial.printText(prisonText); }, "print trial text");
@@ -1404,7 +1404,7 @@ namespace LCS.Engine.Components.Creature
             }
             else
             {
-                trialActionQueue.Add(() => { trial.printText("<b><color=red>GUILTY!</color></b>\n\n"); }, "print trial text");
+                trialActionQueue.Add(() => { trial.printText("<b><color=red>" + mc.getTranslation("TRIAL_jury_guilty") + "</color></b>\n\n"); }, "print trial text");
 
                 if (selection == TrialActions.TrialSelection.SLEEPER_ATTORNEY) sleeperLawyer.getComponent<CreatureBase>().juiceMe(-5, 0);
 
@@ -1432,7 +1432,7 @@ namespace LCS.Engine.Components.Creature
 
             if (lenience)
             {
-                trialActionQueue.Add(() => { trial.printText("During sentencing, the judge grants some leniency.\n\n"); }, "print trial text");
+                trialActionQueue.Add(() => { trial.printText(mc.getTranslation("TRIAL_sentence_lenience") + "\n\n"); }, "print trial text");
             }
 
             if (oldDeathPenalty)
@@ -1440,23 +1440,23 @@ namespace LCS.Engine.Components.Creature
                 deathPenalty = true;
                 CurrentSentence = 3;
 
-                trialActionQueue.Add(() => { trial.printText(getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname + ", you will be returned to prison to carry out your death sentence.\n"); }, "print trial text");
-                trialActionQueue.Add(() => { trial.printText("The execution is scheduled to occur three months from now."); }, "print trial text");
+                trialActionQueue.Add(() => { trial.printText(mc.getTranslation("TRIAL_sentence_return_death_penalty").Replace("$NAME", getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname) + "\n"); }, "print trial text");
+                trialActionQueue.Add(() => { trial.printText(mc.getTranslation("TRIAL_execution")); }, "print trial text");
             }
             else if (deathPenalty)
             {
-                trialActionQueue.Add(() => { trial.printText("<color=red>" + getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname + ", you are sentenced to <b>DEATH</b>!</color>\n"); }, "print trial text");
-                trialActionQueue.Add(() => { trial.printText("The execution is scheduled to occur three months from now."); }, "print trial text");
-                MasterController.GetMC().addMessage(getComponent<CreatureInfo>().getName() + " is sentenced to <color=red>DEATH</color>");
+                trialActionQueue.Add(() => { trial.printText("<color=red>" + mc.getTranslation("TRIAL_sentence_death_penalty").Replace("$NAME", getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname) + "</color>\n"); }, "print trial text");
+                trialActionQueue.Add(() => { trial.printText(mc.getTranslation("TRIAL_execution")); }, "print trial text");
+                mc.addMessage(mc.getTranslation("TRIAL_sentence_death_penalty_log").Replace("$NAME", getComponent<CreatureInfo>().getName()));
             }
             else if (oldLifeSentence > 0 || (oldSentence > 0 && newSentence == 0))
             {
-                trialActionQueue.Add(() => { trial.printText(getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname + ", the court sees no need to add to your existing sentence.\n"); }, "print trial text");
-                string sentenceText = "You will be returned to prison to resume it";
+                trialActionQueue.Add(() => { trial.printText(mc.getTranslation("TRIAL_sentence_already_life").Replace("$NAME", getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname) + "\n"); }, "print trial text");
+                string sentenceText = mc.getTranslation("TRIAL_sentence_already_life_resume");
                 if (lenience && CurrentSentence > 1)
                 {
                     CurrentSentence--;
-                    sentenceText += ", less a month for time already served";
+                    sentenceText += mc.getTranslation("TRIAL_resume_sentence_time_served");
                 }
                 sentenceText += ".";
 
@@ -1464,40 +1464,36 @@ namespace LCS.Engine.Components.Creature
             }
             else if (CurrentSentence == 0 && LifeSentences == 0)
             {
-                trialActionQueue.Add(() => { trial.printText(getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname + ", consider this a warning.  You are free to go."); }, "print trial text");
-                MasterController.GetMC().addMessage(getComponent<CreatureInfo>().getName() + " is let off with a warning.");
+                trialActionQueue.Add(() => { trial.printText(mc.getTranslation("TRIAL_sentence_warning").Replace("$NAME", getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname)); }, "print trial text");
+                mc.addMessage(mc.getTranslation("TRIAL_sentence_warning_log").Replace("$NAME", getComponent<CreatureInfo>().getName()));
             }
             else
             {
-                string sentenceText = getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname + ", you are sentenced to ";
+                string sentenceText = mc.getTranslation("TRIAL_sentence_preface").Replace("$NAME", getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname);
 
                 if (LifeSentences > 0)
                 {
                     if (LifeSentences > 1)
                     {
-                        sentenceText += LifeSentences + " consecutive life terms in prison";
+                        sentenceText += mc.getTranslation("TRIAL_sentence_life_multiple").Replace("$COUNT", MasterController.NumberToWords(LifeSentences).ToLower());
                         if (oldSentence >= 0)
                         {
-                            sentenceText += ".\n\n" + "Have a nice day, " + getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname;
+                            sentenceText += ".\n\n" + mc.getTranslation("TRIAL_sentence_nice_day").Replace("$NAME", getComponent<CreatureInfo>().givenName + " " + getComponent<CreatureInfo>().surname);
                         }
                     }
-                    else sentenceText += "life in prison";
+                    else sentenceText += mc.getTranslation("TRIAL_sentence_life");
 
-                    MasterController.GetMC().addMessage(getComponent<CreatureInfo>().getName() + " is sentenced to life in prison.");
+                    mc.addMessage(mc.getTranslation("TRIAL_sentence_life_log").Replace("$NAME", getComponent<CreatureInfo>().getName()));
                 }
                 else if (newSentence >= 36)
                 {
-                    sentenceText += MasterController.NumberToWords(newSentence / 12).ToLower();
-                    sentenceText += " years in prison";
-                    MasterController.GetMC().addMessage(getComponent<CreatureInfo>().getName() + " is sentenced to " + newSentence / 12 + " years in prison");
+                    sentenceText += mc.getTranslation("TRIAL_sentence_long").Replace("$COUNT", MasterController.NumberToWords(newSentence / 12).ToLower());
+                    mc.addMessage(mc.getTranslation("TRIAL_sentence_long_log").Replace("$NAME", getComponent<CreatureInfo>().getName()).Replace("$COUNT", (newSentence / 12).ToString()));
                 }
                 else
                 {
-                    sentenceText += MasterController.NumberToWords(newSentence).ToLower();
-                    sentenceText += " month";
-                    if (newSentence > 1) sentenceText += "s";
-                    sentenceText += " in prison";
-                    MasterController.GetMC().addMessage(getComponent<CreatureInfo>().getName() + " is sentenced to " + newSentence + (newSentence > 1 ? " months" : " month") + " in prison.");
+                    sentenceText += mc.getTranslation("TRIAL_sentence_short").Replace("$COUNT", MasterController.NumberToWords(newSentence).ToLower()).Replace("$MONTH", newSentence > 1 ? mc.getTranslation("TIME_month_plural").ToLower() : mc.getTranslation("TIME_month").ToLower());
+                    MasterController.GetMC().addMessage(mc.getTranslation("TRIAL_sentence_short_log").Replace("$NAME", getComponent<CreatureInfo>().getName()).Replace("$COUNT", newSentence.ToString()).Replace("$MONTH", newSentence > 1 ? mc.getTranslation("TIME_month_plural").ToLower() : mc.getTranslation("TIME_month").ToLower()));
                 }
 
                 if ((oldSentence > 0 && newSentence > 0) || (oldLifeSentence > 0 && newLifeSentence > 0))
@@ -1514,11 +1510,11 @@ namespace LCS.Engine.Components.Creature
                             CurrentSentence = newSentence;
                         }
 
-                        sentenceText += "to be served concurrently";
+                        sentenceText += mc.getTranslation("TRIAL_sentence_concurrent");
                     }
                     else
                     {
-                        sentenceText += "to be served consecutively";
+                        sentenceText += mc.getTranslation("TRIAL_sentence_consecutive");
                     }
                 }
 

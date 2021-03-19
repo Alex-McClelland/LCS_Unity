@@ -56,6 +56,9 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="no" value="No"/>
     <translation key="no_hotkey" value="(N)o"/>
   </translation_set>
+  <translation_set prefix="COMMON">
+    <translation key="and" value="And"/>
+  </translation_set>
   <!-- Screen specific text -->
   <!-- Title Screen -->
   <translation_set prefix="TITLE">
@@ -530,4 +533,94 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="make_nearly_impossible" value="Nearly Impossible"/>
     <translation key="make_impossible" value="Impossible"/>
   </translation_set>
+  <translation_set prefix="TRIAL">
+    <translation key="defense_court_appointed" value="Use a (C)ourt-Appointed Attorney"/>
+    <translation key="defense_self" value="(D)efend Self!"/>
+    <translation key="defense_plead_guilty" value="Plead (G)uilty"/>
+    <translation key="defense_ace" value="Pay $5000 to Hire (A)ce Liberal Attorney"/>
+    <translation key="defense_sleeper" value="Accept (S)leeper $SLEEPERNAME's Help Pro-Bono"/> <!-- $SLEEPERNAME will be replaced by the name of the name of the available sleeper -->
+    <!-- Pre-Trial preamble -->
+    <translation key="intro" value="$NAME is standing trial."/> <!-- $NAME will be replaced by the name of the person on trial -->
+    <translation key="judge_intro" value="The judge reads the charges:"/>
+    <translation key="judge_intro_sleeper" value="Sleeper $SLEEPERNAME reads the charges, trying to hide a smile:"/> <!-- $SLEEPERNAME will be replaced with the name of the sleeper judge -->
+    <translation key="defendant_intro" value="The defendant $NAME is charged with"/> <!-- $NAME will be replaced with the full name of the defendent -->
+    <translation key="counts_of" value="$COUNT counts of"/> <!-- This text will be used when a defendant is charged with more than one count of a crime, $COUNT will be replaced by the number of charges -->
+    <translation key="rat_one" value="A former LCS member will testify against $NAME."/> <!-- $NAME will be replaced with the full name of the defendant -->
+    <translation key="rat_many" value="$COUNT former LCS members will testify against $NAME."/> <!-- $COUNT will be replaced by the number of witnesses against the defendant. $NAME will be replaced by the full name of the defendant -->
+    <translation key="defense_prompt" value="How does $NAME conduct $HISHER defense?"/> <!-- $NAME will be replaced by the name of the defendant. $HISHER will be replaced by a gender appropriate pronoun -->
+    <translation key="jury_intro" value="The trial proceeds.  Jury selection is first."/>
+    <translation key="jury_ace_stacked" value="$LAWYERNAME ensures the jury is stacked in $NAME's favor!"/> <!-- $LAWYERNAME will be replaced by the name of the lawyer, $NAME will be replaced by the name of the defendant-->
+    <translation key="ace_archrival" value="$LAWYERNAME's CONSERVATIVE ARCH-NEMESIS will represent the prosecution!!!"/> <!-- $LAWYERNAME will be replaced by the name of the lawyer-->
+    <translation key="jury_L+_1" value="$NAME's best friend from childhood is a juror."/><!-- $NAME will be replaced by the name of the defendant-->
+    <translation key="jury_L+_2" value="The jury is Flaming Liberal."/>
+    <translation key="jury_L+_3" value="A few of the jurors are closet Socialists."/>
+    <translation key="jury_L+_4" value="One of the jurors flashes a SECRET LIBERAL HAND SIGNAL when no one is looking."/>
+    <translation key="jury_L" value="The jury is fairly Liberal."/>
+    <translation key="jury_M" value="The jury is quite moderate."/>
+    <translation key="jury_C" value="The jury is a bit Conservative."/>
+    <translation key="jury_C+_1" value="Such a collection of Conservative jurors has never before been assembled."/>
+    <translation key="jury_C+_2" value="One of the accepted jurors is a Conservative activist."/>
+    <translation key="jury_C+_3" value="A few of the jurors are members of the KKK."/>
+    <translation key="jury_C+_4" value="The jury is frighteningly Conservative."/>
+    <!-- Prosecution and defense -->
+    <translation key="prosecution_autoconvict" value="There is no question of $NAME's guilt."/><!-- $NAME will be replaced by the name of the defendant -->
+    <translation key="prosecution_terrible" value="The prosecution's presentation is terrible."/>
+    <translation key="prosecution_bad" value="The prosecution gives a standard presentation."/>
+    <translation key="prosecution_neutral" value="The prosecution's case is solid."/>
+    <translation key="prosecution_good" value="The prosecution makes an airtight case."/>
+    <translation key="prosecution_excellent" value="The prosecution is incredibly strong."/>
+    <translation key="defense_autoconvict" value="The defense makes a noble attempt, but the outcome is inevitable."/>
+    <translation key="defense_noshow" value="The defense attorney rarely showed up."/>
+    <translation key="defense_terrible" value="The defense attorney accidentally said &quot;My client is GUILTY!&quot; during closing."/>
+    <translation key="defense_bad" value="The defense is totally lame."/>
+    <translation key="defense_neutral" value="The defense was lackluster."/>
+    <translation key="defense_good" value="Defense arguments were pretty good."/>
+    <translation key="defense_very_good" value="The defense was really slick."/>
+    <translation key="defense_excellent_beat_prosecutor" value="The defense makes the prosecution look like amateurs."/>
+    <translation key="defense_excellent" value="The defense is extremely compelling."/>
+    <translation key="defense_legendary_beat_prosecutor" value="$LAWYERNAME's arguments made several of the jurors stand up and shout &quot;NOT GUILTY!&quot; before deliberations even began."/><!-- $LAWYERNAME will be replaced by the name of the lawyer -->
+    <translation key="defense_legendary" value="$LAWYERNAME conducts an incredible defense."/><!-- $LAWYERNAME will be replaced by the name of the lawyer -->
+    <!-- In all the below translations, $NAME will be replaced by the name of the defendant -->
+    <translation key="defense_self_idiot_1" value="$NAME makes one horrible mistake after another."/>
+    <translation key="defense_self_idiot_2" value="$NAME forgot where $HESHE was and shouted &quot;DEATH TO THE PATRIARCHY&quot; at the judge."/> <!-- $HESHE will be replaced by a gender appropriate pronoun. Note: the liberal will get one juice for rolling this result -->
+    <translation key="defense_self_idiot_3" value="$NAME accidentally flips off the judge and jury multiple times."/>
+    <translation key="defense_self_terrible" value="$NAME's case really sucked."/>
+    <translation key="defense_self_bad" value="$NAME did all right, but made some mistakes."/>
+    <translation key="defense_self_neutral" value="$NAME's arguments were pretty good."/>
+    <translation key="defense_self_good" value="$NAME worked the jury very well."/>
+    <translation key="defense_self_excellent" value="$NAME made a very powerful case."/>
+    <translation key="defense_self_legendary" value="$NAME had the jury, judge, and prosecution crying for freedom."/>
+    <translation key="jury_begin_deliberation" value="The jury leaves to consider the case."/>
+    <!-- Verdict -->
+    <translation key="jury_finish_deliberation" value="The jury has returned from deliberations."/>
+    <translation key="accept_guilty_plea" value="The court accepts the plea."/>
+    <translation key="jury_hung" value="But they can't reach a verdict!"/>
+    <translation key="jury_not_guilty" value="NOT GUILTY!"/>
+    <translation key="jury_guilty" value="GUILTY!"/>
+    <translation key="jury_hung_retrial" value="The case will be re-tried next month."/>
+    <translation key="jury_hung_drop_case" value="The prosecution declines to re-try the case."/>
+    <translation key="acquitted" value="$NAME is free!"/> <!-- $NAME will be replaced by the name of the defendant-->
+    <translation key="resume_sentence" value="$NAME will be returned to prison to resume an earlier sentence"/> <!-- $NAME will be replaced by the name of the defendant -->
+    <translation key="resume_sentence_time_served" value=", less a month for time already served."/> <!-- This will be appended to the previous line if the judge is lenient -->
+    <translation key="execution" value="The execution is scheduled to occur three months from now."/>
+    <translation key="sentence_lenience" value="During sentencing, the judge grants some leniency."/>
+    <translation key="sentence_return_death_penalty" value="$NAME, you will be returned to prison to carry out your death sentence."/> <!-- $NAME will be replaced by the full name of the defendant-->
+    <translation key="sentence_death_penalty" value="$NAME, you are sentenced to &lt;b&gt;DEATH&lt;/b&gt;!"/> <!-- $NAME will be replaced by the name of the defendant-->
+    <translation key="sentence_death_penalty_log" value="$NAME is sentenced to &lt;color=red&gt;DEATH&lt;/color&gt;"/> <!-- This is the message that will be printed in the message log after a liberal is sentenced to death. $NAME will be replaced by the liberal's name -->
+    <translation key="sentence_already_life" value="$NAME, the court sees no need to add to your existing sentence."/> <!-- $NAME will be replaced by the full name of the defendant -->
+    <translation key="sentence_already_life_resume" value="You will be returned to prison to resume it"/>
+    <translation key="sentence_warning" value="$NAME, consider this a warning.  You are free to go."/><!-- $NAME will be replaced with the full name of the defendant -->
+    <translation key="sentence_warning_log" value="$NAME is let off with a warning."/> <!-- This is the message that will appear in the message log when a liberal is let off with a warning. $NAME will be replaced by the name of the liberal-->
+    <translation key="sentence_preface" value="$NAME, you are sentenced to "/><!-- Note the space at the end, as this is part of a compound string. $NAME will be replaced with the full name of the defendant-->
+    <translation key="sentence_life_multiple" value="$COUNT consecutive life terms in prison"/> <!-- $COUNT will be replaced by the number of life sentence terms they have been given -->
+    <translatino key="sentence_life" value="life in prison"/>
+    <translation key="sentence_nice_day" value="Have a nice day, $NAME"/> <!-- $NAME will be replaced by the full name of the defendant -->
+    <translation key="sentence_life_log" value="$NAME is sentenced to life in prison."/><!-- This message will appear in the message log after a liberal is sentence to life in prison. $NAME will be replaced with the name of the liberal-->
+    <translation key="sentence_long" value="$COUNT years in prison"/> <!-- $COUNT will be replaced with the number of years they have been sentenced with -->
+    <translation key="sentence_long_log" value="$NAME is sentenced to $COUNT years in prison"/> <!-- This is the log message that will display after a liberal has been sentenced to a long prison sentence. $NAME will be replaced with the name of the liberal, $COUNT will be replaced with the length of the sentence-->
+    <translation key="sentence_short" value="$COUNT $MONTH in prison"/> <!--$COUNT will be replaced with the length of the sentence, $MONTH will be replaced with the appropriate singular or plural of the word "month"-->
+    <translation key="sentence_short_log" value="$NAME is sentenced to $COUNT $MONTH in prison"/> <!-- This is the log message that will display after a liberal has been sentenced with a short prison sentence. $NAME will be replaced with the name of the liberal, $COUNT will be replaced with the length of the sentence, and $MONTH will be replaced with the appropriate singular or plural of the word "month"-->
+    <translation key="sentence_consecutive" value="to be served consecutively"/>
+    <translation key="sentence_concurrent" value="to be served concurrently"/>
+  </translation_set> 
 </translations>

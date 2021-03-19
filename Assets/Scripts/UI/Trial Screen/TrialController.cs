@@ -147,7 +147,7 @@ public class TrialController : MonoBehaviour, Trial {
         generatedObjects.Add(MenuButton.gameObject);
         Destroy(MenuButton.GetComponent<ContentSizeFitter>());
         MenuButton.transform.SetParent(eventOptionsBox, false);
-        MenuButton.GetComponentInChildren<Text>().text = "Use a (C)ourt-Appointed Attorney";
+        MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("TRIAL_defense_court_appointed");
         MenuButton.onClick.AddListener(() => { actions.selection(character, TrialActions.TrialSelection.PUBLIC_DEFENDER); extraButtonAction(); });
         ButtonHotkey hotkey = MenuButton.GetComponent<ButtonHotkey>();
         hotkey.key = KeyCode.C;
@@ -157,7 +157,7 @@ public class TrialController : MonoBehaviour, Trial {
         generatedObjects.Add(MenuButton.gameObject);
         Destroy(MenuButton.GetComponent<ContentSizeFitter>());
         MenuButton.transform.SetParent(eventOptionsBox, false);
-        MenuButton.GetComponentInChildren<Text>().text = "(D)efend Self!";
+        MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("TRIAL_defense_self");
         MenuButton.onClick.AddListener(() => { actions.selection(character, TrialActions.TrialSelection.DEFEND_SELF); extraButtonAction(); });
         hotkey = MenuButton.GetComponent<ButtonHotkey>();
         hotkey.key = KeyCode.D;
@@ -167,7 +167,7 @@ public class TrialController : MonoBehaviour, Trial {
         generatedObjects.Add(MenuButton.gameObject);
         Destroy(MenuButton.GetComponent<ContentSizeFitter>());
         MenuButton.transform.SetParent(eventOptionsBox, false);
-        MenuButton.GetComponentInChildren<Text>().text = "Plead (G)uilty";
+        MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("TRIAL_defense_plead_guilty");
         MenuButton.onClick.AddListener(() => { actions.selection(character, TrialActions.TrialSelection.PLEAD_GUILTY); extraButtonAction(); });
         hotkey = MenuButton.GetComponent<ButtonHotkey>();
         hotkey.key = KeyCode.G;
@@ -177,7 +177,7 @@ public class TrialController : MonoBehaviour, Trial {
         generatedObjects.Add(MenuButton.gameObject);
         Destroy(MenuButton.GetComponent<ContentSizeFitter>());
         MenuButton.transform.SetParent(eventOptionsBox, false);
-        MenuButton.GetComponentInChildren<Text>().text = "Pay $5000 to Hire (A)ce Liberal Attorney";
+        MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("TRIAL_defense_ace");
         MenuButton.onClick.AddListener(() => { actions.selection(character, TrialActions.TrialSelection.ACE_ATTORNEY); extraButtonAction(); });
         hotkey = MenuButton.GetComponent<ButtonHotkey>();
         hotkey.key = KeyCode.A;
@@ -191,7 +191,7 @@ public class TrialController : MonoBehaviour, Trial {
             generatedObjects.Add(MenuButton.gameObject);
             Destroy(MenuButton.GetComponent<ContentSizeFitter>());
             MenuButton.transform.SetParent(eventOptionsBox, false);
-            MenuButton.GetComponentInChildren<Text>().text = "Accept (S)leeper " + character.getComponent<CriminalRecord>().sleeperLawyer.getComponent<CreatureInfo>().getName() + "'s Help Pro-Bono";
+            MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("TRIAL_defense_sleeper").Replace("$SLEEPERNAME", character.getComponent<CriminalRecord>().sleeperLawyer.getComponent<CreatureInfo>().getName());
             MenuButton.onClick.AddListener(() => { actions.selection(character, TrialActions.TrialSelection.SLEEPER_ATTORNEY); extraButtonAction(); });
             hotkey = MenuButton.GetComponent<ButtonHotkey>();
             hotkey.key = KeyCode.S;
