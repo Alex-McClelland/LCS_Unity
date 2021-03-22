@@ -182,7 +182,7 @@ public class ChaseController : MonoBehaviour, Chase {
                 generatedButtons.Add(MenuButton.gameObject);
                 Destroy(MenuButton.GetComponent<ContentSizeFitter>());
                 MenuButton.transform.SetParent(eventOptionsBox, false);
-                MenuButton.GetComponentInChildren<Text>().text = "(R)un For It!";
+                MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("CHASE_run_button");
                 MenuButton.onClick.AddListener(run);
                 ButtonHotkey hotkey = MenuButton.GetComponent<ButtonHotkey>();
                 hotkey.key = KeyCode.R;
@@ -192,7 +192,7 @@ public class ChaseController : MonoBehaviour, Chase {
                 generatedButtons.Add(MenuButton.gameObject);
                 Destroy(MenuButton.GetComponent<ContentSizeFitter>());
                 MenuButton.transform.SetParent(eventOptionsBox, false);
-                MenuButton.GetComponentInChildren<Text>().text = "(F)ight!";
+                MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("CHASE_fight_button");
                 MenuButton.onClick.AddListener(fight);
                 hotkey = MenuButton.GetComponent<ButtonHotkey>();
                 hotkey.key = KeyCode.F;
@@ -204,7 +204,7 @@ public class ChaseController : MonoBehaviour, Chase {
                     generatedButtons.Add(MenuButton.gameObject);
                     Destroy(MenuButton.GetComponent<ContentSizeFitter>());
                     MenuButton.transform.SetParent(eventOptionsBox, false);
-                    MenuButton.GetComponentInChildren<Text>().text = "(G)ive Up";
+                    MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("CHASE_give_up_button");
                     MenuButton.onClick.AddListener(surrender);
                     hotkey = MenuButton.GetComponent<ButtonHotkey>();
                     hotkey.key = KeyCode.G;
@@ -217,7 +217,7 @@ public class ChaseController : MonoBehaviour, Chase {
                 generatedButtons.Add(MenuButton.gameObject);
                 Destroy(MenuButton.GetComponent<ContentSizeFitter>());
                 MenuButton.transform.SetParent(eventOptionsBox, false);
-                MenuButton.GetComponentInChildren<Text>().text = "Continue";
+                MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("CHASE_continue_button");
                 MenuButton.onClick.AddListener(mc.doNextAction);
                 ButtonHotkey hotkey = MenuButton.GetComponent<ButtonHotkey>();
                 hotkey.key = KeyCode.Return;
@@ -237,7 +237,7 @@ public class ChaseController : MonoBehaviour, Chase {
                     generatedButtons.Add(MenuButton.gameObject);
                     Destroy(MenuButton.GetComponent<ContentSizeFitter>());
                     MenuButton.transform.SetParent(eventOptionsBox, false);
-                    MenuButton.GetComponentInChildren<Text>().text = "T(R)y to Lose Them!";
+                    MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("CHASE_run_car_button");
                     MenuButton.onClick.AddListener(driveEscape);
                     hotkey = MenuButton.GetComponent<ButtonHotkey>();
                     hotkey.key = KeyCode.R;
@@ -247,7 +247,7 @@ public class ChaseController : MonoBehaviour, Chase {
                     generatedButtons.Add(MenuButton.gameObject);
                     Destroy(MenuButton.GetComponent<ContentSizeFitter>());
                     MenuButton.transform.SetParent(eventOptionsBox, false);
-                    MenuButton.GetComponentInChildren<Text>().text = "(F)ight!";
+                    MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("CHASE_fight_button");
                     MenuButton.onClick.AddListener(fight);
                     hotkey = MenuButton.GetComponent<ButtonHotkey>();
                     hotkey.key = KeyCode.F;
@@ -261,20 +261,20 @@ public class ChaseController : MonoBehaviour, Chase {
                     switch (mc.currentChaseScene.obstacle)
                     {
                         case ChaseScene.ObstacleType.FRUITSTAND:
-                            obstacleTextRisky = "(R) Swerve to avoid it!";
-                            obstacleTextSafe = "(F) Plow through it!";
+                            obstacleTextRisky = MasterController.GetMC().getTranslation("CHASE_car_event_fruit_risky");
+                            obstacleTextSafe = MasterController.GetMC().getTranslation("CHASE_car_event_fruit_safe");
                             break;
                         case ChaseScene.ObstacleType.TRUCK:
-                            obstacleTextRisky = "(R) Speed around it!";
-                            obstacleTextSafe = "(F) Slow Down!";
+                            obstacleTextRisky = MasterController.GetMC().getTranslation("CHASE_car_event_truck_risky");
+                            obstacleTextSafe = MasterController.GetMC().getTranslation("CHASE_car_event_truck_safe");
                             break;
                         case ChaseScene.ObstacleType.REDLIGHT:
-                            obstacleTextRisky = "(R)un the light!";
-                            obstacleTextSafe = "(F) Slow down and turn!";
+                            obstacleTextRisky = MasterController.GetMC().getTranslation("CHASE_car_event_red_risky");
+                            obstacleTextSafe = MasterController.GetMC().getTranslation("CHASE_car_event_red_safe");
                             break;
                         case ChaseScene.ObstacleType.CHILD:
-                            obstacleTextRisky = "(R) Swere around them!";
-                            obstacleTextSafe = "(F) Slam the brakes!";
+                            obstacleTextRisky = MasterController.GetMC().getTranslation("CHASE_car_event_child_risky");
+                            obstacleTextSafe = MasterController.GetMC().getTranslation("CHASE_car_event_child_safe");
                             break;
                     }
 
@@ -303,7 +303,7 @@ public class ChaseController : MonoBehaviour, Chase {
                 generatedButtons.Add(MenuButton.gameObject);
                 Destroy(MenuButton.GetComponent<ContentSizeFitter>());
                 MenuButton.transform.SetParent(eventOptionsBox, false);
-                MenuButton.GetComponentInChildren<Text>().text = "(B)ail out and run!";
+                MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("CHASE_car_bail_button");
                 MenuButton.onClick.AddListener(bail);
                 hotkey = MenuButton.GetComponent<ButtonHotkey>();
                 hotkey.key = KeyCode.B;
@@ -315,7 +315,7 @@ public class ChaseController : MonoBehaviour, Chase {
                     generatedButtons.Add(MenuButton.gameObject);
                     Destroy(MenuButton.GetComponent<ContentSizeFitter>());
                     MenuButton.transform.SetParent(eventOptionsBox, false);
-                    MenuButton.GetComponentInChildren<Text>().text = "(G)ive Up";
+                    MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("CHASE_give_up_button");
                     MenuButton.onClick.AddListener(surrender);
                     hotkey = MenuButton.GetComponent<ButtonHotkey>();
                     hotkey.key = KeyCode.G;
@@ -328,7 +328,7 @@ public class ChaseController : MonoBehaviour, Chase {
                 generatedButtons.Add(MenuButton.gameObject);
                 Destroy(MenuButton.GetComponent<ContentSizeFitter>());
                 MenuButton.transform.SetParent(eventOptionsBox, false);
-                MenuButton.GetComponentInChildren<Text>().text = "Continue";
+                MenuButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("CHASE_continue_button");
                 MenuButton.onClick.AddListener(mc.doNextAction);
             }
         }

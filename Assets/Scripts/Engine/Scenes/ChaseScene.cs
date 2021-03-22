@@ -128,7 +128,19 @@ namespace LCS.Engine.Scenes
             MasterController mc = MasterController.GetMC();
 
             if (chaseText == null)
-                mc.addCombatMessage("As " + nameText + " exits the site, " + (pluralize ? "they notice " : libs[0].getComponent<CreatureInfo>().heShe().ToLower() + " notices ") + (pluralize ? "they are " : libs[0].getComponent<CreatureInfo>().heShe().ToLower() + " is ") + "being followed by Conservative swine!", true);
+            {
+                string text;
+
+                if (pluralize)
+                {
+                    text = mc.getTranslation("CHASE_start_squad").Replace("$NAME", nameText);
+                }
+                else
+                {
+                    text = mc.getTranslation("CHASE_start_solo").Replace("$NAME", nameText).Replace("$HESHE", libs[0].getComponent<CreatureInfo>().heShe().ToLower());
+                }
+                mc.addCombatMessage(text, true);
+            }
             else
                 mc.addCombatMessage(chaseText, true);
 
@@ -206,7 +218,19 @@ namespace LCS.Engine.Scenes
             MasterController mc = MasterController.GetMC();
 
             if (chaseText == null)
-                mc.addCombatMessage("As " + nameText + " exits the site, " + (pluralize ? "they notice " : libs[0].getComponent<CreatureInfo>().heShe().ToLower() + " notices ") + (pluralize ? "they are " : libs[0].getComponent<CreatureInfo>().heShe().ToLower() + " is ") + "being followed by Conservative swine!", true);
+            {
+                string text;
+
+                if (pluralize)
+                {
+                    text = mc.getTranslation("CHASE_start_single").Replace("$NAME", nameText).Replace("$HESHE", libs[0].getComponent<CreatureInfo>().heShe().ToLower());
+                }
+                else
+                {
+                    text = mc.getTranslation("CHASE_start_plural").Replace("$NAME", nameText);
+                }
+                mc.addCombatMessage(text, true);
+            }
             else
                 mc.addCombatMessage(chaseText, true);
 
@@ -278,7 +302,7 @@ namespace LCS.Engine.Scenes
                 if (!liberals.Contains(e)) siegeBuffer.Add(e);
             }
 
-            mc.addCombatMessage("<color=red>UNDER SIEGE: ESCAPE OR ENGAGE</color>\nYou are about to exit the compound to lift the Conservative siege on your safehouse. The enemy is ready for you, and you will have to defeat them all or run away to survive this encounter. Your Squad has filled out to six members if any were available. If you have a larger pool of Liberals, they will provide cover fire from the compound until needed.", true);
+            mc.addCombatMessage(mc.getTranslation("CHASE_siege_escape_start"), true);
 
             News.NewsStory story = MasterController.news.startNewStory("SQUAD_ESCAPED");
             if (siegeLocation.getComponent<SafeHouse>().underAttack)
@@ -461,7 +485,7 @@ namespace LCS.Engine.Scenes
                     case LocationDef.EnemyType.CCS:
                         con = Factories.CreatureFactory.create("CCS_VIGILANTE");
                         //CCS chasers won't be incognito
-                        con.getComponent<CreatureInfo>().encounterName = "CCS Vigilante";
+                        con.getComponent<CreatureInfo>().encounterName = con.getComponent<CreatureInfo>().type_name;
                         conservatives.Add(con);
                         conservativeSpeeds.Add(con, 0);
                         break;
@@ -514,7 +538,14 @@ namespace LCS.Engine.Scenes
 
             arrestedThisRound = false;
 
-            mc.addCombatMessage(nameText + " make" + (pluralize ? "" : "s") + " a break for it!");
+            if (pluralize)
+            {
+                mc.addCombatMessage(mc.getTranslation("CHASE_run_squad").Replace("$NAME", nameText));
+            }
+            else
+            {
+                mc.addCombatMessage(mc.getTranslation("CHASE_run_solo").Replace("$NAME", nameText));
+            }
             chaseRoot.Add(null, "NOP");
 
             foreach (Entity runner in liberals)
@@ -547,6 +578,8 @@ namespace LCS.Engine.Scenes
             if (runner == null) return;
             if (!liberals.Contains(runner)) return;
 
+            MasterController mc = MasterController.GetMC();
+
             string returnString = "";
 
             if (!runner.getComponent<Body>().canWalk())
@@ -559,29 +592,29 @@ namespace LCS.Engine.Scenes
 
             if (runner.getComponent<CreatureBase>().Skills["STREET_SENSE"].check(Difficulty.AVERAGE))
             {
-                liberalSpeeds[runner] += MasterController.GetMC().LCSRandom(5) + 3;
-                switch (MasterController.GetMC().LCSRandom(liberalSpeeds[runner] / 5))
+                liberalSpeeds[runner] += mc.LCSRandom(5) + 3;
+                switch (mc.LCSRandom(liberalSpeeds[runner] / 5))
                 {
                     default:
-                        returnString = runner.getComponent<CreatureInfo>().getName() + " suddenly darts into an alley!";
+                        returnString = mc.getTranslation("CHASE_run_fast_1").Replace("$NAME", runner.getComponent<CreatureInfo>().getName());
                         break;
                     case 1:
-                        returnString = runner.getComponent<CreatureInfo>().getName() + " runs as fast as " + runner.getComponent<CreatureInfo>().heShe().ToLower() + " can!";
+                        returnString = mc.getTranslation("CHASE_run_fast_2").Replace("$NAME", runner.getComponent<CreatureInfo>().getName()).Replace("$HESHE", runner.getComponent<CreatureInfo>().heShe().ToLower());
                         break;
                     case 2:
-                        returnString = runner.getComponent<CreatureInfo>().getName() + " climbs a fence in record time!";
+                        returnString = mc.getTranslation("CHASE_run_fast_3").Replace("$NAME", runner.getComponent<CreatureInfo>().getName());
                         break;
                     case 3:
-                        returnString = runner.getComponent<CreatureInfo>().getName() + " scales a small building and leaps between rooftops!";
+                        returnString = mc.getTranslation("CHASE_run_fast_4").Replace("$NAME", runner.getComponent<CreatureInfo>().getName());
                         break;
                 }
             }
 
-            MasterController.GetMC().addCombatMessage("##DEBUG## " + runner.getComponent<CreatureInfo>().getName() + " speed=" + liberalSpeeds[runner]);
+            mc.addCombatMessage("##DEBUG## " + runner.getComponent<CreatureInfo>().getName() + " speed=" + liberalSpeeds[runner]);
             if (returnString != "")
-                MasterController.GetMC().addCombatMessage(returnString);
+                mc.addCombatMessage(returnString);
             else
-                MasterController.GetMC().doNextAction();
+                mc.doNextAction();
         }
 
         private void conRun(Entity chaser)
@@ -589,6 +622,8 @@ namespace LCS.Engine.Scenes
             //Con has already fallen short
             if (chaser == null) return;
             if (!conservatives.Contains(chaser)) return;
+
+            MasterController mc = MasterController.GetMC();
 
             if (!chaser.getComponent<Body>().canWalk())
                 conservativeSpeeds[chaser] = 0;
@@ -602,7 +637,7 @@ namespace LCS.Engine.Scenes
 
             if (conservativeSpeeds[chaser] < liberalSpeeds[getSlowestLiberal()])
             {
-                returnText = "<color=cyan>" + chaser.getComponent<CreatureInfo>().encounterName + " can't keep up!</color>";
+                returnText = "<color=cyan>" + mc.getTranslation("CHASE_run_slow").Replace("$NAME", chaser.getComponent<CreatureInfo>().encounterName) + "</color>";
                 conservatives[conservatives.IndexOf(chaser)] = null;
             }
 
@@ -629,7 +664,7 @@ namespace LCS.Engine.Scenes
 
             if (liberalSpeeds[runner] > conservativeSpeeds[getFastestConservative()])
             {
-                returnText = "<color=cyan>" + runner.getComponent<CreatureInfo>().getName() + " breaks away!</color>";
+                returnText = "<color=cyan>" + mc.getTranslation("CHASE_run_escape").Replace("$NAME", runner.getComponent<CreatureInfo>().getName()) + "</color>";
                 int runnerIndex = liberals.IndexOf(runner);
                 liberals[runnerIndex] = null;
                 escapedLibs++;
@@ -643,7 +678,7 @@ namespace LCS.Engine.Scenes
             }
             else if (liberalSpeeds[runner] < conservativeSpeeds[getFastestConservative()] - 10)
             {
-                returnText = "<color=red>" + runner.getComponent<CreatureInfo>().getName() + " is seized, ";
+                returnText = "<color=red>";
                 Entity fastestCon = getFastestConservative();
 
                 switch (fastestCon.def)
@@ -651,23 +686,23 @@ namespace LCS.Engine.Scenes
                     case "COP":
                         if (MasterController.GetMC().testCondition("LAW:POLICE:>:0"))
                         {
-                            returnText += "pushed to the ground, and handcuffed!";
+                            returnText += mc.getTranslation("CHASE_run_caught_police").Replace("$NAME", runner.getComponent<CreatureInfo>().getName());
                             runner.getComponent<CriminalRecord>().arrest();
-                            MasterController.GetMC().addMessage(runner.getComponent<CreatureInfo>().getName() + " was arrested while fleeing Conservative Swine.");
+                            MasterController.GetMC().addMessage(mc.getTranslation("CHASE_run_caught_police_log").Replace("$NAME", runner.getComponent<CreatureInfo>().getName()));
                         }
                         else
                         {
                             if (runner.getComponent<Body>().Blood <= 10)
                             {
-                                returnText += "thrown to the ground, and tazed to death!";
-                                runner.getComponent<CreatureBase>().doDie(new Events.Die("was tazed to death by police"));
+                                returnText += mc.getTranslation("CHASE_run_caught_police_death").Replace("$NAME", runner.getComponent<CreatureInfo>().getName());
+                                runner.getComponent<CreatureBase>().doDie(new Events.Die(mc.getTranslation("DEATH_chase_police_brutality")));
                             }
                             else
                             {
-                                returnText += "thrown to the ground, and tazed repeatedly!";
+                                returnText += mc.getTranslation("CHASE_run_caught_police_brutality").Replace("$NAME", runner.getComponent<CreatureInfo>().getName());
                                 runner.getComponent<Body>().Blood -= 10;
                                 runner.getComponent<CriminalRecord>().arrest();
-                                MasterController.GetMC().addMessage(runner.getComponent<CreatureInfo>().getName() + " was arrested while fleeing Conservative Swine.");
+                                MasterController.GetMC().addMessage(mc.getTranslation("CHASE_run_caught_police_log").Replace("$NAME", runner.getComponent<CreatureInfo>().getName()));
                             }
                         }
                         
@@ -675,26 +710,26 @@ namespace LCS.Engine.Scenes
                         arrestedThisRound = true;
                         break;
                     case "DEATHSQUAD":
-                        returnText += "thrown to the ground, and shot in the head!";
-                        runner.getComponent<CreatureBase>().doDie(new Events.Die("was executed by Death Squad"));
+                        returnText += mc.getTranslation("CHASE_run_caught_deathsquad").Replace("$NAME", runner.getComponent<CreatureInfo>().getName());
+                        runner.getComponent<CreatureBase>().doDie(new Events.Die(mc.getTranslation("DEATH_chase_deathsquad")));
                         //Death Squad don't fall behind when executing stragglers - no need to secure a corpse.
                         break;
                     case "TANK":
-                        returnText = "<color=red>" + runner.getComponent<CreatureInfo>().getName() + " is crushed beneath the tank's treads!";
-                        runner.getComponent<CreatureBase>().doDie(new Events.Die("was run over by a tank"));
+                        returnText += mc.getTranslation("CHASE_run_caught_tank").Replace("$NAME", runner.getComponent<CreatureInfo>().getName());
+                        runner.getComponent<CreatureBase>().doDie(new Events.Die(mc.getTranslation("DEATH_chase_tank")));
                         break;
                     case "GANGUNIT":
                         if (runner.getComponent<Body>().Blood <= 60)
                         {
-                            returnText += "thrown to the ground, and beaten to death!";
-                            runner.getComponent<CreatureBase>().doDie(new Events.Die("was beaten to death by police"));
+                            returnText += mc.getTranslation("CHASE_run_caught_gangunit_death").Replace("$NAME", runner.getComponent<CreatureInfo>().getName());
+                            runner.getComponent<CreatureBase>().doDie(new Events.Die(mc.getTranslation("DEATH_chase_gangunit")));
                         }
                         else
                         {
-                            returnText += "thrown to the ground, and beaten senseless!";
+                            returnText += mc.getTranslation("CHASE_run_caught_gangunit").Replace("$NAME", runner.getComponent<CreatureInfo>().getName());
                             runner.getComponent<Body>().Blood -= 60;
                             runner.getComponent<CriminalRecord>().arrest();
-                            MasterController.GetMC().addMessage(runner.getComponent<CreatureInfo>().getName() + " was arrested while fleeing Conservative Swine.");
+                            MasterController.GetMC().addMessage(mc.getTranslation("CHASE_run_caught_police_log").Replace("$NAME", runner.getComponent<CreatureInfo>().getName()));
                         }
                         
                         conservatives[conservatives.IndexOf(fastestCon)] = null;
@@ -703,12 +738,12 @@ namespace LCS.Engine.Scenes
                     default:
                         if (runner.getComponent<Body>().Blood <= 60)
                         {
-                            returnText += "thrown to the ground, and beaten to death!";
-                            runner.getComponent<CreatureBase>().doDie(new Events.Die("was beaten to death by pursuers"));
+                            returnText += mc.getTranslation("CHASE_run_caught_generic_death").Replace("$NAME", runner.getComponent<CreatureInfo>().getName()); ;
+                            runner.getComponent<CreatureBase>().doDie(new Events.Die(mc.getTranslation("DEATH_chase_generic")));
                         }
                         else
                         {
-                            returnText += "thrown to the ground, and beaten senseless!";
+                            returnText += mc.getTranslation("CHASE_run_caught_generic").Replace("$NAME", runner.getComponent<CreatureInfo>().getName());
                             runner.getComponent<Body>().Blood -= 60;
                         }
                         break;
@@ -723,7 +758,7 @@ namespace LCS.Engine.Scenes
                         if (hauledUnit.hasComponent<Liberal>() && hauledUnit.getComponent<Body>().Alive)
                         {
                             hauledUnit.getComponent<CriminalRecord>().arrest();
-                            mc.addCombatMessage(hauledUnit.getComponent<CreatureInfo>().getName() + " is arrested.");
+                            mc.addCombatMessage(mc.getTranslation("CHASE_run_caught_arrest_hauled_liberal").Replace("$NAME", hauledUnit.getComponent<CreatureInfo>().getName()));
                         }
                         else
                         {
@@ -840,14 +875,14 @@ namespace LCS.Engine.Scenes
             {
                 switch (mc.LCSRandom(4))
                 {
-                    case 0: mc.addCombatMessage("You keep the gas floored!"); break;
-                    case 1: mc.addCombatMessage("You swerve around the next corner!"); break;
-                    case 2: mc.addCombatMessage("You screech through an empty lot to the next street!"); break;
+                    case 0: mc.addCombatMessage(mc.getTranslation("CHASE_car_desc_1")); break;
+                    case 1: mc.addCombatMessage(mc.getTranslation("CHASE_car_desc_2")); break;
+                    case 2: mc.addCombatMessage(mc.getTranslation("CHASE_car_desc_3")); break;
                     case 3:
                         if(lowest > 15)
-                            mc.addCombatMessage("You boldly weave through oncoming traffic!");
+                            mc.addCombatMessage(mc.getTranslation("CHASE_car_desc_4_fast"));
                         else
-                            mc.addCombatMessage("You make obscene gestures at the pursuers!");
+                            mc.addCombatMessage(mc.getTranslation("CHASE_car_desc_4"));
                         break;
                 }
             }, "drive description");
@@ -860,14 +895,14 @@ namespace LCS.Engine.Scenes
                 {
                     chaseRoot.Add(() =>
                     {
-                        string result = "<color=cyan>" + e.getComponent<ItemBase>().getName();
+                        string result = "<color=cyan>";
 
                         switch (mc.LCSRandom(liberalCarSpeeds[libCar] / 5))
                         {
-                            default: result += " falls behind!"; break;
-                            case 1: result += " skids out!"; break;
-                            case 2: result += " backs off for safety."; break;
-                            case 3: result += " brakes hard and nearly crashes!"; break;
+                            default: result += mc.getTranslation("CHASE_car_slow_1").Replace("$NAME", e.getComponent<ItemBase>().getName()); break;
+                            case 1: result += mc.getTranslation("CHASE_car_slow_2").Replace("$NAME", e.getComponent<ItemBase>().getName()); break;
+                            case 2: result += mc.getTranslation("CHASE_car_slow_3").Replace("$NAME", e.getComponent<ItemBase>().getName()); break;
+                            case 3: result += mc.getTranslation("CHASE_car_slow_4").Replace("$NAME", e.getComponent<ItemBase>().getName()); break;
                         }
                         result += "</color>";
 
@@ -884,7 +919,7 @@ namespace LCS.Engine.Scenes
                 {
                     chaseRoot.Add(() =>
                     {
-                        mc.addCombatMessage("<color=yellow>" + e.getComponent<ItemBase>().getName() + " is still on your tail!</color>");
+                        mc.addCombatMessage("<color=yellow>" + mc.getTranslation("CHASE_car_neutral").Replace("$NAME", e.getComponent<ItemBase>().getName()) + "</color>");
                     }, "stillOnTail");
                 }
             }
@@ -892,7 +927,7 @@ namespace LCS.Engine.Scenes
             chaseRoot.Add(() =>
             {
                 if (conservativeCars.Count > 0)
-                    mc.addCombatMessage("Here they come!");
+                    mc.addCombatMessage(mc.getTranslation("CHASE_car_incoming"));
                 else
                     mc.doNextAction();
             }, "stillOnTail");
@@ -928,7 +963,7 @@ namespace LCS.Engine.Scenes
 
             changeChaseMode(ChaseType.FOOT);
             
-            MasterController.GetMC().addCombatMessage("You bail out and run!");
+            MasterController.GetMC().addCombatMessage(MasterController.GetMC().getTranslation("CHASE_car_bail"));
             if(chasePhase == ChasePhase.SELECTION)
                 MasterController.GetMC().uiController.chase.enableInput();
         }
@@ -939,7 +974,7 @@ namespace LCS.Engine.Scenes
             mc.nextRound();
             chasePhase = ChasePhase.RUN;
 
-            mc.addCombatMessage("You swerve to avoid the obstacle!");
+            mc.addCombatMessage(mc.getTranslation("CHASE_car_event_swerve"));
             bool crashed = false;
 
             foreach(Entity e in liberalCarSpeeds.Keys)
@@ -1002,7 +1037,7 @@ namespace LCS.Engine.Scenes
                 case ObstacleType.REDLIGHT:
                     chaseRoot.Add(() =>
                     {
-                        mc.addCombatMessage("You slow down, and turn the corner.");
+                        mc.addCombatMessage(mc.getTranslation("CHASE_car_event_red_desc"));
                     }, "drivetext");
 
                     if(mc.LCSRandom(3) == 0)
@@ -1010,7 +1045,7 @@ namespace LCS.Engine.Scenes
                         chaseRoot.Add(() =>
                         {
                             if (conservativeCars.Count > 0)
-                                mc.addCombatMessage("Here they come!");
+                                mc.addCombatMessage(mc.getTranslation("CHASE_car_incoming"));
                             else
                                 mc.doNextAction();
                         }, "stillOnTail");
@@ -1022,12 +1057,12 @@ namespace LCS.Engine.Scenes
                 case ObstacleType.FRUITSTAND:
                     chaseRoot.Add(() =>
                     {
-                        mc.addCombatMessage("Fruit smashes all over the windshield!");
+                        mc.addCombatMessage(mc.getTranslation("CHASE_car_event_fruit_desc"));
                     }, "drivetext");
 
                     if(mc.LCSRandom(5) == 0)
                     {
-                        mc.addCombatMessage("<color=red>The fruit seller is squashed!</color>");
+                        mc.addCombatMessage("<color=red>" + mc.getTranslation("CHASE_car_event_fruit_oops") + "</color>");
                         foreach(Entity e in liberals)
                         {
                             if (e == null) continue;
@@ -1039,7 +1074,7 @@ namespace LCS.Engine.Scenes
                 case ObstacleType.TRUCK:
                     chaseRoot.Add(() =>
                     {
-                        mc.addCombatMessage("You slow down, and carefully evade the truck.");
+                        mc.addCombatMessage(mc.getTranslation("CHASE_car_event_truck_desc"));
                     }, "drivetext");
 
                     if (mc.LCSRandom(3) == 0)
@@ -1047,7 +1082,7 @@ namespace LCS.Engine.Scenes
                         chaseRoot.Add(() =>
                         {
                             if (conservativeCars.Count > 0)
-                                mc.addCombatMessage("Here they come!");
+                                mc.addCombatMessage(mc.getTranslation("CHASE_car_incoming"));
                             else
                                 mc.doNextAction();
                         }, "stillOnTail");
@@ -1059,7 +1094,7 @@ namespace LCS.Engine.Scenes
                 case ObstacleType.CHILD:
                     chaseRoot.Add(() =>
                     {
-                        mc.addCombatMessage("You slow down and carefully avoid the kid.");
+                        mc.addCombatMessage(mc.getTranslation("CHASE_car_event_child_desc"));
                     }, "drivetext");
                     /*TODO: Maybe make this depend on what kind of people are chasing you? Less moral = more chance to fire
                     morality:
@@ -1070,7 +1105,7 @@ namespace LCS.Engine.Scenes
                         chaseRoot.Add(() =>
                         {
                             if (conservativeCars.Count > 0)
-                                mc.addCombatMessage("<color=red>The Conservative bastards unleash a hail of gunfire!</color>");
+                                mc.addCombatMessage("<color=red>" + mc.getTranslation("CHASE_car_event_child_cons_shoot") + "</color>");
                             else
                                 mc.doNextAction();
                         }, "stillOnTail");
@@ -1082,7 +1117,7 @@ namespace LCS.Engine.Scenes
                     {
                         chaseRoot.Add(() => 
                         {
-                            mc.addCombatMessage("<color=lime>Both sides refrain from endangering the child...</color>");
+                            mc.addCombatMessage("<color=lime>" + mc.getTranslation("CHASE_car_event_child_cons_hold") + "</color>");
                         }, "combatText");
                     }
                     break;
@@ -1167,7 +1202,7 @@ namespace LCS.Engine.Scenes
         public void surrender()
         {
             MasterController mc = MasterController.GetMC();
-            mc.addCombatMessage("You stop and are arrested.");
+            mc.addCombatMessage(mc.getTranslation("CHASE_surrender"));
 
             if (chaseType == ChaseType.CAR)
             {
@@ -1235,7 +1270,7 @@ namespace LCS.Engine.Scenes
                                 if (p.getComponent<Body>().canWalk())
                                 {
                                     vehicle.getComponent<Vehicle>().driver = p;
-                                    mc.addCombatMessage("<color=yellow>" + p.getComponent<CreatureInfo>().getName() + " takes the wheel</color>");
+                                    mc.addCombatMessage("<color=yellow>" + mc.getTranslation("CHASE_car_change_driver").Replace("$NAME", p.getComponent<CreatureInfo>().getName()) + "</color>");
                                     foundDriver = true;
                                     break;
                                 }
@@ -1247,7 +1282,7 @@ namespace LCS.Engine.Scenes
                             if (livingPassengers.Count > 0 &&
                             livingPassengers[mc.LCSRandom(livingPassengers.Count)].getComponent<CreatureBase>().Skills[Constants.SKILL_RELIGION].check(Difficulty.HEROIC))
                             {
-                                mc.addCombatMessage("<color=lime>JESUS takes the wheel</color>");
+                                mc.addCombatMessage("<color=lime>" + mc.getTranslation("CHASE_car_change_driver_religious") + "</color>");
                             }
                             else
                             {
@@ -1308,19 +1343,19 @@ namespace LCS.Engine.Scenes
                             {
                                 case 0:
                                     obstacle = ObstacleType.FRUITSTAND;
-                                    mc.addCombatMessage("You are speeding towards a flimsy fruit stand!", true);
+                                    mc.addCombatMessage(mc.getTranslation("CHASE_car_event_fruit"), true);
                                     break;
                                 case 1:
                                     obstacle = ObstacleType.REDLIGHT;
-                                    mc.addCombatMessage("There's a red light with cross traffic ahead!", true);
+                                    mc.addCombatMessage(mc.getTranslation("CHASE_car_event_red"), true);
                                     break;
                                 case 2:
                                     obstacle = ObstacleType.TRUCK;
-                                    mc.addCombatMessage("A truck pulls out into your path!", true);
+                                    mc.addCombatMessage(mc.getTranslation("CHASE_car_event_truck"), true);
                                     break;
                                 case 3:
                                     obstacle = ObstacleType.CHILD;
-                                    mc.addCombatMessage("A kid runs into the street for his ball!", true);
+                                    mc.addCombatMessage(mc.getTranslation("CHASE_car_event_child"), true);
                                     break;
                             }
                         }
@@ -1339,13 +1374,12 @@ namespace LCS.Engine.Scenes
             MasterController mc = MasterController.GetMC();
             vehicle.getComponent<ItemBase>().destroyItem();
 
-            string message = "<color=magenta>Your ";
-            message += vehicle.getComponent<ItemBase>().getName() + " ";
+            string message = "<color=magenta>";
             switch (mc.LCSRandom(3))
             {
-                case 0: message += "slams into a building!"; break;
-                case 1: message += "spins out and crashes!"; break;
-                case 2: message += "hits a parked car and flips over!"; break;
+                case 0: message += mc.getTranslation("CHASE_car_lib_crash_1").Replace("$CAR", vehicle.getComponent<ItemBase>().getName()); break;
+                case 1: message += mc.getTranslation("CHASE_car_lib_crash_2").Replace("$CAR", vehicle.getComponent<ItemBase>().getName()); break;
+                case 2: message += mc.getTranslation("CHASE_car_lib_crash_3").Replace("$CAR", vehicle.getComponent<ItemBase>().getName()); break;
             }
             message += "</color>";
             mc.addCombatMessage(message);
@@ -1374,18 +1408,20 @@ namespace LCS.Engine.Scenes
                     }
                 }
 
-                if(e.getComponent<Liberal>().hauledUnit != null)
+                if(e.getComponent<Liberal>().hauledUnit != null && e.getComponent<Liberal>().hauledUnit.getComponent<Body>().Alive)
                 {
-                    e.getComponent<Liberal>().hauledUnit.getComponent<CreatureBase>().doDie(new Events.Die("died in a car crash"));
+                    e.getComponent<Liberal>().hauledUnit.getComponent<CreatureBase>().doDie(new Events.Die(mc.getTranslation("DEATH_chase_car_crash")));
+                    message = "<color=red>";
+                    string name;
                     if(!e.getComponent<Liberal>().hauledUnit.hasComponent<Liberal>())
-                        message = "<color=red>"  + e.getComponent<Liberal>().hauledUnit.getComponent<CreatureInfo>().encounterName;
+                       name = e.getComponent<Liberal>().hauledUnit.getComponent<CreatureInfo>().encounterName;
                     else
-                        message = "<color=red>" + e.getComponent<Liberal>().hauledUnit.getComponent<CreatureInfo>().getName();
+                        name = e.getComponent<Liberal>().hauledUnit.getComponent<CreatureInfo>().getName();
                     switch (mc.LCSRandom(3))
                     {
-                        case 0: message += " is crushed inside the car."; break;
-                        case 1: message += "'s lifeless body smashes through the windshield."; break;
-                        case 2: message += " is thrown from the car and killed instantly."; break;
+                        case 0: message += mc.getTranslation("CHASE_car_crash_hauled_death_1").Replace("$NAME", name); break;
+                        case 1: message += mc.getTranslation("CHASE_car_crash_hauled_death_2").Replace("$NAME", name); break;
+                        case 2: message += mc.getTranslation("CHASE_car_crash_hauled_death_3").Replace("$NAME", name); break;
                     }
                     message += "</color>";
                     mc.addCombatMessage(message);
@@ -1393,39 +1429,44 @@ namespace LCS.Engine.Scenes
 
                 if(e.getComponent<Body>().Blood <= 0 && e.getComponent<Body>().Alive)
                 {
-                    e.getComponent<CreatureBase>().doDie(new Events.Die("died in a car crash"));
+                    e.getComponent<CreatureBase>().doDie(new Events.Die(mc.getTranslation("DEATH_chase_car_crash")));
                     if(liberals.Contains(e)) liberals[liberals.IndexOf(e)] = null;
-                    message = "<color=red>" + e.getComponent<CreatureInfo>().getName();
+                    message = "<color=red>";
                     switch (mc.LCSRandom(3))
                     {
-                        case 0: message += " slumps in " + e.getComponent<CreatureInfo>().hisHer().ToLower() + " seat, out cold, and dies."; break;
-                        case 1: message += " is crushed by the impact."; break;
-                        case 2: message += " struggles free of the car, then collapses lifelessly."; break;
+                        case 0: message += mc.getTranslation("CHASE_car_crash_death_1").Replace("$NAME", e.getComponent<CreatureInfo>().getName()).Replace("$HISHER", e.getComponent<CreatureInfo>().hisHer().ToLower()); break;
+                        case 1: message += mc.getTranslation("CHASE_car_crash_death_2").Replace("$NAME", e.getComponent<CreatureInfo>().getName()); break;
+                        case 2: message += mc.getTranslation("CHASE_car_crash_death_3").Replace("$NAME", e.getComponent<CreatureInfo>().getName()); break;
                     }
                     message += "</color>";
                     mc.addCombatMessage(message);
                 }
                 else if (e.getComponent<Body>().Alive)
                 {
-                    message = "<color=yellow>" + e.getComponent<CreatureInfo>().getName();
+                    message = "<color=yellow>";
                     switch (mc.LCSRandom(3))
                     {
                         case 0:
-                            message += " grips the ";
-                            if (e.getComponent<Inventory>().weapon != null)
-                                message += e.getComponent<Inventory>().weapon.getComponent<ItemBase>().getName(true);
-                            else
-                                message += "car frame";
-                            message += " and struggles to " + e.getComponent<CreatureInfo>().hisHer().ToLower();
                             if (e.getComponent<Body>().canWalk())
-                                message += " feet.";
+                            {
+                                message += mc.getTranslation("CHASE_car_crash_lived_3").Replace("$NAME", e.getComponent<CreatureInfo>().getName())
+                                    .Replace("$WEAPON", e.getComponent<Inventory>().weapon != null ? e.getComponent<Inventory>().weapon.getComponent<ItemBase>().getName(true) : mc.getTranslation("CHASE_car_crash_frame"))
+                                    .Replace("$HISHER", e.getComponent<CreatureInfo>().hisHer().ToLower());
+                            }
                             else if ((e.getComponent<CreatureInfo>().flags & CreatureInfo.CreatureFlag.WHEELCHAIR) != 0)
-                                message += " wheelchair.";
+                            {
+                                message += mc.getTranslation("CHASE_car_crash_lived_3_wheelchair").Replace("$NAME", e.getComponent<CreatureInfo>().getName())
+                                    .Replace("$WEAPON", e.getComponent<Inventory>().weapon != null ? e.getComponent<Inventory>().weapon.getComponent<ItemBase>().getName(true) : mc.getTranslation("CHASE_car_crash_frame"))
+                                    .Replace("$HISHER", e.getComponent<CreatureInfo>().hisHer().ToLower());
+                            }
                             else
-                                message += " crawl from the wreckage.";                                
+                            {
+                                message += mc.getTranslation("CHASE_car_crash_lived_3_cantwalk").Replace("$NAME", e.getComponent<CreatureInfo>().getName())
+                                    .Replace("$WEAPON", e.getComponent<Inventory>().weapon != null ? e.getComponent<Inventory>().weapon.getComponent<ItemBase>().getName(true) : mc.getTranslation("CHASE_car_crash_frame"));
+                            }
                             break;
-                        case 1: message += " gasps in pain, but lives, for now."; break;
-                        case 2: message += "crawls free of the car, shivering with pain."; break;
+                        case 1: message += mc.getTranslation("CHASE_car_crash_lived_1").Replace("$NAME", e.getComponent<CreatureInfo>().getName()); break;
+                        case 2: message += mc.getTranslation("CHASE_car_crash_lived_2").Replace("$NAME", e.getComponent<CreatureInfo>().getName()); break;
                     }
                     message += "</color>";
                     mc.addCombatMessage(message);
@@ -1436,17 +1477,16 @@ namespace LCS.Engine.Scenes
         private void theyCrash(Entity vehicle)
         {
             MasterController mc = MasterController.GetMC();
-            string message = "<color=cyan>The ";
-            message += vehicle.getComponent<ItemBase>().getName() + " ";
+            string message = "<color=cyan>";
             switch (mc.LCSRandom(3))
             {
-                case 0: message += "slams into a building!"; break;
-                case 1: message += "spins out and crashes!"; break;
-                case 2: message += "hits a parked car and flips over!"; break;
+                case 0: message += mc.getTranslation("CHASE_car_con_crash_1").Replace("$CAR", vehicle.getComponent<ItemBase>().getName()); break;
+                case 1: message += mc.getTranslation("CHASE_car_con_crash_2").Replace("$CAR", vehicle.getComponent<ItemBase>().getName()); break;
+                case 2: message += mc.getTranslation("CHASE_car_con_crash_3").Replace("$CAR", vehicle.getComponent<ItemBase>().getName()); break;
             }
             message += "</color>";
             foreach (Entity e in vehicle.getComponent<Vehicle>().passengers)
-                e.getComponent<CreatureBase>().doDie(new Events.Die("died in a car crash"));
+                e.getComponent<CreatureBase>().doDie(new Events.Die(mc.getTranslation("DEATH_chase_car_crash")));
 
             conservativeCars.Remove(vehicle);
 
@@ -1468,7 +1508,7 @@ namespace LCS.Engine.Scenes
                                 Entity newLib = siegeBuffer[0];
                                 liberals[i] = newLib;
                                 siegeBuffer.Remove(newLib);
-                                MasterController.GetMC().addCombatMessage(newLib.getComponent<CreatureInfo>().getName() + " joins the fight");
+                                MasterController.GetMC().addCombatMessage(MasterController.GetMC().getTranslation("CHASE_siege_new_join").Replace("$NAME", newLib.getComponent<CreatureInfo>().getName()));
                             }
                         }
                     }
@@ -1504,21 +1544,21 @@ namespace LCS.Engine.Scenes
                     {
                         chasePhase = ChasePhase.COMPLETE;
                         if (!arrestedThisRound)
-                            mc.addCombatMessage("<color=cyan>Looks like you lost them!</color>");
+                            mc.addCombatMessage("<color=cyan>" + mc.getTranslation("CHASE_end_escape_full") + "</color>");
                         else
-                            mc.addCombatMessage("<color=cyan>But the rest manage to escape!</color>");
+                            mc.addCombatMessage("<color=cyan>" + mc.getTranslation("CHASE_end_escape_partial") + "</color>");
                         mc.uiController.chase.enableInput();
                     }
                     else
                     {
                         chasePhase = ChasePhase.COMPLETE;
                         if (escapedLibs > 0)
-                            mc.addCombatMessage("<color=cyan>But the rest managed to escape!</color>");
+                            mc.addCombatMessage("<color=cyan>" + mc.getTranslation("CHASE_end_escape_partial") + "</color>");
                         else
                         {
                             List<UI.PopupOption> ok = new List<UI.PopupOption>();
-                            ok.Add(new UI.PopupOption("Reflect on your Conservative ineptitude...", mc.doNextAction));
-                            mc.uiController.showOptionPopup("The Entire Squad has been eliminated.", ok);
+                            ok.Add(new UI.PopupOption(mc.getTranslation("CHASE_end_wipe_button"), mc.doNextAction));
+                            mc.uiController.showOptionPopup(mc.getTranslation("CHASE_end_wipe"), ok);
                         }
                         mc.uiController.chase.enableInput();
                     }
@@ -1532,14 +1572,14 @@ namespace LCS.Engine.Scenes
 
             if (liberals.Count(i => i != null) > 0 && chasePhase == ChasePhase.FIGHT)
             {
-                mc.addMessage("The siege is broken!", true);
+                mc.addMessage(mc.getTranslation("CHASE_end_siege_win"), true);
                 if (siegeLocation.getComponent<SafeHouse>().siegeType == LocationDef.EnemyType.POLICE)
                 {
-                    mc.addMessage("The Conservative automatons have been driven back for the time being. While they are regrouping, you might consider abandoning this safe house for a safer location.", true);
+                    mc.addMessage(mc.getTranslation("CHASE_end_siege_win_police"), true);
                     MasterController.news.currentStory.type = "SQUAD_BROKESIEGE";
                 }
                 else
-                    mc.addMessage("The Conservative automatons have been driven back. Unfortunately, you will never truly be safe from this filth until the Liberal Agenda is realized.", true);
+                    mc.addMessage(mc.getTranslation("CHASE_end_siege_win_other"), true);
 
                 
                 siegeLocation.getComponent<SafeHouse>().underSiege = false;
@@ -1552,7 +1592,7 @@ namespace LCS.Engine.Scenes
             }
             else if((liberals.Count(i => i != null) > 0 && chasePhase == ChasePhase.RUN) || escapedLibs > 0)
             {
-                mc.addMessage("You have escaped!\nThe Conservatives thought that the Liberal Crime Squad was finished, but once again, Conservative Thinking has proven itself to be based on Unsound Notions.\nHowever, all is not well. In your haste to escape you have lost everything that you've left behind. You'll have to start from scratch in a new safe house. Your funds remain under your control, fortunately.\nYour flight has given you some time to regroup, but the Conservatives will doubtless be preparing another assault.", true);
+                mc.addMessage(mc.getTranslation("CHASE_end_siege_escape"), true);
 
                 Entity lootLocation = null;
 
@@ -1610,8 +1650,8 @@ namespace LCS.Engine.Scenes
 
                 siegeLocation.getComponent<SafeHouse>().giveUpSiege();
                 List<UI.PopupOption> ok = new List<UI.PopupOption>();
-                ok.Add(new UI.PopupOption("Reflect on your Conservative ineptitude...", mc.doNextAction));
-                mc.uiController.showOptionPopup("The Entire Squad has been eliminated.", ok);
+                ok.Add(new UI.PopupOption(mc.getTranslation("CHASE_end_wipe_button"), mc.doNextAction));
+                mc.uiController.showOptionPopup(mc.getTranslation("CHASE_end_wipe"), ok);
             }
 
             chasePhase = ChasePhase.COMPLETE;

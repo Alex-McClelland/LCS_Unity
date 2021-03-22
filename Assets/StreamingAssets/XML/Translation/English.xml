@@ -59,6 +59,15 @@ mark placeholders for values that need to be determined within the code based on
   <translation_set prefix="COMMON">
     <translation key="and" value="And"/>
   </translation_set>
+  <!-- For all of the DEATH set, $NAME will be replaced by the name of the person that has died -->
+  <translation_set prefix="DEATH">
+    <translation key="chase_police_brutality" value="$NAME was tazed to death by police"/>
+    <translation key="chase_gangunit" value="$NAME was beaten to death by police"/>
+    <translation key="chase_deathsquad" value="$NAME was executed by Death Squad"/>
+    <translation key="chase_tank" value="$NAME was run over by a tank"/>
+    <translation key="chase_generic" value="$NAME was beaten to death by pursuers"/>
+    <translation key="chase_car_crash" value="$NAME died in a car crash"/>
+  </translation_set>
   <!-- Screen specific text -->
   <!-- Title Screen -->
   <translation_set prefix="TITLE">
@@ -217,6 +226,7 @@ mark placeholders for values that need to be determined within the code based on
     <!-- Liberal Management screen -->
     <translation key="quick_activity_button" value="(Q)uick Activity Menu"/>
     <translation key="view_martyrs" value="View Liberal Martyrs"/>
+    <translation key="martyr_epitaph" value="$CAUSE on $DATE"/> <!-- $CAUSE will be replaced with the string for the cause of death from the DEATH section. $DATE will be replaced with the date of death -->
     <!-- Quick Activity Menu -->
     <translation key="quick_activism" value="(1) Liberal Activism"/>
     <translation key="quick_legal_fundraising" value="(2)  Legal Fundraising"/>
@@ -622,5 +632,100 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="sentence_short_log" value="$NAME is sentenced to $COUNT $MONTH in prison"/> <!-- This is the log message that will display after a liberal has been sentenced with a short prison sentence. $NAME will be replaced with the name of the liberal, $COUNT will be replaced with the length of the sentence, and $MONTH will be replaced with the appropriate singular or plural of the word "month"-->
     <translation key="sentence_consecutive" value="to be served consecutively"/>
     <translation key="sentence_concurrent" value="to be served concurrently"/>
-  </translation_set> 
+  </translation_set>
+  <translation_set prefix="CHASE">
+    <translation key="title" value="Escape!"/>
+    <translation key="start_solo" value="As $NAME exits the site, $HESHE notices $HESHE is being followed by Conservative swine!"/> <!-- $NAME will be replaced by the name of the Liberal, $HESHE will be replaced by an appropriate pronoun -->
+    <translation key="start_squad" value="As $NAME exits the site, they notice they are being followed by Conservative swine!"/> <!-- $NAME will be replaced by the name of the squad -->
+    <translation key="run_button" value="(R)un For It!"/>
+    <translation key="run_car_button" value="T(R)y to Lose Them!"/>
+    <translation key="run_solo" value="$NAME makes a break for it!"/> <!-- $NAME will be replaced by the name of the Liberal -->
+    <translation key="run_squad" value="$NAME make a break for it!"/> <!-- $NAME will be replaced by the name of the squad -->
+    <translation key="fight_button" value="(F)ight!"/>
+    <translation key="give_up_button" value="(G)ive Up"/>
+    <translation key="continue_button" value="Continue (enter)"/>
+    <translation key="car_bail_button" value="(B)ail out and run!"/>
+    <translation key="siege_escape_start" value="&lt;color=red&gt;UNDER SIEGE: ESCAPE OR ENGAGE&lt;/color&gt;\nYou are about to exit the compound to lift the Conservative siege on your safehouse. The enemy is ready for you, and you will have to defeat them all or run away to survive this encounter. Your Squad has filled out to six members if any were available. If you have a larger pool of Liberals, they will provide cover fire from the compound until needed."/>
+    <translation key="surrender" value="You stop and are arrested"/>
+    <translation key="siege_new_join" value="$NAME joins the fight"/> <!-- $NAME will be replaced by the name of the Liberal joining the chase -->
+    <translation key="end_escape_full" value="Looks like you lost them!"/>
+    <translation key="end_escape_partial" value="But the rest manage to escape!"/>
+    <translation key="end_wipe" value="The Entire Squad has been eliminated."/>
+    <translation key="end_wipe_button" value="Reflect on your Conservative ineptitude..."/>
+    <translation key="end_siege_win" value="The siege is broken!"/>
+    <translation key="end_siege_win_police" value="The Conservative automatons have been driven back for the time being. While they are regrouping, you might consider abandoning this safe house for a safer location."/>
+    <translation key="end_siege_win_other" value="The Conservative automatons have been driven back. Unfortunately, you will never truly be safe from this filth until the Liberal Agenda is realized."/>
+    <translation key="end_siege_escape" value="You have escaped!\nThe Conservatives thought that the Liberal Crime Squad was finished, but once again, Conservative Thinking has proven itself to be based on Unsound Notions.\nHowever, all is not well. In your haste to escape you have lost everything that you've left behind. You'll have to start from scratch in a new safe house. Your funds remain under your control, fortunately.\nYour flight has given you some time to regroup, but the Conservatives will doubtless be preparing another assault."/>
+    <!-- Car chase event text -->
+    <translation key="car_event_fruit" value="You are speeding towards a flimsy fruit stand!"/>
+    <translation key="car_event_red" value="There's a red light with cross traffic ahead!"/>
+    <translation key="car_event_truck" value="A truck pulls out into your path!"/>
+    <translation key="car_event_child" value="A kid runs into the street for his ball!"/>
+    <translation key="car_event_fruit_risky" value="(R) Swerve to avoid it!"/>
+    <translation key="car_event_fruit_safe" value="(F) Plow through it!"/>
+    <translation key="car_event_fruit_desc" value="Fruit smashes all over the windshield!"/>
+    <translation key="car_event_fruit_oops" value="The fruit seller is squashed!"/>
+    <translation key="car_event_truck_risky" value="(R) Speed around it!"/>
+    <translation key="car_event_truck_safe" value="(F) Slow Down!"/>
+    <translation key="car_event_truck_desc" value="You slow down, and carefully evade the truck."/>
+    <translation key="car_event_red_risky" value="(R)un the light!"/>
+    <translation key="car_event_red_safe" value="(F) Slow down and turn!"/>
+    <translation key="car_event_red_desc" value="You slow down, and turn the corner."/>
+    <translation key="car_event_child_risky" value="(R) Swere around them!"/>
+    <translation key="car_event_child_safe" value="(F) Slam the brakes!"/>
+    <translation key="car_event_child_desc" value="You slow down and carefully avoid the kid."/>
+    <translation key="car_event_child_cons_shoot" value="The Conservative bastards unleash a hail of gunfire!"/>
+    <translation key="car_event_child_cons_hold" value="Both sides refrain from endangering the child..."/>
+    <translation key="car_event_swerve" value="You swerve to avoid the obstacle!"/>
+    <!-- Escape flavour text - in all of these $NAME will be replaced by the name of the relevant runner -->
+    <translation key="run_fast_1" value="$NAME suddenly darts into an alley!"/>
+    <translation key="run_fast_2" value="$NAME runs as fast as $HESHE can!"/> <!-- $HESHE will be replaced with an appropriate pronoun -->
+    <translation key="run_fast_3" value="$NAME climbs a fence in record time!"/>
+    <translation key="run_fast_4" value="$NAME scales a small building and leaps between rooftops!"/>
+    <translation key="run_slow" value="$NAME can't keep up!"/>
+    <translation key="run_escape" value="$NAME breaks away!"/>
+    <translation key="run_caught_police" value="$NAME is seized, pushed to the ground, and handcuffed!"/>
+    <translation key="run_caught_police_log" value="$NAME was arrested while fleeing Conservative Swine."/>
+    <translation key="run_caught_police_brutality" value="$NAME is seized, thrown to the ground, and tazed repeatedly!"/>
+    <translation key="run_caught_police_death" value="$NAME is seized, thrown to the ground, and tazed to death!"/>
+    <translation key="run_caught_deathsquad" value="$NAME is seized, thrown to the ground, and shot in the head!"/>
+    <translation key="run_caught_tank" value="$NAME is crushed beneath the tank's treads!"/>
+    <translation key="run_caught_gangunit" value="$NAME is seized, thrown to the ground, and beaten senseless!"/>
+    <translation key="run_caught_gangunit_death" value="$NAME is seized, thrown to the ground, and beaten to death!"/>
+    <translation key="run_caught_generic" value="$NAME is seized, thrown to the ground, and beaten senseless!"/>
+    <translation key="run_caught_generic_death" value="$NAME is seized, thrown to the ground, and beaten to death!"/>
+    <translation key="run_caught_arrest_hauled_liberal" value="$NAME is arrested"/>
+    <translation key="car_desc_1" value="You keep the gas floored!"/>
+    <translation key="car_desc_2" value="You swerve around the next corner!"/>
+    <translation key="car_desc_3" value="You screech through an empty lot to the next street!"/>
+    <translation key="car_desc_4" value="You make obscene gestures at the pursuers!"/>
+    <translation key="car_desc_4_fast" value="You boldly weave through oncoming traffic!"/>
+    <translation key="car_slow_1" value="$NAME falls behind!"/>
+    <translation key="car_slow_2" value="$NAME skids out!"/>
+    <translation key="car_slow_3" value="$NAME backs off for safety."/>
+    <translation key="car_slow_4" value="$NAME brakes hard and nearly crashes!"/>
+    <translation key="car_neutral" value="$NAME is still on your tail!"/>
+    <translation key="car_incoming" value="Here they come!"/>
+    <translation key="car_bail" value="You bail out and run!"/>
+    <translation key="car_change_driver" value="$NAME takes the wheel"/>
+    <translation key="car_change_driver_religious" value="JESUS takes the wheel"/>
+    <translation key="car_lib_crash_1" value="Your $CAR slams into a building!"/> <!-- $CAR will be replaced by the name of the car -->
+    <translation key="car_lib_crash_2" value="Your $CAR spins out and crashes!"/> <!-- $CAR will be replaced by the name of the car -->
+    <translation key="car_lib_crash_3" value="Your $CAR hits a parked car and flips over!"/> <!-- $CAR will be replaced by the name of the car -->
+    <translation key="car_con_crash_1" value="The $CAR slams into a building!"/> <!-- $CAR will be replaced by the name of the car -->
+    <translation key="car_con_crash_2" value="The $CAR spins out and crashes!"/> <!-- $CAR will be replaced by the name of the car -->
+    <translation key="car_con_crash_3" value="The $CAR hits a parked car and flips over!"/> <!-- $CAR will be replaced by the name of the car -->
+    <translation key="car_crash_hauled_death_1" value="$NAME is crushed inside the car."/>
+    <translation key="car_crash_hauled_death_2" value="$NAME's lifeless body smashes through the windshield."/>
+    <translation key="car_crash_hauled_death_3" value="$NAME is thrown from the car and killed instantly."/>
+    <translation key="car_crash_death_1" value="$NAME slumps in $HISHER seat, out cold, and dies."/> <!-- $HISHER will be replaced by an appropriate pronoun -->
+    <translation key="car_crash_death_2" value="$NAME is crushed by the impact."/>
+    <translation key="car_crash_death_3" value="$NAME struggles free of the car, then collapses lifelessly."/>
+    <translation key="car_crash_lived_1" value="$NAME gasps in pain, but lives, for now."/>
+    <translation key="car_crash_lived_2" value="$NAME crawls free of the car, shivering with pain."/>
+    <translation key="car_crash_lived_3" value="$NAME grips the $WEAPON and struggles to $HISHER feet."/> <!-- $WEAPON will be replaced with the name of their currently equipped weapon. $HISHER will be replaced with an appropriate pronoun-->
+    <translation key="car_crash_lived_3_wheelchair" value="$NAME grips the $WEAPON and struggles to $HISHER wheelchair."/> <!-- $WEAPON will be replaced with the name of their currently equipped weapon. $HISHER will be replaced with an appropriate pronoun-->
+    <translation key="car_crash_lived_3_cantwalk" value="$NAME grips the $WEAPON and struggles to crawl from the wreckage"/> <!-- $WEAPON will be replaced with the name of their currently equipped weapon. -->
+    <translation key="car_crash_frame" value="car frame"/> <!-- This will be used in place of $WEAPON in the above strings if the liberal is unarmed -->
+  </translation_set>
 </translations>

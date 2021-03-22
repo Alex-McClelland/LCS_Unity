@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using LCS.Engine.Components.World;
+using LCS.Engine;
 
 public class MemorialUI : MonoBehaviour {
 
@@ -27,6 +28,6 @@ public class MemorialUI : MonoBehaviour {
             damagedOrgans.Add(s, "DESTROYED");
         }
         i_Portrait.buildPortrait(memorial.portrait, memorial.old, damagedOrgans);
-        t_Epitaph.text = memorial.name + " " + memorial.causeOfDeath + " on " + memorial.timeOfDeath.ToString("D");
+        t_Epitaph.text = MasterController.GetMC().getTranslation("BASE_martyr_epitaph").Replace("$CAUSE", memorial.causeOfDeath.Replace("$NAME", memorial.name)).Replace("DATE", memorial.timeOfDeath.ToString("D"));
     }
 }

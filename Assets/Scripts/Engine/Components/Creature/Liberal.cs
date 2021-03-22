@@ -262,7 +262,7 @@ namespace LCS.Engine.Components.Creature
                 }
             }
             MasterController.lcs.liberalMartyrs.Add(new LiberalCrimeSquad.Memorial(getComponent<Portrait>().copy(), getComponent<Age>().getAge() >= (getComponent<Body>().getSpecies().oldage - getComponent<Body>().getSpecies().oldage/6), nameString, args.cause, MasterController.GetMC().currentDate, damagedOrgans));
-            MasterController.GetMC().addMessage(getComponent<CreatureInfo>().getName() + " " + args.cause);
+            MasterController.GetMC().addMessage(args.cause.Replace("$NAME", getComponent<CreatureInfo>().getName()));
             //If the Founder dies (probably due to old age) after the LCS has disbanded, the game ends as there is no contact between members even if they would have rejoined
             if (!MasterController.GetMC().canSeeThings && leader == null)
                 MasterController.GetMC().endGameState = MasterController.EndGame.DISBANDLOSS;
