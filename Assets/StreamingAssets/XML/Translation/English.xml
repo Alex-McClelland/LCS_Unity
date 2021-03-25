@@ -24,16 +24,29 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="masculine_gender_descriptor" value="Man"/>
     <translation key="feminine_gender_descriptor" value="Woman"/>
     <translation key="neutral_gender_descriptor" value="Person"/>
+    <translation key="masculine_title" value="Mr."/>
+    <translation key="feminine_title" value="Mrs."/>
+    <translation key="neutral_title" value="Mx."/>
   </translation_set>
   <translation_set prefix="GOVERNMENT">
     <translation key="president" value="President"/>
     <translation key="vice_president" value="Vice President"/>
+    <translation key="vice_president_short" value="VP"/>
     <translation key="secretary_of_state" value="Secretary of State"/>
     <translation key="attorney_general" value="Attorney General"/>
+    <translation key="justice" value="Justice"/>
     <translation key="house" value="House"/>
     <translation key="senate" value="Senate"/>
     <translation key="yea" value="Yea"/> <!-- Affirmative government vote -->
     <translation key="nay" value="Nay"/> <!-- Negative government vote -->
+    <translation key="president_died" value="With the death of President $PRESIDENT, Vice President $VP has ascended to the Presidency."/> <!-- $PRESIDENT will be replaced by the name of the president, $VP will be replaced by the name of the vice president -->
+    <translation key="vp_died" value="Due to the untimely death of Vice President $OLDVP, $NEWVP has been appointed in their stead."/> <!-- $OLDVP will be replaced by the name of the old Vice President, $NEWVP will be replaced by the name of the new vice president -->
+    <translation key="judge_died" value="With the death of $NAME, a new vacancy has opened in the Supreme Court"/> <!-- $NAME will be replaced with the name of the judge who died -->
+    <!-- The following four titles are used for presidential candidates during elections -->
+    <translation key="governor" value="Governor"/>
+    <translation key="senator" value="Senator"/>
+    <translation key="general" value="Ret. General"/>
+    <translation key="rep" value="Representative"/>
   </translation_set>
   <translation_set prefix="ALIGNMENT">
     <translation key="l+" value="Elite Liberal"/>
@@ -58,6 +71,7 @@ mark placeholders for values that need to be determined within the code based on
   </translation_set>
   <translation_set prefix="COMMON">
     <translation key="and" value="And"/>
+    <translation key="fast_mode_button" value="FAST MODE(F1)"/>
   </translation_set>
   <!-- For all of the DEATH set, $NAME will be replaced by the name of the person that has died -->
   <translation_set prefix="DEATH">
@@ -727,5 +741,39 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="car_crash_lived_3_wheelchair" value="$NAME grips the $WEAPON and struggles to $HISHER wheelchair."/> <!-- $WEAPON will be replaced with the name of their currently equipped weapon. $HISHER will be replaced with an appropriate pronoun-->
     <translation key="car_crash_lived_3_cantwalk" value="$NAME grips the $WEAPON and struggles to crawl from the wreckage"/> <!-- $WEAPON will be replaced with the name of their currently equipped weapon. -->
     <translation key="car_crash_frame" value="car frame"/> <!-- This will be used in place of $WEAPON in the above strings if the liberal is unarmed -->
+  </translation_set>
+  <translation_set prefix="SHOP">
+    <translation key="buy_button" value="(B)UY"/>
+    <translation key="sell_button" value="(S)ELL"/>
+    <translation key="done_button" value="Done (esc)"/>
+    <translation key="sell_all_button" value="Sell All (L)oot"/>
+    <translation key="shift_click_info" value="Shift + Click to sell entire stack"/>
+    <translation key="total_cost" value="TOTAL: $$AMT"/> <!-- $AMT will be replaced by the value of the current cart -->
+    <translation key="checkout_buy" value="Buy (⏎)"/>
+    <translation key="checkout_sell" value="Sell (⏎)"/>
+  </translation_set>
+  <translation_set prefix="LAW">
+    <translation key="supreme_court_title" value="Supreme Court Watch $YEAR"/> <!-- $YEAR will be replaced by the current game year -->
+    <translation key="supreme_court_desc" value="A Decision Could $DESC"/> <!-- $DESC will be replaced by the specific description of the issue -->
+    <translation key="supreme_court_change" value="$COUNT for Change"/> <!-- $COUNT will be replaced by the number of votes in favor of the new law -->
+    <translation key="supreme_court_status_quo" value="$COUNT for Status Quo"/> <!-- $COUNT will be replaced by the number of votes against the new law-->
+    <translation key="dead_in_congress" value="DEAD IN CONGRESS"/>
+    <translation key="forced_by_congress" value="FORCED BY CONGRESS"/>
+    <translation key="veto" value="*** VETO ***"/>
+    <translation key="prop_tie" value="Status Quo"/>
+    <translation key="prop_title" value="Important Propositions $YEAR"/> <!-- $YEAR will be replaced by the current game year -->
+    <translation key="prop_name" value="Prop $NAME"/> <!-- $NAME will be replaced by the number of the proposition -->
+    <translation key="law_desc" value="To $DESC"/> <!-- $DESC will be replaced by the specific description of the issue -->
+    <translation key="congress_title" value="Legislative Agenda $YEAR"/> <!-- $YEAR will be replaced by the current game year -->
+    <translation key="congress_name" value="Joint Resolution $NAME"/> <!-- $NAME will be replaced by the name of the bill -->
+    <translation key="show_results_button" value="Show Results"/>
+    <translation key="continue" value="Continue"/>
+    <translation key="watch_president" value="Watch President"/>
+    <translation key="judge_retire" value="$NAME is stepping down."/> <!-- $NAME will be replaced by the name of the retiring judge -->
+    <translation key="judge_honorific" value="The Honorable $NAME"/> <!-- This text will be used when giving the name of a supreme court judge -->
+    <translation key="judge_appoint" value="After much debate and televised testimony, a new justice, $NAME, is appointed to the bench."/> <!-- $NAME will be replaced with the name of the new judge -->
+    <translation key="shift_liberal" value="$LAW became &lt;color=lime&gt;more Liberal&lt;/color&gt;."/> <!-- $LAW will be replaced by the name of the law that has changed -->
+    <translation key="shift_conservative" value="$LAW became &lt;color=red&gt;more Conservative&lt;/color&gt;."/> <!-- $LAW will be replaced by the name of the law that has changed -->
+    <translation key="shift_elite_liberal" value="$LAW became &lt;color=lime&gt;&lt;b&gt;ELITE LIBERAL&lt;/b&gt;&lt;/color&gt;."/> <!-- $LAW will be replaced by the name of the law that has changed -->
   </translation_set>
 </translations>

@@ -233,40 +233,40 @@ namespace LCS.Engine.Components.World
             }
 
             if(candidate == president)
-                candidate.getComponent<CreatureInfo>().encounterName = "President " + candidate.getComponent<CreatureInfo>().surname;
+                candidate.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_president") + " " + candidate.getComponent<CreatureInfo>().surname;
             else if(candidate == vicePresident)
-                candidate.getComponent<CreatureInfo>().encounterName = "Vice President " + candidate.getComponent<CreatureInfo>().surname;
+                candidate.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_vice_president") + " " + candidate.getComponent<CreatureInfo>().surname;
             else
             {
                 if(MasterController.GetMC().LCSRandom(2) == 0)
-                    candidate.getComponent<CreatureInfo>().encounterName = "Governor " + candidate.getComponent<CreatureInfo>().surname;
+                    candidate.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_governor") + " " + candidate.getComponent<CreatureInfo>().surname;
                 else if (MasterController.GetMC().LCSRandom(2) == 0)
-                    candidate.getComponent<CreatureInfo>().encounterName = "Senator " + candidate.getComponent<CreatureInfo>().surname;
+                    candidate.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_senator") + " " + candidate.getComponent<CreatureInfo>().surname;
                 else if (MasterController.GetMC().LCSRandom(2) == 0)
-                    candidate.getComponent<CreatureInfo>().encounterName = "Ret. General " + candidate.getComponent<CreatureInfo>().surname;
+                    candidate.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_general") + " " + candidate.getComponent<CreatureInfo>().surname;
                 else if (MasterController.GetMC().LCSRandom(2) == 0)
-                    candidate.getComponent<CreatureInfo>().encounterName = "Representative " + candidate.getComponent<CreatureInfo>().surname;
+                    candidate.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_rep") + " " + candidate.getComponent<CreatureInfo>().surname;
                 else
                 {
                     if (candidate.getComponent<CreatureInfo>().alignment == Alignment.LIBERAL)
                     {
                         if (candidate.getComponent<CreatureInfo>().genderLiberal == CreatureInfo.CreatureGender.FEMALE)
-                            candidate.getComponent<CreatureInfo>().encounterName = "Mrs. " + candidate.getComponent<CreatureInfo>().surname;
+                            candidate.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GENDER_feminine_title") + " " + candidate.getComponent<CreatureInfo>().surname;
                         else if (candidate.getComponent<CreatureInfo>().genderLiberal == CreatureInfo.CreatureGender.MALE ||
                             candidate.getComponent<CreatureInfo>().genderLiberal == CreatureInfo.CreatureGender.WHITEMALEPATRIARCH)
-                            candidate.getComponent<CreatureInfo>().encounterName = "Mr. " + candidate.getComponent<CreatureInfo>().surname;
+                            candidate.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GENDER_masculine_title") + " " + candidate.getComponent<CreatureInfo>().surname;
                         else
-                            candidate.getComponent<CreatureInfo>().encounterName = "Mx. " + candidate.getComponent<CreatureInfo>().surname;
+                            candidate.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GENDER_neutral_title") + " " + candidate.getComponent<CreatureInfo>().surname;
                     }
                     else
                     {
                         if (candidate.getComponent<CreatureInfo>().genderConservative == CreatureInfo.CreatureGender.FEMALE)
-                            candidate.getComponent<CreatureInfo>().encounterName = "Mrs. " + candidate.getComponent<CreatureInfo>().surname;
+                            candidate.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GENDER_feminine_title") + " " + candidate.getComponent<CreatureInfo>().surname;
                         else if (candidate.getComponent<CreatureInfo>().genderConservative == CreatureInfo.CreatureGender.MALE ||
                             candidate.getComponent<CreatureInfo>().genderConservative == CreatureInfo.CreatureGender.WHITEMALEPATRIARCH)
-                            candidate.getComponent<CreatureInfo>().encounterName = "Mr. " + candidate.getComponent<CreatureInfo>().surname;
+                            candidate.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GENDER_masculine_title") + " " + candidate.getComponent<CreatureInfo>().surname;
                         else
-                            candidate.getComponent<CreatureInfo>().encounterName = "Mx. " + candidate.getComponent<CreatureInfo>().surname;
+                            candidate.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GENDER_neutral_title") + " " + candidate.getComponent<CreatureInfo>().surname;
                     }
                 }
             }
@@ -428,7 +428,7 @@ namespace LCS.Engine.Components.World
                     president = liberalCandidate;
                     vicePresident = getCabinetMember();
                     vicePresident.getComponent<Politician>().position = "VICE_PRESIDENT";
-                    vicePresident.getComponent<CreatureInfo>().encounterName = "Vice President";
+                    vicePresident.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_vice_president");
                     presidentTerm = 1;
                 }
             }
@@ -440,7 +440,7 @@ namespace LCS.Engine.Components.World
                     president = conservativeCandidate;
                     vicePresident = getCabinetMember();
                     vicePresident.getComponent<Politician>().position = "VICE_PRESIDENT";
-                    vicePresident.getComponent<CreatureInfo>().encounterName = "Vice President";
+                    vicePresident.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_vice_president");
                     presidentTerm = 1;
                 }
             }
@@ -595,20 +595,20 @@ namespace LCS.Engine.Components.World
                     }
                 }
 
-                vicePresident.getComponent<CreatureInfo>().encounterName = "Vice President " + vicePresident.getComponent<CreatureInfo>().surname;
+                vicePresident.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_vice_president") + " " + vicePresident.getComponent<CreatureInfo>().surname;
             }
             
             if(presidentTerm == 1)
             {
                 secretaryOfState = getCabinetMember();
                 secretaryOfState.getComponent<Politician>().position = "SECRETARY_OF_STATE";
-                secretaryOfState.getComponent<CreatureInfo>().encounterName = "Secretary of State";
+                secretaryOfState.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_secretary_of_state");
                 attorneyGeneral = getCabinetMember();
                 attorneyGeneral.getComponent<Politician>().position = "ATTORNEY_GENERAL";
-                attorneyGeneral.getComponent<CreatureInfo>().encounterName = "Attorney General";
+                attorneyGeneral.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_attorney_general");
             }
 
-            president.getComponent<CreatureInfo>().encounterName = "President " + president.getComponent<CreatureInfo>().surname;
+            president.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_president") + " " + president.getComponent<CreatureInfo>().surname;
 
             president.persist();
             vicePresident.persist();
@@ -752,7 +752,7 @@ namespace LCS.Engine.Components.World
             politicianComponent.position = "SUPREME_COURT";
             politicianComponent.alignment = newJusticeAlign;
             newJustice.setComponent(politicianComponent);
-            newJustice.getComponent<CreatureInfo>().encounterName = "Justice " + newJustice.getComponent<CreatureInfo>().surname;
+            newJustice.getComponent<CreatureInfo>().encounterName = MasterController.GetMC().getTranslation("GOVERNMENT_justice") + " " + newJustice.getComponent<CreatureInfo>().surname;
             newJustice.persist();
             supremeCourt.Add(newJustice);
 
@@ -761,12 +761,14 @@ namespace LCS.Engine.Components.World
             if (retiree != null)
             {
                 color = UIControllerImpl.getAlignmentColor(retiree.getComponent<Politician>().alignment);
-                messageText += color + "Justice " + retiree.getComponent<CreatureInfo>().getName() + "</color> is stepping down.\n";
+                messageText += MasterController.GetMC().getTranslation("LAW_judge_retire").Replace("$NAME", color + MasterController.GetMC().getTranslation("GOVERNMENT_justice") + " " + retiree.getComponent<CreatureInfo>().getName() + "</color>") + "\n";
             }
 
             color = UIControllerImpl.getAlignmentColor(newJusticeAlign);
 
-            messageText += "After much debate and televised testimony, a new justice, " + color +"the Honorable " + newJustice.getComponent<CreatureInfo>().getName() + "</color>, is appointed to the bench.";
+            string newJudgeName = color + MasterController.GetMC().getTranslation("LAW_judge_honorific").Replace("$NAME", newJustice.getComponent<CreatureInfo>().getName()) + "</color>";
+
+            messageText += MasterController.GetMC().getTranslation("LAW_judge_appoint").Replace("$NAME", newJudgeName);
             mc.addMessage(messageText, true);
         }
 
@@ -1463,14 +1465,14 @@ namespace LCS.Engine.Components.World
             {
                 laws[law].alignment++;
                 if(laws[law].alignment == Alignment.ELITE_LIBERAL)
-                    MasterController.GetMC().addMessage(GameData.getData().lawList[law].name + " became <color=lime><b>ELITE LIBERAL</b></color>.");
+                    MasterController.GetMC().addMessage(MasterController.GetMC().getTranslation("LAW_shift_elite_liberal").Replace("$LAW", GameData.getData().lawList[law].name));
                 else
-                    MasterController.GetMC().addMessage(GameData.getData().lawList[law].name + " became <color=lime>more Liberal</color>.");
+                    MasterController.GetMC().addMessage(MasterController.GetMC().getTranslation("LAW_shift_liberal").Replace("$LAW", GameData.getData().lawList[law].name));
             }
             else
             {
                 laws[law].alignment--;
-                MasterController.GetMC().addMessage(GameData.getData().lawList[law].name + " became <color=red>more Conservative</color>.");
+                MasterController.GetMC().addMessage(MasterController.GetMC().getTranslation("LAW_shift_conservative").Replace("$LAW", GameData.getData().lawList[law].name));
             }
         }
 
@@ -1513,7 +1515,7 @@ namespace LCS.Engine.Components.World
             {
                 promoteVP();
 
-                mc.addMessage("With the death of President " + whoDied.getComponent<CreatureInfo>().getName() + ", Vice President " + president.getComponent<CreatureInfo>().getName() + " has ascended to the Presidency.", true);
+                mc.addMessage(MasterController.GetMC().getTranslation("GOVERNMENT_president_died").Replace("$PRESIDENT", whoDied.getComponent<CreatureInfo>().getName()).Replace("$VP", president.getComponent<CreatureInfo>().getName()), true);
                 if (mc.currentDate.Year % 4 < 2) presidentTerm = 0;
                 else presidentTerm = 1;
             }
@@ -1522,7 +1524,7 @@ namespace LCS.Engine.Components.World
                 vicePresident = getCabinetMember();
                 vicePresident.persist();
 
-                mc.addMessage("Due to the untimely death of Vice President " + whoDied.getComponent<CreatureInfo>().getName() + ", " + vicePresident.getComponent<CreatureInfo>().getName() + " has been appointed in their stead.", true);
+                mc.addMessage(MasterController.GetMC().getTranslation("GOVERNMENT_vp_died").Replace("$OLDVP", whoDied.getComponent<CreatureInfo>().getName()).Replace("$NEWVP", vicePresident.getComponent<CreatureInfo>().getName()), true);
             }
             //The other cabinent members aren't really important enough to bother informing the player about their replacement
             else if(whoDied.getComponent<Politician>().position == "SECRETARY_OF_STATE")
@@ -1538,7 +1540,8 @@ namespace LCS.Engine.Components.World
             else if(whoDied.getComponent<Politician>().position == "SUPREME_COURT")
             {
                 string color = UIControllerImpl.getAlignmentColor(whoDied.getComponent<Politician>().alignment);
-                appointNewJustice(false, "With the death of " + color + "Justice " + whoDied.getComponent<CreatureInfo>().getName() + "</color>, a new vacancy has opened in the Supreme Court\n");
+                string judgeName = color + MasterController.GetMC().getTranslation("GOVERNMENT_justice") + " " + whoDied.getComponent<CreatureInfo>().getName() + "</color>";
+                appointNewJustice(false, MasterController.GetMC().getTranslation("GOVERNMENT_judge_died").Replace("$NAME", judgeName) + "\n");
                 supremeCourt.Remove(whoDied);                
             }
             else if(whoDied.getComponent<Politician>().position == "CEO")

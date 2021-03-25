@@ -126,7 +126,8 @@ public class LawScreenController : MonoBehaviour, Law {
         if (propYesVotes > propNoVotes) yesColor = "<color=white>";
         else noColor = "<color=white>";
 
-        laws[currentItem].GetComponent<Proposition>().t_Support.text = yesColor + propYesVotes + " for Change</color>\n" + noColor + propNoVotes + " for Status Quo</color>";
+        laws[currentItem].GetComponent<Proposition>().t_Support.text = yesColor + MasterController.GetMC().getTranslation("LAW_supreme_court_change").Replace("$COUNT", propYesVotes.ToString()) + "</color>\n" 
+            + noColor + MasterController.GetMC().getTranslation("LAW_supreme_court_status_quo").Replace("$COUNT", propNoVotes.ToString()) + "</color>";
 
         if (propYesVotes + propNoVotes == MasterController.government.supremeCourt.Count)
         {            
@@ -181,13 +182,13 @@ public class LawScreenController : MonoBehaviour, Law {
         string noColor = "<color=grey>";
         if (houseYesVotes > houseNoVotes) yesColor = "<color=white>";
         else noColor = "<color=white>";
-        laws[currentItem].GetComponent<Bill>().t_House.text = "Yay: " + yesColor + houseYesVotes + "</color>\nNay: " + noColor + houseNoVotes + "</color>";
+        laws[currentItem].GetComponent<Bill>().t_House.text = MasterController.GetMC().getTranslation("GOVERNMENT_yea") + ": " + yesColor + houseYesVotes + "</color>\n" + MasterController.GetMC().getTranslation("GOVERNMENT_nay") + ": " + noColor + houseNoVotes + "</color>";
 
         yesColor = "<color=grey>";
         noColor = "<color=grey>";
         if (senateYesVotes > senateNoVotes) yesColor = "<color=white>";
         else noColor = "<color=white>";
-        laws[currentItem].GetComponent<Bill>().t_Senate.text = "Yay: " + yesColor + senateYesVotes + "</color>\nNay: " + noColor + senateNoVotes + "</color>";
+        laws[currentItem].GetComponent<Bill>().t_Senate.text = MasterController.GetMC().getTranslation("GOVERNMENT_yea") + ": " + yesColor + senateYesVotes + "</color>\n" + MasterController.GetMC().getTranslation("GOVERNMENT_nay") + ": " + noColor + senateNoVotes + "</color>";
 
         if (senateYesVotes + senateNoVotes == MasterController.government.senateNum &&
             houseYesVotes + houseNoVotes == MasterController.government.houseNum)
@@ -195,9 +196,9 @@ public class LawScreenController : MonoBehaviour, Law {
             if(senateYesVotes == senateNoVotes)
             {
                 if(billResults[currentItem].vpVote)
-                    laws[currentItem].GetComponent<Bill>().t_Senate.text = "(VP) Yay: " + "<color=white>" + senateYesVotes + "</color>\nNay: " + "<color=grey>" + senateNoVotes + "</color>";
+                    laws[currentItem].GetComponent<Bill>().t_Senate.text = "(" + MasterController.GetMC().getTranslation("GOVERNMENT_vice_president_short") + ") " + MasterController.GetMC().getTranslation("GOVERNMENT_yea") + ": " + "<color=white>" + senateYesVotes + "</color>\n" + MasterController.GetMC().getTranslation("GOVERNMENT_nay") + ": " + "<color=grey>" + senateNoVotes + "</color>";
                 else
-                    laws[currentItem].GetComponent<Bill>().t_Senate.text = "Yay: " + "<color=grey>" + senateYesVotes + "</color>\n(VP) Nay: " + "<color=white>" + senateNoVotes + "</color>";
+                    laws[currentItem].GetComponent<Bill>().t_Senate.text = MasterController.GetMC().getTranslation("GOVERNMENT_yea") + ": " + "<color=grey>" + senateYesVotes + "</color>\n(" + MasterController.GetMC().getTranslation("GOVERNMENT_vice_president_short") + ") " + MasterController.GetMC().getTranslation("GOVERNMENT_nay") + ": " + "<color=white>" + senateNoVotes + "</color>";
             }
 
             if (billResults[currentItem].houseYesVotes > MasterController.government.houseNum / 2 &&
@@ -209,7 +210,7 @@ public class LawScreenController : MonoBehaviour, Law {
             }
             else
             {
-                laws[currentItem].GetComponent<Bill>().t_President.text = "<color=grey>DEAD IN CONGRESS</color>";
+                laws[currentItem].GetComponent<Bill>().t_President.text = "<color=grey>" + MasterController.GetMC().getTranslation("LAW_dead_in_congress") + "</color>";
             }
 
             loadNextBillResult();
@@ -246,13 +247,13 @@ public class LawScreenController : MonoBehaviour, Law {
         if (propYesVotes > propNoVotes) yesColor = "<color=white>";
         else noColor = "<color=white>";
 
-        laws[currentItem].GetComponent<Proposition>().t_Support.text = "Yes: " + yesColor + (propYesVotes / 1000f).ToString("P1") + "</color>\nNo:  " + noColor + (propNoVotes / 1000f).ToString("P1") + "</color>";
+        laws[currentItem].GetComponent<Proposition>().t_Support.text = MasterController.GetMC().getTranslation("OPTION_yes") + ": " + yesColor + (propYesVotes / 1000f).ToString("P1") + "</color>\n" + MasterController.GetMC().getTranslation("OPTION_no") + ":  " + noColor + (propNoVotes / 1000f).ToString("P1") + "</color>";
 
         if (propYesVotes + propNoVotes == 1000)
         {
             if (propYesVotes == 500)
             {
-                laws[currentItem].GetComponent<Proposition>().t_Support.text = "Yes: " + yesColor + (propYesVotes / 1000f).ToString("P1") + "</color>\n(Status Quo) No:  " + noColor + (propNoVotes / 1000f).ToString("P1") + "</color>";
+                laws[currentItem].GetComponent<Proposition>().t_Support.text = MasterController.GetMC().getTranslation("OPTION_yes") + ": " + yesColor + (propYesVotes / 1000f).ToString("P1") + "</color>\n(" + MasterController.GetMC().getTranslation("LAW_prop_tie") + ") " + MasterController.GetMC().getTranslation("OPTION_no") + ":  " + noColor + (propNoVotes / 1000f).ToString("P1") + "</color>";
             }
             loadNextPropResult();
         }
@@ -264,7 +265,9 @@ public class LawScreenController : MonoBehaviour, Law {
         mode = Mode.PROP;
         propResults = new List<int>();
 
-        t_Title.text = "Important Propositions " + MasterController.GetMC().currentDate.Year;
+        MasterController mc = MasterController.GetMC();
+
+        t_Title.text = mc.getTranslation("LAW_prop_title").Replace("$YEAR", mc.currentDate.Year.ToString());
 
         for (int i = 0; i < result.Count; i++)
         {
@@ -272,10 +275,10 @@ public class LawScreenController : MonoBehaviour, Law {
             prop.transform.SetParent(lawContainer, false);
             laws.Add(prop.gameObject);
 
-            prop.t_Name.text = "Prop " + result[i].propNum + ":";
+            prop.t_Name.text = mc.getTranslation("LAW_prop_name").Replace("$NAME", result[i].propNum.ToString()) + ":";
             prop.t_Description.text = "<color=" + (result[i].lawDir == Alignment.LIBERAL ? "lime" : "red") + ">";
-            prop.t_Description.text += "To " + GameData.getData().lawList[result[i].lawDef].electionText[result[i].lawDir] + "</color>";
-            prop.t_Support.text = "Yes: <color=grey>0.0%</color>\nNo:  <color=grey>0.0%</color>";
+            prop.t_Description.text += mc.getTranslation("LAW_law_desc").Replace("$DESC", GameData.getData().lawList[result[i].lawDef].electionText[result[i].lawDir]) + "</color>";
+            prop.t_Support.text = mc.getTranslation("OPTION_yes") + ": <color=grey>0.0%</color>\n" + mc.getTranslation("OPTION_no") + ":  <color=grey>0.0%</color>";
 
             propResults.Add(result[i].yesVotes);
         }
@@ -287,7 +290,9 @@ public class LawScreenController : MonoBehaviour, Law {
         mode = Mode.CONGRESS;
         billResults = new List<CongressBillResult>();
 
-        t_Title.text = "Legislative Agenda " + MasterController.GetMC().currentDate.Year;
+        MasterController mc = MasterController.GetMC();
+
+        t_Title.text = mc.getTranslation("LAW_congress_title").Replace("$YEAR", mc.currentDate.Year.ToString());
 
         for(int i=  0; i < result.Count; i++)
         {
@@ -295,12 +300,12 @@ public class LawScreenController : MonoBehaviour, Law {
             bill.transform.SetParent(lawContainer, false);
             laws.Add(bill.gameObject);
 
-            bill.t_Name.text = "Joint Resolution " + MasterController.GetMC().currentDate.Year + "-" + (i + 1) + ":";
+            bill.t_Name.text = mc.getTranslation("LAW_congress_name").Replace("$NAME", mc.currentDate.Year + "-" + (i + 1)) + ":";
             bill.t_Description.text = "<color=" + (result[i].lawDir == Alignment.LIBERAL ? "lime" : "red") + ">";
-            bill.t_Description.text += "To " + GameData.getData().lawList[result[i].lawDef].electionText[result[i].lawDir] + "</color>";
+            bill.t_Description.text += mc.getTranslation("LAW_law_desc").Replace("$DESC", GameData.getData().lawList[result[i].lawDef].electionText[result[i].lawDir]) + "</color>";
             bill.t_President.text = "";
-            bill.t_House.text = "Yay: <color=grey>0</color>\nNay: <color=grey>0</color>";
-            bill.t_Senate.text = "Yay: <color=grey>0</color>\nNay: <color=grey>0</color>";
+            bill.t_House.text = mc.getTranslation("GOVERNMENT_yea") + ": <color=grey>0</color>\n" + mc.getTranslation("GOVERNMENT_nay") +": <color=grey>0</color>";
+            bill.t_Senate.text = mc.getTranslation("GOVERNMENT_yea") + ": <color=grey>0</color>\n" + mc.getTranslation("GOVERNMENT_nay") + ": <color=grey>0</color>";
 
             billResults.Add(result[i]);
         }
@@ -312,8 +317,9 @@ public class LawScreenController : MonoBehaviour, Law {
         show();
         mode = Mode.SUPREME_COURT;
         propResults = new List<int>();
+        MasterController mc = MasterController.GetMC();
 
-        t_Title.text = "Supreme Court Watch " + MasterController.GetMC().currentDate.Year;
+        t_Title.text = mc.getTranslation("LAW_supreme_court_title").Replace("$YEAR", mc.currentDate.Year.ToString());
 
         for(int i = 0; i < result.Count; i++)
         {
@@ -324,8 +330,8 @@ public class LawScreenController : MonoBehaviour, Law {
 
             ccase.t_Name.text = result[i].caseName;
             ccase.t_Description.text = "<color=" + (result[i].lawDir == Alignment.LIBERAL ? "lime" : "red") + ">";
-            ccase.t_Description.text += "A Decision Could " + GameData.getData().lawList[result[i].lawDef].electionText[result[i].lawDir] + "</color>";
-            ccase.t_Support.text = "<color=grey>0 for Change</color>\n<color=grey>0 for Status Quo</color>";
+            ccase.t_Description.text += mc.getTranslation("LAW_supreme_court_desc").Replace("$DESC", GameData.getData().lawList[result[i].lawDef].electionText[result[i].lawDir]) + "</color>";
+            ccase.t_Support.text = "<color=grey>" + mc.getTranslation("LAW_supreme_court_change").Replace("$COUNT", "0") + "</color>\n<color=grey>" + mc.getTranslation("LAW_supreme_court_status_quo").Replace("$COUNT", "0") +"</color>";
 
             propResults.Add(result[i].yesVotes);
         }
@@ -365,7 +371,7 @@ public class LawScreenController : MonoBehaviour, Law {
             b_TurboMode.image.color = uiController.buttonColorOff;
         }
 
-        b_ShowResults.GetComponentInChildren<Text>().text = "Show Results";
+        b_ShowResults.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("LAW_show_results_button");
     }
 
     public void hide()
@@ -438,7 +444,7 @@ public class LawScreenController : MonoBehaviour, Law {
         {
             presidentFinished = true;
             b_ShowResults.interactable = true;
-            b_ShowResults.GetComponentInChildren<Text>().text = "Continue";
+            b_ShowResults.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("LAW_continue");
             return;
         }
 
@@ -452,7 +458,7 @@ public class LawScreenController : MonoBehaviour, Law {
             {
                 presidentFinished = true;
                 b_ShowResults.interactable = true;
-                b_ShowResults.GetComponentInChildren<Text>().text = "Continue";
+                b_ShowResults.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("LAW_continue");
                 return;
             }
         }
@@ -465,9 +471,12 @@ public class LawScreenController : MonoBehaviour, Law {
         {
             if (billResults[currentItem].houseYesVotes >= MasterController.government.houseNum * (2 / 3f) &&
                 billResults[currentItem].senateYesVotes >= MasterController.government.senateNum * (2 / 3f))
-                laws[currentItem].GetComponent<Bill>().t_President.text = "FORCED BY CONGRESS";
+                laws[currentItem].GetComponent<Bill>().t_President.text = MasterController.GetMC().getTranslation("LAW_forced_by_congress");
             else
-                laws[currentItem].GetComponent<Bill>().t_President.text = "<color=red>*** VETO ***</color>";
+            {
+                string color = "<color=" + (billResults[currentItem].lawDir == Alignment.LIBERAL ? "red" : "lime") + ">";
+                laws[currentItem].GetComponent<Bill>().t_President.text = color + MasterController.GetMC().getTranslation("LAW_veto") + "</color>";
+            }
         }
     }
 
@@ -480,7 +489,7 @@ public class LawScreenController : MonoBehaviour, Law {
             voteStarted = false;
             voteFinished = true;
             b_ShowResults.interactable = true;
-            b_ShowResults.GetComponentInChildren<Text>().text = "Continue";
+            b_ShowResults.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("LAW_continue");
             //40% chance justice will retire
             if (MasterController.GetMC().LCSRandom(10) >= 6)
                 MasterController.government.appointNewJustice(true);
@@ -507,10 +516,10 @@ public class LawScreenController : MonoBehaviour, Law {
             voteFinished = true;
             b_ShowResults.interactable = true;
             if (billPassedCongress)
-                b_ShowResults.GetComponentInChildren<Text>().text = "Watch President";
+                b_ShowResults.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("LAW_watch_president");
             else
             {
-                b_ShowResults.GetComponentInChildren<Text>().text = "Continue";
+                b_ShowResults.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("LAW_continue");
                 presidentFinished = true;
             }
             return;
@@ -541,7 +550,7 @@ public class LawScreenController : MonoBehaviour, Law {
             voteStarted = false;
             voteFinished = true;
             b_ShowResults.interactable = true;
-            b_ShowResults.GetComponentInChildren<Text>().text = "Continue";
+            b_ShowResults.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("LAW_continue");
             return;
         }
 

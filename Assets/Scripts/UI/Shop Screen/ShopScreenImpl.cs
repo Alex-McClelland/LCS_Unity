@@ -138,7 +138,7 @@ public class ShopScreenImpl : MonoBehaviour, LCS.Engine.UI.ShopUI
                 }
             }
 
-            t_totalCost.text = "TOTAL: $" + currentLocation.getComponent<Shop>().getTotalBuyValue();
+            t_totalCost.text = MasterController.GetMC().getTranslation("SHOP_total_cost").Replace("$AMT", currentLocation.getComponent<Shop>().getTotalBuyValue().ToString());
             if (currentLocation.getComponent<Shop>().getTotalBuyValue() > MasterController.lcs.Money)
                 checkoutButton.interactable = false;
             else
@@ -178,7 +178,7 @@ public class ShopScreenImpl : MonoBehaviour, LCS.Engine.UI.ShopUI
                 }
             }
 
-            t_totalCost.text = "TOTAL: $" + currentLocation.getComponent<Shop>().getTotalSellValue();
+            t_totalCost.text = MasterController.GetMC().getTranslation("SHOP_total_cost").Replace("$AMT", currentLocation.getComponent<Shop>().getTotalSellValue().ToString());
             checkoutButton.interactable = true;
         }
     }
@@ -201,7 +201,7 @@ public class ShopScreenImpl : MonoBehaviour, LCS.Engine.UI.ShopUI
 
         t_cash.text = "$" + MasterController.lcs.Money;
         t_shopTitle.text = location.getComponent<SiteBase>().getCurrentName();
-        t_totalCost.text = "TOTAL: $0";
+        t_totalCost.text = MasterController.GetMC().getTranslation("SHOP_total_cost").Replace("$AMT", "0"); ;
 
         foreach(LocationDef.ShopDepartmentDef department in location.getComponent<Shop>().getDepartments())
         {
@@ -269,6 +269,7 @@ public class ShopScreenImpl : MonoBehaviour, LCS.Engine.UI.ShopUI
                 Button buyItemButton = Instantiate(p_MenuButton);
                 buyItemButton.transform.SetParent(buyItemButtonContainer, false);
                 buyItemButton.GetComponentInChildren<Text>().text = item.text + " ($" + currentLocation.getComponent<Shop>().itemPrices[item.item.type] + ")";
+                buyItemButton.GetComponent<ContentSizeFitter>().horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
                 buyItemButton.onClick.AddListener(() => { actions.addItemToBuyCart(currentLocation, ItemFactory.create(item.item.type)); refresh(); });
                 buyItemButtons.Add(buyItemButton.gameObject); 
             }
@@ -346,7 +347,7 @@ public class ShopScreenImpl : MonoBehaviour, LCS.Engine.UI.ShopUI
             mode = ShopMode.BUY;
             buyView.SetActive(true);
             sellView.SetActive(false);
-            checkoutButton.GetComponentInChildren<Text>().text = "Buy (⏎)";
+            checkoutButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("SHOP_checkout_buy");
             checkoutButton.onClick.RemoveAllListeners();
             checkoutButton.onClick.AddListener(() => { actions.buy(currentLocation); refresh(); });
         }
@@ -355,7 +356,7 @@ public class ShopScreenImpl : MonoBehaviour, LCS.Engine.UI.ShopUI
             mode = ShopMode.SELL;
             buyView.SetActive(false);
             sellView.SetActive(true);
-            checkoutButton.GetComponentInChildren<Text>().text = "Sell (⏎)";
+            checkoutButton.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("SHOP_checkout_sell");
             checkoutButton.onClick.RemoveAllListeners();
             checkoutButton.onClick.AddListener(() => { actions.sell(currentLocation); refresh(); });
         }
