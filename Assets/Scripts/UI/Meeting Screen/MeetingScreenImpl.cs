@@ -61,7 +61,7 @@ public class MeetingScreenImpl : MonoBehaviour, Meeting {
     {
         character = e;
         t_Text.text = "";
-        t_Title.text = "Adventures in Liberal Recruitment";
+        t_Title.text = MasterController.GetMC().getTranslation("MEETING_title");
         screenMode = ScreenMode.RECRUIT;
         recruitmentButtons.SetActive(true);
         datingButtons.SetActive(false);
@@ -75,7 +75,9 @@ public class MeetingScreenImpl : MonoBehaviour, Meeting {
         screenMode = ScreenMode.DATE;
         recruitmentButtons.SetActive(false);
         datingButtons.SetActive(true);
-        b_kidnap.GetComponentInChildren<Text>().text = character.getComponent<CreatureInfo>().genderLiberal == CreatureInfo.CreatureGender.FEMALE ? "E - Just kidnap the Conservative bitch" : "E - Just kidnap the Conservative prick";
+        b_kidnap.GetComponentInChildren<Text>().text = character.getComponent<CreatureInfo>().genderLiberal == CreatureInfo.CreatureGender.FEMALE ? MasterController.GetMC().getTranslation("MEETING_kidnap_female") : MasterController.GetMC().getTranslation("MEETING_kidnap_male");
+        if (MasterController.government.laws[Constants.LAW_FREE_SPEECH].alignment == Alignment.ARCHCONSERVATIVE)
+            b_breakup.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("MEETING_kidnap_censored");
         show();
     }
 
@@ -204,7 +206,7 @@ public class MeetingScreenImpl : MonoBehaviour, Meeting {
             if (MasterController.lcs.Money < 50)
             {
                 b_useProps.interactable = false;
-                b_useProps.GetComponent<MouseOverText>().mouseOverText = "Not enough money";
+                b_useProps.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("MEETING_not_enough_money_mouseover");
             }
             else
             {
@@ -217,12 +219,12 @@ public class MeetingScreenImpl : MonoBehaviour, Meeting {
             if (character.getComponent<Recruit>().eagerness < 4)
             {
                 b_invite.interactable = false;
-                b_invite.GetComponent<MouseOverText>().mouseOverText = character.getComponent<CreatureInfo>().getName() + " isn't ready to join the LCS";
+                b_invite.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("MEETING_not_ready_mouseover").Replace("$NAME", character.getComponent<CreatureInfo>().getName());
             }
             else if (!character.getComponent<Recruit>().recruiter.getComponent<Liberal>().canRecruit())
             {
                 b_invite.interactable = false;
-                b_invite.GetComponent<MouseOverText>().mouseOverText = character.getComponent<Recruit>().recruiter.getComponent<CreatureInfo>().getName() + " needs more Juice to recruit";
+                b_invite.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("MEETING_not_enough_juice_mouseover").Replace("$NAME", character.getComponent<Recruit>().recruiter.getComponent<CreatureInfo>().getName());
             }
             else
             {
@@ -237,7 +239,7 @@ public class MeetingScreenImpl : MonoBehaviour, Meeting {
             if (MasterController.lcs.Money < 100)
             {
                 b_spendCash.interactable = false;
-                b_spendCash.GetComponent<MouseOverText>().mouseOverText = "Not enough money";
+                b_spendCash.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("MEETING_not_enough_money_mouseover");
             }
             else
             {
@@ -251,7 +253,7 @@ public class MeetingScreenImpl : MonoBehaviour, Meeting {
                 character.getComponent<Dating>().partner.getComponent<Liberal>().status == Liberal.Status.HOSPITAL)
             {
                 b_vacation.interactable = false;
-                b_vacation.GetComponent<MouseOverText>().mouseOverText = "Too injured to travel";
+                b_vacation.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("MEETING_injured_travel_mouseover");
             }
             else
             {
@@ -276,7 +278,7 @@ public class MeetingScreenImpl : MonoBehaviour, Meeting {
                 else
                 {
                     b_kidnap.interactable = false;
-                    b_kidnap.GetComponent<MouseOverText>().mouseOverText = "Too injured for that";
+                    b_kidnap.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("MEETING_injured_kidnap_mouseover");
                 }
             }
         }

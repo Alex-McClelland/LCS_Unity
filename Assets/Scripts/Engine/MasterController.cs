@@ -208,11 +208,11 @@ namespace LCS.Engine
                             (target.getComponent<TroubleSpot>().getFlags() & LocationDef.TroubleSpotFlag.SIEGE_ONLY) == 0)
                         {
                             List<PopupOption> options = new List<PopupOption>();
-                            options.Add(new PopupOption("(1) Base", () => { squad.travelAction = LiberalCrimeSquad.Squad.TravelAction.BASE; }));
-                            options.Add(new PopupOption("(2) Trouble", () => { squad.travelAction = LiberalCrimeSquad.Squad.TravelAction.TROUBLE; }));
-                            options.Add(new PopupOption("(3) Both", () => { squad.travelAction = LiberalCrimeSquad.Squad.TravelAction.BOTH; }));
+                            options.Add(new PopupOption(getTranslation("BASE_travel_rebase"), () => { squad.travelAction = LiberalCrimeSquad.Squad.TravelAction.BASE; }));
+                            options.Add(new PopupOption(getTranslation("BASE_travel_trouble"), () => { squad.travelAction = LiberalCrimeSquad.Squad.TravelAction.TROUBLE; }));
+                            options.Add(new PopupOption(getTranslation("BASE_travel_both"), () => { squad.travelAction = LiberalCrimeSquad.Squad.TravelAction.BOTH; }));
 
-                            uiController.showOptionPopup("Rebase Liberals here, cause trouble, or both?", options);
+                            uiController.showOptionPopup(getTranslation("BASE_travel_rebase_prompt"), options);
                         }
                         else if (target.hasComponent<SafeHouse>() && target.getComponent<SafeHouse>().owned)
                         {
@@ -705,21 +705,14 @@ namespace LCS.Engine
 
             Entity president = worldState.getComponent<Government>().president;
 
-            string introText = "<size=26>A NEW CONSERVATIVE ERA</size>";
+            string introText = getTranslation("TITLE_intro_text_1");
             addMessage(introText, true);
-            introText = "Conservative President " + Factories.CreatureFactory.generateSurname(CreatureInfo.CreatureGender.WHITEMALEPATRIARCH)
-                + " ends his second term with approval ratings in the high 70s, and is succeeded by hardcore Arch-Conservative "
-                + president.getComponent<CreatureInfo>().getName() + ".\n"
-                + "With Conservatives sweeping into power in the House of Representatives and Senate, and a Conservative majority in"
-                + " the Supreme Court of the United States, commentators are hailing it as the beginning of a new Conservative era.";
+            introText = getTranslation("TITLE_intro_text_2").Replace("$OLDPRESIDENT", Factories.CreatureFactory.generateSurname(CreatureInfo.CreatureGender.WHITEMALEPATRIARCH)).Replace("$PRESIDENT", president.getComponent<CreatureInfo>().getName());
             addMessage(introText, true);
-            introText = "<color=red>President " + president.getComponent<CreatureInfo>().getName() + " has asked"
-                + " the new Congress to move quickly to rubber stamp " + president.getComponent<CreatureInfo>().hisHer().ToLower()
-                + " radical Arch-Conservative agenda.</color>\nThe left seems powerless to stop this imminent trampling of Liberal Sanity and Justice."
-                + " In this dark time, the Liberal Crime Squad is born...";
+            introText = getTranslation("TITLE_intro_text_3").Replace("$PRESIDENT", president.getComponent<CreatureInfo>().getName()).Replace("$HISHER", president.getComponent<CreatureInfo>().hisHer().ToLower());
             addMessage(introText, true);
 
-            addMessage("It is " + currentDate.ToString("D") + ", and the nation is about to experience real change.", true);
+            addMessage(getTranslation("TITLE_intro_text_4").Replace("$DATE", currentDate.ToString("D")), true);
         }
 
         public void finishQuestions()
@@ -1534,7 +1527,7 @@ namespace LCS.Engine
                     {
                         if (lcs.Money < 200*squad.Count)
                         {
-                            addMessage(squad.name + " could not afford to travel.");
+                            addMessage(getTranslation("BASE_change_city_cannot_afford").Replace("$SQUAD", squad.name));
                             continue;
                         }
                         else
@@ -1596,7 +1589,7 @@ namespace LCS.Engine
                             squad.target.getComponent<SafeHouse>().moveSquadHere(squad);
                         else
                         {
-                            mc.addMessage(squad.name + " decided " + squad.target.getComponent<SiteBase>().getCurrentName() + " was too hot to risk.");
+                            mc.addMessage(getTranslation("BASE_travel_too_hot").Replace("$SQUAD", squad.name).Replace("$TARGET", squad.target.getComponent<SiteBase>().getCurrentName()));
                         }
                     }
 
@@ -1660,12 +1653,12 @@ namespace LCS.Engine
                                 }
                                 else
                                 {
-                                    mc.addMessage(squad.name + " couldn't find a vehicle to reach " + squad.target.getComponent<SiteBase>().getCurrentName() + ".");
+                                    mc.addMessage(getTranslation("BASE_travel_no_car").Replace("$SQUAD", squad.name).Replace("$TARGET", squad.target.getComponent<SiteBase>().getCurrentName()));
                                 }
                             }
                             else
                             {
-                                mc.addMessage(squad.name + " decided " + squad.target.getComponent<SiteBase>().getCurrentName() + " was too hot to risk.");
+                                mc.addMessage(getTranslation("BASE_travel_too_hot").Replace("$SQUAD", squad.name).Replace("$TARGET", squad.target.getComponent<SiteBase>().getCurrentName()));
                             }
                         }
                         else if (GameData.getData().locationList[squad.target.def].hospital > 0)
@@ -1698,7 +1691,7 @@ namespace LCS.Engine
                 {
                     if (lcs.Money < 200)
                     {
-                        addMessage(e.getComponent<CreatureInfo>().getName() + " couldn't afford to travel.");
+                        addMessage(getTranslation("BASE_change_city_cannot_afford").Replace("$SQUAD", e.getComponent<CreatureInfo>().getName()));
                         continue;
                     }
                     else

@@ -91,6 +91,10 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="continue" value="(C)ontinue Game"/>
     <translation key="highscore" value="(H)igh Scores"/>
     <translation key="exitgame" value="Exit Game (esc)"/>
+    <translation key="intro_text_1" value="&lt;size=26&gt;A NEW CONSERVATIVE ERA&lt;/size&gt;"/>
+    <translation key="intro_text_2" value="Conservative President $OLDPRESIDENT ends his second term with approval ratings in the high 70s, and is succeeded by hardcore Arch-Conservative $PRESIDENT.\nWith Conservatives sweeping into power in the House of Representatives and Senate, and a Conservative majority in the Supreme Court of the United States, commentators are hailing it as the beginning of a new Conservative era."/> <!-- $OLDPRESIDENT will be replaced by a random name for the old president, $PRESIDENT will be replaced by the name of the current president -->
+    <translation key="intro_text_3" value="&lt;color=red&gt;President $PRESIDENT has asked the new Congress to move quickly to rubber stamp $HISHER radical Arch-Conservative agenda.&lt;/color&gt;\nThe left seems powerless to stop this imminent trampling of Liberal Sanity and Justice. In this dark time, the Liberal Crime Squad is born..."/> <!-- $PRESIDENT will be replaced by the name of the current president. $HISHER will be replaced by an appropriate pronoun -->
+    <translation key="intro_text_4" value="It is $DATE, and the nation is about to experience real change."/> <!-- $DATE will be replaced by the current in-game date -->
   </translation_set>
   <!-- Founder Question screen -->
   <translation_set prefix="QUESTIONS">
@@ -214,7 +218,14 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="siege_cannot_wait" value="Cannot wait while under attack"/> <!-- Displayed as a mouseover tooltip when trying to wait while under siege -->
     <translation key="under_siege" value="UNDER SIEGE"/> <!-- Displayed on the travel button when a squad is selected that is under siege -->
     <translation key="change_city" value="(T)RAVEL ($200 per person)"/>
+    <translation key="change_city_cannot_afford" value="$SQUAD could not afford to travel."/> <!-- $SQUAD will be replaced by the name of the travelling squad -->
     <translation key="travel_cancel" value="Cancel (esc)"/>
+    <translation key="travel_rebase_prompt" value="Rebase Liberals here, cause trouble, or both?"/>
+    <translation key="travel_rebase" value="(1) Base"/>
+    <translation key="travel_trouble" value="(2) Trouble"/>
+    <translation key="travel_both" value="(3) Both"/>
+    <translation key="travel_too_hot" value="$SQUAD decided $TARGET was too hot to risk."/> <!-- $SQUAD will be replaced by the name of the travelling squad, $TARGET will be replaced by the name of their target -->
+    <translation key="travel_no_car" value="$SQUAD couldn't find a vehicle to reach $TARGET."/> <!-- $SQUAD will be replaced byt he name of the travelling squad, $TARGET will be replaced by the name of their target -->
     <!-- Liberal Agenda Screen -->
     <translation key="term" value="term"/>
     <translation key="supreme_court_label" value="S C\nU O\nP U\nR R\nE T\nM\nE"/> <!-- The need to print this vertically renders it awkward -->
@@ -775,5 +786,24 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="shift_liberal" value="$LAW became &lt;color=lime&gt;more Liberal&lt;/color&gt;."/> <!-- $LAW will be replaced by the name of the law that has changed -->
     <translation key="shift_conservative" value="$LAW became &lt;color=red&gt;more Conservative&lt;/color&gt;."/> <!-- $LAW will be replaced by the name of the law that has changed -->
     <translation key="shift_elite_liberal" value="$LAW became &lt;color=lime&gt;&lt;b&gt;ELITE LIBERAL&lt;/b&gt;&lt;/color&gt;."/> <!-- $LAW will be replaced by the name of the law that has changed -->
+  </translation_set>
+  <translation_set prefix="MEETING">
+    <translation key="title" value="Adventures in Liberal Recruitment"/>
+    <translation key="use_props" value="A - Spend $50 on props and a book for them to keep afterward"/>
+    <translation key="discuss_politics" value="B - Just casually chat with them and discuss politics"/>
+    <translation key="join_lcs" value="C - Offer to let them join the LCS as a full member"/>
+    <translation key="end_meetings" value="D - Break off the meetings"/>
+    <translation key="date_expensive" value="A - Spend a hundred bucks tonight to get the ball rolling"/>
+    <translation key="date_cheap" value="B - Try to get through the evening without spending a penny"/>
+    <translation key="vacation" value="C - Spend a week on a cheap vacation (stands up any other dates)"/>
+    <translation key="break_off" value="D - Break it off"/>
+    <translation key="kidnap_female" value="E - Just kidnap the Conservative bitch"/>
+    <translation key="kidnap_male" value="E - Just kidnap the Conservative prick"/>
+    <translation key="kidnap_censored" value="E - Just kidnap the Conservative [person]"/>
+    <translation key="not_enough_money_mouseover" value="Not enough money"/>
+    <translation key="not_ready_mouseover" value="$NAME isn't ready to join the LCS"/> <!-- $NAME will be replaced by the name of the person being recruited -->
+    <translation key="not_enough_juice_mouseover" value="$NAME needs more Juice to recruit"/> <!-- $NAME will be replaced by the name of the recruiter -->
+    <translation key="injured_travel_mouseover" value="Too injured to travel"/>
+    <translation key="injured_kidnap_mouseover" value="Too injured for that"/>
   </translation_set>
 </translations>
