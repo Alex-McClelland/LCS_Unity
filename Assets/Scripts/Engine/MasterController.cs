@@ -1773,9 +1773,8 @@ namespace LCS.Engine
                     if (government.getHouseCount(Alignment.ARCHCONSERVATIVE) >= government.houseNum * (2f / 3f) &&
                     government.getSenateCount(Alignment.ARCHCONSERVATIVE) >= government.senateNum * (2f / 3f))
                     {
-                        string descriptionString = "In recognition of the fact that society is degenerating under the pressure of the elite liberal threat, WE THE PEOPLE HEREBY REPEAL THE CONSTITUTION. The former United States are to be reorganized into the CONFEDERATED STATES OF AMERICA, with new boundaries to be determined by leading theologians. Ronald Reagan is to be King, forever, even after death. People may petition Jesus for a redress of grievances, as He will be the only one listening.\nHave a nice day.";
                         Containers.AmendmentResult result = government.ratify(Alignment.ARCHCONSERVATIVE, true);
-                        uiController.nationMap.showAmendmentVote(result, "The Arch-Conservative Congress is proposing an <color=red>ARCH-CONSERVATIVE AMENDMENT</color>!", descriptionString, true);
+                        uiController.nationMap.showAmendmentVote(result, getTranslation("ENDGAME_archconservative_amendment_proposal"), getTranslation("ENDGAME_archconservative_amendment_desc"), true);
                         if (result.ratified)
                         {
                             endGameState = EndGame.REAGAN;
@@ -1802,7 +1801,7 @@ namespace LCS.Engine
             if (government.winCheck())
             {
                 endGameState = EndGame.WON;
-                addMessage("The Liberal agenda has triumphed! Long have you waited for this day - The Liberal Crime Squad's work is complete; it is finally time to come in from the dark.", true);
+                addMessage(getTranslation("ENDGAME_win_desc"), true);
             }
         }
 
@@ -1906,38 +1905,38 @@ namespace LCS.Engine
                 switch (endGameState)
                 {
                     case EndGame.DEAD:
-                        gameOver("The Liberal Crime Squad was KIA in " + currentDate.Year);
+                        gameOver(getTranslation("ENDGAME_dead").Replace("$DATE", currentDate.Year.ToString()));
                         break;
                     case EndGame.POLICE:
-                        gameOver("The Liberal Crime Squad was brought to justice in " + currentDate.Year);
+                        gameOver(getTranslation("ENDGAME_police").Replace("$DATE", currentDate.Year.ToString()));
                         break;
                     case EndGame.CIA:
-                        gameOver("The Liberal Crime Squad was blotted out in " + currentDate.Year);
+                        gameOver(getTranslation("ENDGAME_cia").Replace("$DATE", currentDate.Year.ToString()));
                         break;
                     case EndGame.HICKS:
-                        gameOver("The Liberal Crime Squad was mobbed in " + currentDate.Year);
+                        gameOver(getTranslation("ENDGAME_hicks").Replace("$DATE", currentDate.Year.ToString()));
                         break;
                     case EndGame.CORP:
-                        gameOver("The Liberal Crime Squad was downsized in " + currentDate.Year);
+                        gameOver(getTranslation("ENDGAME_corp").Replace("$DATE", currentDate.Year.ToString()));
                         break;
                     case EndGame.FIREMEN:
-                        gameOver("The Liberal Crime Squad was burned in " + currentDate.Year);
+                        gameOver(getTranslation("ENDGAME_firemen").Replace("$DATE", currentDate.Year.ToString()));
                         break;
                     case EndGame.EXECUTED:
-                        gameOver("The Liberal Crime Squad was executed in " + currentDate.Year);
+                        gameOver(getTranslation("ENDGAME_executed").Replace("$DATE", currentDate.Year.ToString()));
                         break;
                     case EndGame.REAGAN:
-                        gameOver("The country was Reaganified in " + currentDate.Year);
+                        gameOver(getTranslation("ENDGAME_reagan").Replace("$DATE", currentDate.Year.ToString()));
                         break;
                     case EndGame.CCS:
-                        gameOver("The Liberal Crime Squad was out Crime-Squadded in " + currentDate.Year);
+                        gameOver(getTranslation("ENDGAME_ccs").Replace("$DATE", currentDate.Year.ToString()));
                         break;
                     case EndGame.DISBANDLOSS:
-                        gameOver("The Liberal Crime Squad was permanently disbanded in " + currentDate.Year);
+                        gameOver(getTranslation("ENDGAME_disband_loss").Replace("$DATE", currentDate.Year.ToString()));
                         break;
                     case EndGame.WON:
                         //TODO: One final overview of all laws at L++ level
-                        gameOver("Liberalized the country in " + currentDate.Year);
+                        gameOver(getTranslation("ENDGAME_won").Replace("$DATE", currentDate.Year.ToString()));
                         break;
                 }
             }

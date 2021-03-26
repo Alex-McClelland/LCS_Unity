@@ -82,6 +82,23 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="chase_generic" value="$NAME was beaten to death by pursuers"/>
     <translation key="chase_car_crash" value="$NAME died in a car crash"/>
   </translation_set>
+  <translation_set prefix="ENDGAME">
+    <translation key="archconservative_amendment_desc" value="In recognition of the fact that society is degenerating under the pressure of the elite liberal threat, WE THE PEOPLE HEREBY REPEAL THE CONSTITUTION. The former United States are to be reorganized into the CONFEDERATED STATES OF AMERICA, with new boundaries to be determined by leading theologians. Ronald Reagan is to be King, forever, even after death. People may petition Jesus for a redress of grievances, as He will be the only one listening.\nHave a nice day."/>
+    <translation key="archconservative_amendment_proposal" value="The Arch-Conservative Congress is proposing an &lt;color=red&gt;ARCH-CONSERVATIVE AMENDMENT&lt;/color&gt;!"/>
+    <translation key="win_desc" value="The Liberal agenda has triumphed! Long have you waited for this day - The Liberal Crime Squad's work is complete; it is finally time to come in from the dark."/>
+    <!-- $DATE in the following entries will be replaced by the in-game year the game ended -->
+    <translation key="dead" value="The Liberal Crime Squad was KIA in $DATE"/>
+    <translation key="police" value="The Liberal Crime Squad was brought to justice in $DATE"/>
+    <translation key="cia" value="The Liberal Crime Squad was blotted out in $DATE"/>
+    <translation key="hicks" value="The Liberal Crime Squad was mobbed in $DATE"/>
+    <translation key="corp" value="The Liberal Crime Squad was downsized in $DATE"/>
+    <translation key="firemen" value="The Liberal Crime Squad was burned in $DATE"/>
+    <translation key="executed" value="The Liberal Crime Squad was executed in $DATE"/>
+    <translation key="reagan" value="The country was Reaganified in $DATE"/>
+    <translation key="ccs" value="The Liberal Crime Squad was out Crime-Squadded in $DATE"/>
+    <translation key="disband_loss" value="The Liberal Crime Squad was permanently disbanded in $DATE"/>
+    <translation key="won" value="Liberalized the country in $DATE"/>
+  </translation_set>
   <!-- Screen specific text -->
   <!-- Title Screen -->
   <translation_set prefix="TITLE">
