@@ -64,13 +64,13 @@ public class NewsScreenController : MonoBehaviour, NewsUI {
         t_Date.text = MasterController.GetMC().currentDate.ToString("D");
         if (guardian)
         {
-            t_Title.text = "The Liberal Guardian";
+            t_Title.text = MasterController.GetMC().getTranslation("NEWS_header_guardian");
             t_Title.font = guardianFont;
             t_Title.fontSize = 30;
         }
         else
         {
-            t_Title.text = "The Moderate Informer";
+            t_Title.text = MasterController.GetMC().getTranslation("NEWS_header_normal");
             t_Title.font = neutralFont;
             t_Title.fontSize = 40;
         }

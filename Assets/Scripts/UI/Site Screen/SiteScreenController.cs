@@ -126,7 +126,7 @@ public class SiteScreenController : MonoBehaviour, SiteMode
                 location.getComponent<TroubleSpot>().map[p.z][p.x, p.y].getComponent<TileBase>().cash > 0)
             {
                 getInteractive = true;
-                b_Get.GetComponentInChildren<Text>().text = "(G)et";
+                b_Get.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("SITE_get");
             }
             else
                 getInteractive = false;
@@ -136,11 +136,11 @@ public class SiteScreenController : MonoBehaviour, SiteMode
                 if (MasterController.GetMC().currentSiteModeScene.canGraffiti())
                 {
                     getInteractive = true;
-                    b_Get.GetComponentInChildren<Text>().text = "(G)raffiti";
+                    b_Get.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("SITE_graffiti");
                 }
                 else
                 {
-                    b_Get.GetComponentInChildren<Text>().text = "(G)et";
+                    b_Get.GetComponentInChildren<Text>().text = MasterController.GetMC().getTranslation("SITE_get");
                 }
             }
 
@@ -212,11 +212,11 @@ public class SiteScreenController : MonoBehaviour, SiteMode
             foreach(Button b in talkButtons)
             {
                 b.interactable = false;
-                b.GetComponent<MouseOverText>().mouseOverText = "Select both a speaker and a target";
+                b.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("SITE_talk_mouseover");
             }
 
             b_KidnapCommit.interactable = false;
-            b_KidnapCommit.GetComponent<MouseOverText>().mouseOverText = "Select both a kidnapper and a target";
+            b_KidnapCommit.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("SITE_talk_select_hostage_mouseover");
         }
         else
         {
@@ -229,7 +229,7 @@ public class SiteScreenController : MonoBehaviour, SiteMode
                 uiController.squadUIImpl.selectedChar.getComponent<Age>().isYoung())
             {
                 b_TalkDating.interactable = false;
-                b_TalkDating.GetComponent<MouseOverText>().mouseOverText = "They are too young!";
+                b_TalkDating.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("TALK_dating_too_young");
             }
 
             b_KidnapCommit.interactable = true;
@@ -604,7 +604,7 @@ public class SiteScreenController : MonoBehaviour, SiteMode
         if (uiController.enemyUIImpl.noTalkers())
         {
             b_TalkButton.interactable = false;
-            b_TalkButton.GetComponent<MouseOverText>().mouseOverText = "Nobody is willing to talk to you";
+            b_TalkButton.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("SITE_talk_no_talkers_mouseover");
         }
         else
         {
@@ -616,7 +616,7 @@ public class SiteScreenController : MonoBehaviour, SiteMode
             MasterController.GetMC().currentSiteModeScene.encounterHasEnemies())
         {
             b_TalkButton.interactable = false;
-            b_TalkButton.GetComponent<MouseOverText>().mouseOverText = "Nobody is going to fall for that";
+            b_TalkButton.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("SITE_talk_no_bluff_mouseover");
         }
         else
         {
@@ -635,7 +635,7 @@ public class SiteScreenController : MonoBehaviour, SiteMode
             if (uiController.enemyUIImpl.noKidnap())
             {
                 b_Kidnap.interactable = false;
-                b_Kidnap.GetComponent<MouseOverText>().mouseOverText = "All of the targets are too dangerous";
+                b_Kidnap.GetComponent<MouseOverText>().mouseOverText = MasterController.GetMC().getTranslation("SITE_kidnap_too_dangerous_mouseover");
             }
             else
             {
@@ -660,13 +660,13 @@ public class SiteScreenController : MonoBehaviour, SiteMode
         string text = location.getComponent<SiteBase>().getCurrentName();
         if(location.getComponent<TroubleSpot>().map.Count > 1)
         {
-            text += " " + MasterController.shortOrdinal((MasterController.GetMC().currentSiteModeScene.squadPosition.z + 1)) + " floor";
+            text += " " + MasterController.GetMC().getTranslation("SITE_status_floor").Replace("$FLOOR", MasterController.shortOrdinal((MasterController.GetMC().currentSiteModeScene.squadPosition.z + 1)));
         }
 
         if (MasterController.GetMC().currentSiteModeScene.location.hasComponent<SafeHouse>() &&
             MasterController.GetMC().currentSiteModeScene.location.getComponent<SafeHouse>().underSiege)
         {
-            text += " -- <color=red>UNDER SIEGE</color>";
+            text += " -- <color=red>" + MasterController.GetMC().getTranslation("SITE_status_under_siege") + "</color>";
         }
         else
         {
@@ -677,55 +677,55 @@ public class SiteScreenController : MonoBehaviour, SiteMode
                     switch (location.getComponent<TroubleSpot>().getResponseType())
                     {
                         case LocationDef.EnemyType.ARMY:
-                            text += " -- <b><color=red>MILITARY RESPONDING</color></b>";
+                            text += " -- <b><color=red>" + MasterController.GetMC().getTranslation("SITE_status_military") + "</color></b>";
                             break;
                         case LocationDef.EnemyType.AGENT:
-                            text += " -- <b><color=red>AGENTS RESPONDING</color></b>";
+                            text += " -- <b><color=red>" + MasterController.GetMC().getTranslation("SITE_status_agents") + "</color></b>";
                             break;
                         case LocationDef.EnemyType.MERC:
-                            text += " -- <b><color=red>MERCENARIES RESPONDING</color></b>";
+                            text += " -- <b><color=red>" + MasterController.GetMC().getTranslation("SITE_status_mercenaries") + "</color></b>";
                             break;
                         case LocationDef.EnemyType.REDNECK:
-                            text += " -- <b><color=red>ANGRY MOB RESPONDING</color></b>";
+                            text += " -- <b><color=red>" + MasterController.GetMC().getTranslation("SITE_status_redneck") + "</color></b>";
                             break;
                         case LocationDef.EnemyType.GANG:
-                            text += " -- <b><color=red>GANG MEMBERS RESPONDING</color></b>";
+                            text += " -- <b><color=red>" + MasterController.GetMC().getTranslation("SITE_status_gang") + "</color></b>";
                             break;
                         case LocationDef.EnemyType.CCS:
-                            text += " -- <b><color=red>CCS VIGILANTES RESPONDING</color></b>";
+                            text += " -- <b><color=red>" + MasterController.GetMC().getTranslation("SITE_status_ccs") + "</color></b>";
                             break;
                         default:
                             if (MasterController.government.laws["POLICE"].alignment == Alignment.ARCHCONSERVATIVE &&
                                 MasterController.government.laws["DEATH_PENALTY"].alignment == Alignment.ARCHCONSERVATIVE)
-                                text += " -- <b><color=red>DEATH SQUADS RESPONDING</color></b>";
+                                text += " -- <b><color=red>" + MasterController.GetMC().getTranslation("SITE_status_death_squad") + "</color></b>";
                             else
-                                text += " -- <b><color=red>POLICE RESPONDING</color></b>";
+                                text += " -- <b><color=red>" + MasterController.GetMC().getTranslation("SITE_status_police") + "</color></b>";
                             break;
                     }
                 }
                 else if (MasterController.GetMC().currentSiteModeScene.alarmTimer > 60)
                 {
-                    text += " -- <b><color=red>CONSERVATIVE REINFORCEMENTS INCOMING</color></b>";
+                    text += " -- <b><color=red>" + MasterController.GetMC().getTranslation("SITE_status_reinforcements") + "</color></b>";
                 }
                 else
                 {
                     if (MasterController.GetMC().currentSiteModeScene.siteAlienate == 2)
                     {
-                        text += " -- <color=red>ALIENATED EVERYONE</color>";
+                        text += " -- <color=red>" + MasterController.GetMC().getTranslation("SITE_status_alienated_all") + "</color>";
                     }
                     else if (MasterController.GetMC().currentSiteModeScene.siteAlienate == 1)
                     {
-                        text += " -- <color=red>ALIENATED MASSES</color>";
+                        text += " -- <color=red>" + MasterController.GetMC().getTranslation("SITE_status_alienated_masses") + "</color>";
                     }
                     else
                     {
-                        text += " -- <color=red>CONSERVATIVES ALARMED</color>";
+                        text += " -- <color=red>" + MasterController.GetMC().getTranslation("SITE_status_conservatives_alarmed") + "</color>";
                     }
                 }
             }
             else if (MasterController.GetMC().currentSiteModeScene.suspicionTimer == 0)
             {
-                text += " -- <color=yellow>CONSERVATIVES SUSPICIOUS</color>";
+                text += " -- <color=yellow>" + MasterController.GetMC().getTranslation("SITE_status_conservatives_suspicious") + "</color>";
             }
         }
 

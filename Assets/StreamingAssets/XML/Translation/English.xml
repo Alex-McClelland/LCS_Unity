@@ -823,4 +823,54 @@ mark placeholders for values that need to be determined within the code based on
     <translation key="injured_travel_mouseover" value="Too injured to travel"/>
     <translation key="injured_kidnap_mouseover" value="Too injured for that"/>
   </translation_set>
+  <translation_set prefix="NEWS">
+    <translation key="continue" value="Continue"/>
+    <translation key="header_guardian" value="The Liberal Guardian"/>
+    <translation key="header_normal" value="The Moderate Informer"/>
+  </translation_set>
+  <translation_set prefix="SITE">
+    <translation key="use" value="(U)se"/>
+    <translation key="get" value="(G)et"/>
+    <translation key="graffiti" value="(G)raffiti"/>
+    <translation key="talk" value="(T)alk"/>
+    <translation key="fight" value="(F)ight"/>
+    <translation key="kidnap" value="(K)idnap"/>
+    <translation key="kidnap_too_dangerous_mouseover" value="All of the targets are too dangerous"/>
+    <translation key="release" value="(R)elease Oppressed"/>
+    <translation key="rob_bank" value="(R)ob Bank"/>
+    <translation key="encounter_warning" value="(E)ncounter Warning"/>
+    <translation key="map" value="(M)ap"/>
+    <translation key="status_under_siege" value="UNDER SIEGE"/>
+    <translation key="status_floor" value="$FLOOR floor"/> <!-- $FLOOR will be replaced by the floor number -->
+    <translation key="status_military" value="MILITARY RESPONDING"/>
+    <translation key="status_agents" value="AGENTS RESPONDING"/>
+    <translation key="status_mercenaries" value="MERCENARIES RESPONDING"/>
+    <translation key="status_redneck" value="ANGRY MOB RESPONDING"/>
+    <translation key="status_gang" value="GANG MEMBERS RESPONDING"/>
+    <translation key="status_ccs" value="CCS VIGILANTES RESPONDING"/>
+    <translation key="status_death_squad" value="DEATH SQUAD RESPONDING"/>
+    <translation key="status_police" value="POLICE RESPONDING"/>
+    <translation key="status_reinforcements" value="CONSERVATIVE REINFORCEMENTS INCOMING"/>
+    <translation key="status_alienated_all" value="ALIENATED EVERYONE"/>
+    <translation key="status_alienated_masses" value="ALIENATED MASSES"/>
+    <translation key="status_conservatives_alarmed" value="CONSERVATIVES ALARMED"/>
+    <translation key="status_conservatives_suspicious" value="CONSERVATIVES SUSPICIOUS"/>
+    <translation key="talk_cancel" value="Never Mind (esc)"/>
+    <translation key="talk_mouseover" value="Select both a speaker and a target"/>
+    <translation key="talk_no_talkers_mouseover" value="Nobody is willing to talk to you"/>
+    <translation key="talk_dating" value="Drop a (P)ickup Line"/>
+    <translation key="talk_dating_too_young" value="They are too young!"/>
+    <translation key="talk_issues" value="Talk About the (I)ssues"/>
+    <translation key="talk_rent" value="(R)ent a Room"/>
+    <translation key="talk_buy_weapons" value="(B)uy Weapons"/>
+    <translation key="talk_bluff" value="(B)luff"/>
+    <translation key="talk_no_bluff_mouseover" value="Nobody is going to fall for that"/>
+    <translation key="talk_intimidate" value="(I)ntimidate"/>
+    <translation key="talk_threaten_hostage" value="Threaten (H)ostage"/>
+    <translation key="talk_surrender" value="Surrender to Authorities (O)"/>
+    <translation key="talk_select_hostage" value="Select (enter)"/>
+    <translation key="talk_select_hostage_mouseover" value="Select both a kidnapper and a target"/>
+    <translation key="rob_teller" value="(A) Quietly pass the teller a note"/>
+    <translation key="rob_vault" value="(B) Threaten bystanders to get to the vault"/>
+  </translation_set>
 </translations>
