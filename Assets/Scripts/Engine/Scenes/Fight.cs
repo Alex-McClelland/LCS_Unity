@@ -229,12 +229,17 @@ namespace LCS.Engine.Scenes
         {
             MasterController.GetMC().addCombatMessage("##DEBUG## Entering doCleanup");
 
-            foreach(Entity e in liberals)
+            List<Entity> tempList = new List<Entity>(liberals);
+
+            foreach(Entity e in tempList)
             {
                 if (e != null && !e.getComponent<Body>().Alive)
                     liberals[liberals.IndexOf(e)] = null;
             }
-            foreach(Entity e in conservatives)
+
+            tempList = new List<Entity>(conservatives);
+
+            foreach(Entity e in tempList)
             {
                 if (e != null && !e.getComponent<Body>().Alive)
                     conservatives[conservatives.IndexOf(e)] = null;

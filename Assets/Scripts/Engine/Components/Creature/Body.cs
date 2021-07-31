@@ -1544,7 +1544,7 @@ namespace LCS.Engine.Components.Creature
                     else
                         lastAttacker.getComponent<CreatureBase>().juiceMe(-(5 + getComponent<CreatureBase>().Juice / 20));
 
-                    if (lastAttacker.hasComponent<Liberal>() &&
+                    if (lastAttacker.hasComponent<Liberal>() && lastAttacker.getComponent<Body>().Alive &&
                             (getSpecies().type == "HUMAN" ||
                                 (getSpecies().type == "DOG" &&
                                 MasterController.government.laws[Constants.LAW_ANIMAL_RESEARCH].alignment == Alignment.ELITE_LIBERAL)))
