@@ -1847,8 +1847,8 @@ namespace LCS.Engine.Components.Creature
             {
                 if (creature == null) continue;
 
-                // Dogs aren't that useful as sleeper agents.
-                if (creature.type.Equals("GUARDDOG")) continue;
+                // We might be liberal, but even so we only need humans.
+                if (creature.getComponent<Body>().getSpecies().type != "HUMAN") continue;
 
                 //Liberals are easier to recruit than non-liberals
                 if (creature.getComponent<CreatureInfo>().alignment != Alignment.LIBERAL &&
