@@ -1846,6 +1846,10 @@ namespace LCS.Engine.Components.Creature
             foreach (Entity creature in recruitOptions)
             {
                 if (creature == null) continue;
+
+                // Dogs aren't that useful as sleeper agents.
+                if (creature.type.Equals("GUARDDOG")) continue;
+
                 //Liberals are easier to recruit than non-liberals
                 if (creature.getComponent<CreatureInfo>().alignment != Alignment.LIBERAL &&
                     MasterController.GetMC().LCSRandom(5) != 0)
