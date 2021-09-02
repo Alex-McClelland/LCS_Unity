@@ -659,7 +659,13 @@ namespace LCS.Engine.Components.Creature
                 {
                     CurrentSentence--;
 
-                    if(CurrentSentence == 0)
+                    //Pause the death penalty countdown if the prison is closed, to allow for opportunities to rescue the Liberal
+                    if (deathPenalty && getComponent<CreatureBase>().Location.getComponent<TroubleSpot>().closed > 0)
+                    {
+                        CurrentSentence++;
+                    }
+
+                    if (CurrentSentence == 0)
                     {
                         if (deathPenalty)
                         {
