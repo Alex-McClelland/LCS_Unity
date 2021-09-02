@@ -206,6 +206,10 @@ namespace LCS.Engine.Components.Creature
         {
             status = Status.SLEEPER;
             homeBase = getComponent<CreatureInfo>().workLocation;
+            if (homeBase.hasComponent<TroubleSpot>())
+            {
+                homeBase.getComponent<TroubleSpot>().mapped = true;
+            }
             goHome();
             
             setActivity("SLEEPER_NONE");
