@@ -715,11 +715,23 @@ namespace LCS.Engine.Components.Creature
 
                             notificationText += " next month.";
 
+                            if(deathPenalty && getComponent<CreatureBase>().Location.getComponent<TroubleSpot>().closed > 0)
+                            {
+                                notificationText += "\nHowever, the closure of " + getComponent<CreatureBase>().Location.getComponent<SiteBase>().getCurrentName() + " has delayed " + getComponent<CreatureInfo>().getName() + "'s execution by an additional month.\nBut they won't wait forever...";
+                            }
+
                             mc.addMessage(notificationText, true);                            
                         }
                         else if (deathPenalty)
                         {
-                            mc.addMessage(getComponent<CreatureInfo>().getName() + " is due to be <color=red>executed</color> in " + MasterController.NumberToWords(CurrentSentence).ToLower() + " months.");
+                            if (getComponent<CreatureBase>().Location.getComponent<TroubleSpot>().closed > 0)
+                            {
+                                mc.addMessage("The closure of " + getComponent<CreatureBase>().Location.getComponent<SiteBase>().getCurrentName() + " has delayed " + getComponent<CreatureInfo>().getName() + "'s execution by a month. But they won't wait forever...");
+                            }
+                            else
+                            {
+                                mc.addMessage(getComponent<CreatureInfo>().getName() + " is due to be <color=red>executed</color> in " + MasterController.NumberToWords(CurrentSentence).ToLower() + " months.");
+                            }
                         }
                     }
                 }
