@@ -720,6 +720,10 @@ namespace LCS.Engine.Components.Creature
                 {
                     subordinateCount--;
                 }
+                else if (!e.getComponent<Body>().Alive)
+                {
+                    subordinateCount--;
+                }
             }
 
             return subordinateCount;
