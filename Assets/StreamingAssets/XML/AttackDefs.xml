@@ -50,7 +50,7 @@ Attack def formatting:
       valid flags:
         RANGED - this is a ranged attack
         ALWAYS_DESCRIBE_HIT - use hit description even on a single hit
-        BACKSTAB - this can cause backstab damage on unaware enemies (not currently implemented)
+        BACKSTAB - this can cause backstab damage on unaware enemies
         DAMAGE_ARMOR - this attack can cause damage to armour
         CAUSE_BLEED - this attack can cause bleeding
         SKILL_DAMAGE - this attack's damage is based on the skill of the attacker rather than the fixed/random damage
