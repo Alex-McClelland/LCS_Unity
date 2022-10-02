@@ -67,6 +67,9 @@ public class UIControllerImpl : MonoBehaviour, UIController {
     public MartyrScreenImpl martyrScreenImpl;
     public MartyrScreen martyrScreen { get; set; }
 
+    public FinanceView financesImpl;
+    public Finances finances { get; set; }
+
     public MessageLog debugLog;
 
     public PopupMessage popupMessageBox;
@@ -124,6 +127,7 @@ public class UIControllerImpl : MonoBehaviour, UIController {
         news = newsImpl;
         fastAdvance = fastAdvanceImpl;
         martyrScreen = martyrScreenImpl;
+        finances = financesImpl;
 
         tooltip = tooltipInstance;
 

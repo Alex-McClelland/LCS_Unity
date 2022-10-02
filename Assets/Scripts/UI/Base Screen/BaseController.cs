@@ -164,7 +164,7 @@ public class BaseController : MonoBehaviour, BaseMode {
 
     public void refreshMoney()
     {
-        t_Money.text = "Money: " + MasterController.lcs.Money.ToString("C00");
+        t_Money.text = "M(o)ney: " + MasterController.lcs.Money.ToString("C00");
     }
 
     public void showHideTabs()
@@ -338,7 +338,15 @@ public class BaseController : MonoBehaviour, BaseMode {
     public void viewMartyrs()
     {
         uiController.hideUI();
+        UIControllerImpl.tooltip.setText("");
         uiController.martyrScreen.show();
+    }
+
+    public void viewFinances()
+    {
+        uiController.hideUI();
+        UIControllerImpl.tooltip.setText("");
+        uiController.finances.show();
     }
 
     private void refreshLocations()

@@ -266,6 +266,7 @@ public class LiberalAgendaImpl : MonoBehaviour, LiberalAgenda {
     public void viewMap()
     {
         uiController.hideUI();
+        UIControllerImpl.tooltip.setText("");
         uiController.nationMap.showDemographics();
     }
 

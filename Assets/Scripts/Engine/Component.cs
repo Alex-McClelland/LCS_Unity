@@ -170,7 +170,7 @@ namespace LCS.Engine
             {
                 if (componentData.SelectSingleNode(field.Name) == null)
                 {
-                    MasterController.GetMC().addErrorMessage(field.Name + " was missing from entity " + component.owner + " and set to default. This may be fine or this may break the game.");
+                    MasterController.GetMC().addErrorMessage(field.Name + " was missing from component " + component.GetType() + " on entity " + component.owner.def + " and set to default. This may be fine or this may break the game.");
                     return;
                 }
 

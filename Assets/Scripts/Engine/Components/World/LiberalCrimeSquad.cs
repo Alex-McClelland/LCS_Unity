@@ -36,9 +36,13 @@ namespace LCS.Engine.Components.World
         public List<Memorial> liberalMartyrs { get; set; }
 
         [SimpleSave]
-        private int monthlyIncome;
+        public int monthlyIncome;
         [SimpleSave]
-        private int monthlyExpenses;
+        public int monthlyExpenses;
+        [SimpleSave]
+        public int lastMonthIncome;
+        [SimpleSave]
+        public int lastMonthExpenses;
 
         public LiberalCrimeSquad()
         {
@@ -50,6 +54,26 @@ namespace LCS.Engine.Components.World
             hackingLiberals = new List<Entity>();
             liberalMartyrs = new List<Memorial>();
             slogan = "We need a slogan!";
+        }
+
+        public override void subscribe()
+        {
+            base.subscribe();
+            MasterController.GetMC().nextMonth += doMonthly;
+        }
+
+        public override void unsubscribe()
+        {
+            base.unsubscribe();
+            MasterController.GetMC().nextMonth -= doMonthly;
+        }
+
+        private void doMonthly(object sender, EventArgs args)
+        {
+            lastMonthExpenses = monthlyExpenses;
+            lastMonthIncome = monthlyIncome;
+            monthlyExpenses = 0;
+            monthlyIncome = 0;
         }
 
         public override void save(XmlNode entityNode)
