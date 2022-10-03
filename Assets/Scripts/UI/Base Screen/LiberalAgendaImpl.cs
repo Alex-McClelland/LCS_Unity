@@ -74,9 +74,13 @@ public class LiberalAgendaImpl : MonoBehaviour, LiberalAgenda {
 
         int[] supremeCourtAlignments = new int[5];
 
-        for(int i=0;i<MasterController.government.supremeCourt.Count;i++)
+        List<Entity> sortedSupremeCourtList = new List<Entity>(MasterController.government.supremeCourt);
+
+        sortedSupremeCourtList.Sort((Entity a, Entity b) => { return a.getComponent<Politician>().alignment - b.getComponent<Politician>().alignment; });
+
+        for(int i=0;i<sortedSupremeCourtList.Count;i++)
         {
-            Entity e = MasterController.government.supremeCourt[i];
+            Entity e = sortedSupremeCourtList[i];
             if(t_SupremeCourtNames.Count < i + 1)
             {
                 GameObject g = Instantiate(p_SupremeCourtName, SupremeCourtContainer.transform, false);
@@ -84,27 +88,55 @@ public class LiberalAgendaImpl : MonoBehaviour, LiberalAgenda {
             }
 
             string justiceColor = getAlignmentColor(e.getComponent<Politician>().alignment);
+            string justiceAlign = "";
+
+            switch (e.getComponent<Politician>().alignment)
+            {
+                case Alignment.ARCHCONSERVATIVE:
+                    justiceAlign = "C+";
+                    break;
+                case Alignment.CONSERVATIVE:
+                    justiceAlign = "C";
+                    break;
+                case Alignment.MODERATE:
+                    justiceAlign = "M";
+                    break;
+                case Alignment.LIBERAL:
+                    justiceAlign = "L";
+                    break;
+                case Alignment.ELITE_LIBERAL:
+                    justiceAlign = "L+";
+                    break;
+            }
+
             Text t_SupremeCourtName = t_SupremeCourtNames[i].GetComponent<Text>();
             MouseOverText t_SupremeCourtMouseOver = t_SupremeCourtNames[i].GetComponent<MouseOverText>();
-            t_SupremeCourtName.text = justiceColor + e.getComponent<CreatureInfo>().getName(true) + "</color>";
-            t_SupremeCourtMouseOver.mouseOverText = "Age: " + e.getComponent<Age>().getAge() + "\n" + "Health: " + e.getComponent<CreatureBase>().BaseAttributes[Constants.ATTRIBUTE_HEALTH].Level;
+            string justiceName = e.getComponent<CreatureInfo>().getName(true);
+            justiceName = justiceName.Substring(0, justiceName.Length < 11 ? justiceName.Length : 11);
+            t_SupremeCourtName.text = justiceColor + justiceName + "</color> (" + justiceAlign + ")";
+            t_SupremeCourtMouseOver.mouseOverText = e.getComponent<CreatureInfo>().encounterName + "\nAge: " + e.getComponent<Age>().getAge() + "\n" + "Health: " + e.getComponent<CreatureBase>().BaseAttributes[Constants.ATTRIBUTE_HEALTH].Level;
 
             switch (e.getComponent<Politician>().alignment)
             {
                 case Alignment.ARCHCONSERVATIVE:
                     supremeCourtAlignments[0]++;
+                    t_SupremeCourtMouseOver.mouseOverText += "\nAlignment: Arch-Conservative";
                     break;
                 case Alignment.CONSERVATIVE:
                     supremeCourtAlignments[1]++;
+                    t_SupremeCourtMouseOver.mouseOverText += "\nAlignment: Conservative";
                     break;
                 case Alignment.MODERATE:
                     supremeCourtAlignments[2]++;
+                    t_SupremeCourtMouseOver.mouseOverText += "\nAlignment: Moderate";
                     break;
                 case Alignment.LIBERAL:
                     supremeCourtAlignments[3]++;
+                    t_SupremeCourtMouseOver.mouseOverText += "\nAlignment: Liberal";
                     break;
                 case Alignment.ELITE_LIBERAL:
                     supremeCourtAlignments[4]++;
+                    t_SupremeCourtMouseOver.mouseOverText += "\nAlignment: Elite Liberal";
                     break;
             }
         }
