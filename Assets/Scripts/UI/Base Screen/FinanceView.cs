@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 using LCS.Engine;
@@ -8,14 +10,12 @@ using LCS.Engine.Components.World;
 
 public class FinanceView : MonoBehaviour, Finances
 {
-    public UIControllerImpl uiController;
+    public FinancialMonthDisplay p_FinancialMonthDisplay;
+    public Transform reportContainer;
+    public Text t_Total;
 
-    public Text t_currentIncome;
-    public Text t_currentExpenses;
-    public Text t_currentTotal;
-    public Text t_lastIncome;
-    public Text t_lastExpenses;    
-    public Text t_lastTotal;
+    public UIControllerImpl uiController;
+    public List<FinancialMonthDisplay> months;
 
     // Start is called before the first frame update
     void Start()
@@ -36,31 +36,41 @@ public class FinanceView : MonoBehaviour, Finances
 
         LiberalCrimeSquad lcs = MasterController.GetMC().worldState.getComponent<LiberalCrimeSquad>();
 
-        t_currentIncome.text = lcs.monthlyIncome.ToString("C00");
-        t_currentExpenses.text = lcs.monthlyExpenses.ToString("C00");
-        t_lastIncome.text = lcs.lastMonthIncome.ToString("C00");
-        t_lastExpenses.text = lcs.lastMonthExpenses.ToString("C00");
+        int total = 0;
 
-        if(lcs.monthlyIncome - lcs.monthlyExpenses < 0)
+        CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+        culture.NumberFormat.CurrencyNegativePattern = 1;
+
+        while (months.Count < lcs.financials.Count)
         {
-            t_currentTotal.color = Color.red;
+            FinancialMonthDisplay month = Instantiate(p_FinancialMonthDisplay, reportContainer);
+            month.transform.SetAsFirstSibling();
+            months.Add(month);
         }
+
+        for (int i = 0; i < lcs.financials.Count; i++)
+        {
+            DateTime modMonth = MasterController.GetMC().currentDate.AddMonths(-i);
+
+            months[i].t_Date.text = modMonth.ToString("MMMM yyyy");
+            months[i].t_Income.text = lcs.financials[i].income.ToString("C00", culture);
+            months[i].t_Expenses.text = lcs.financials[i].expenses.ToString("C00", culture);
+            months[i].t_Net.text = (lcs.financials[i].income - lcs.financials[i].expenses).ToString("C00", culture);
+
+            if (lcs.financials[i].income - lcs.financials[i].expenses < 0)
+                months[i].t_Net.color = Color.red;
+            else
+                months[i].t_Net.color = Color.white;
+
+            total += lcs.financials[i].income - lcs.financials[i].expenses;
+        }
+
+        t_Total.text = total.ToString("C00", culture);
+
+        if (total < 0)
+            t_Total.color = Color.red;
         else
-        {
-            t_currentTotal.color = Color.white;
-        }
-
-        if (lcs.lastMonthIncome - lcs.lastMonthExpenses < 0)
-        {
-            t_lastTotal.color = Color.red;
-        }
-        else
-        {
-            t_lastTotal.color = Color.white;
-        }
-
-        t_currentTotal.text = (lcs.monthlyIncome - lcs.monthlyExpenses).ToString("C00");
-        t_lastTotal.text = (lcs.lastMonthIncome - lcs.lastMonthExpenses).ToString("C00");
+            t_Total.color = Color.white;
     }
 
     public void hide()

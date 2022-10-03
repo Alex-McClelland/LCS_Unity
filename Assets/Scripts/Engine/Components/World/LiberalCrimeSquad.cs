@@ -35,21 +35,17 @@ namespace LCS.Engine.Components.World
         public List<Entity> hackingLiberals { get; set; }
         public List<Memorial> liberalMartyrs { get; set; }
 
-        [SimpleSave]
-        public int monthlyIncome;
-        [SimpleSave]
-        public int monthlyExpenses;
-        [SimpleSave]
-        public int lastMonthIncome;
-        [SimpleSave]
-        public int lastMonthExpenses;
+        public List<FinanceMonth> financials = new List<FinanceMonth>();
+
+        private const int FINANCIAL_COUNT = 12;
 
         public LiberalCrimeSquad()
         {
             squads = new List<Squad>();
             Money = 0;
-            monthlyIncome = 0;
-            monthlyExpenses = 0;
+
+            for (int i = 0; i < FINANCIAL_COUNT; i++) financials.Add(new FinanceMonth());
+
             protestingLiberals = new List<Entity>();
             hackingLiberals = new List<Entity>();
             liberalMartyrs = new List<Memorial>();
@@ -70,10 +66,12 @@ namespace LCS.Engine.Components.World
 
         private void doMonthly(object sender, EventArgs args)
         {
-            lastMonthExpenses = monthlyExpenses;
-            lastMonthIncome = monthlyIncome;
-            monthlyExpenses = 0;
-            monthlyIncome = 0;
+            for(int i = FINANCIAL_COUNT - 1; i > 0; i--)
+            {
+                financials[i] = new FinanceMonth(financials[i - 1]);
+            }
+
+            financials[0] = new FinanceMonth();
         }
 
         public override void save(XmlNode entityNode)
@@ -93,6 +91,9 @@ namespace LCS.Engine.Components.World
             if (saveNode.SelectSingleNode("martyrs") != null)
                 saveNode.RemoveChild(saveNode.SelectSingleNode("martyrs"));
 
+            if (saveNode.SelectSingleNode("financials") != null)
+                saveNode.RemoveChild(saveNode.SelectSingleNode("financials"));
+
             XmlNode squadNode = saveNode.OwnerDocument.CreateElement("squads");
             saveNode.AppendChild(squadNode);
 
@@ -104,6 +105,12 @@ namespace LCS.Engine.Components.World
 
             foreach (Memorial m in liberalMartyrs)
                 m.save(martyrNode);
+
+            XmlNode financeNode = saveNode.OwnerDocument.CreateElement("financials");
+            saveNode.AppendChild(financeNode);
+
+            foreach (FinanceMonth f in financials)
+                f.save(financeNode);
         }
 
         public override void load(XmlNode componentData, Dictionary<long, Entity> entityList)
@@ -115,6 +122,21 @@ namespace LCS.Engine.Components.World
                 Memorial m = new Memorial();
                 m.load(node, entityList);
                 liberalMartyrs.Add(m);
+            }
+
+            if (componentData.SelectSingleNode("financials") != null)
+            {
+                financials.Clear();
+
+                foreach (XmlNode node in componentData.SelectSingleNode("financials").ChildNodes)
+                {
+                    FinanceMonth f = new FinanceMonth();
+                    f.load(node);
+                    financials.Add(f);
+                }
+
+                while (financials.Count < FINANCIAL_COUNT)
+                    financials.Add(new FinanceMonth());
             }
         }
 
@@ -193,7 +215,7 @@ namespace LCS.Engine.Components.World
             if (amt > 0)
             {
                 Money += amt;
-                monthlyIncome += amt;
+                financials[0].income += amt;
                 MasterController.highscore.moneyTaxed += amt;
                 return true;
             }
@@ -203,7 +225,7 @@ namespace LCS.Engine.Components.World
                 if(Money < amt) return false;
 
                 Money += amt;
-                monthlyExpenses += -amt;
+                financials[0].expenses += -amt;
                 MasterController.highscore.moneySpent += -amt;
                 return true;
             }
@@ -986,5 +1008,50 @@ namespace LCS.Engine.Components.World
                     damagedOrgans.Add(organNode.InnerText);
             }
         }
+
+        public class FinanceMonth
+        {
+            public int income;
+            public int expenses;
+
+            public FinanceMonth()
+            {
+                income = 0;
+                expenses = 0;
+            }
+
+            public FinanceMonth(int income, int expenses)
+            {
+                this.income = income;
+                this.expenses = expenses;
+            }
+
+            public FinanceMonth(FinanceMonth input)
+            {
+                income = input.income;
+                expenses = input.expenses;
+            }
+
+            public void save(XmlNode parent)
+            {
+                XmlNode saveNode = parent.OwnerDocument.CreateElement("FinanceMonth");
+                parent.AppendChild(saveNode);
+
+                XmlNode incomeNode = saveNode.OwnerDocument.CreateElement("income");
+                saveNode.AppendChild(incomeNode);
+
+                XmlNode expenseNode = saveNode.OwnerDocument.CreateElement("expenses");
+                saveNode.AppendChild(expenseNode);
+
+                incomeNode.InnerText = income.ToString();
+                expenseNode.InnerText = expenses.ToString();
+            }
+
+            public void load(XmlNode financialNode)
+            {
+                income = int.Parse(financialNode.SelectSingleNode("income").InnerText);
+                expenses = int.Parse(financialNode.SelectSingleNode("expenses").InnerText);
+            }
+        };
     }
 }
