@@ -13,6 +13,8 @@ public class FinanceView : MonoBehaviour, Finances
     public FinancialMonthDisplay p_FinancialMonthDisplay;
     public Transform reportContainer;
     public Text t_Total;
+    public Text t_Money;
+    public Text t_Date;
 
     public UIControllerImpl uiController;
     public List<FinancialMonthDisplay> months;
@@ -33,6 +35,9 @@ public class FinanceView : MonoBehaviour, Finances
     {
         gameObject.SetActive(true);
         uiController.addCurrentScreen(this);
+
+        t_Money.text = "Money: " + MasterController.lcs.Money.ToString("C00");
+        t_Date.text = MasterController.GetMC().currentDate.ToString("D");
 
         LiberalCrimeSquad lcs = MasterController.GetMC().worldState.getComponent<LiberalCrimeSquad>();
 
