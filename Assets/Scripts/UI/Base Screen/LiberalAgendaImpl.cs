@@ -167,11 +167,11 @@ public class LiberalAgendaImpl : MonoBehaviour, LiberalAgenda {
         t_Congress.text = "";
         t_Congress.text += majorityColor + "HOUSE:</color> ";
         if (MasterController.government.houseWinCheck()) t_Congress.text += "</b>";
-        t_Congress.text +=" <color=red>" + houseAlignments[0] + "</color> / ";
-        t_Congress.text += "<color=magenta>" + houseAlignments[1] + "</color> / ";
-        t_Congress.text += "<color=yellow>" + houseAlignments[2] + "</color> / ";
+        t_Congress.text += " <color=lime>" + houseAlignments[4] + "</color> / ";
         t_Congress.text += "<color=cyan>" + houseAlignments[3] + "</color> / ";
-        t_Congress.text += "<color=lime>" + houseAlignments[4] + "</color>";
+        t_Congress.text += "<color=yellow>" + houseAlignments[2] + "</color> / ";
+        t_Congress.text += "<color=magenta>" + houseAlignments[1] + "</color> / ";
+        t_Congress.text += "<color=red>" + houseAlignments[0] + "</color>";
 
         int[] senateAlignments = new int[5];
 
@@ -221,11 +221,11 @@ public class LiberalAgendaImpl : MonoBehaviour, LiberalAgenda {
         t_Congress.text += "\n";
         t_Congress.text += majorityColor + "SENATE:</color>";
         if (MasterController.government.senateWinCheck()) t_Congress.text += "</b>";
-        t_Congress.text += " <color=red>" + senateAlignments[0] + "</color> / ";
-        t_Congress.text += "<color=magenta>" + senateAlignments[1] + "</color> / ";
-        t_Congress.text += "<color=yellow>" + senateAlignments[2] + "</color> / ";
+        t_Congress.text += " <color=lime>" + senateAlignments[4] + "</color> / ";
         t_Congress.text += "<color=cyan>" + senateAlignments[3] + "</color> / ";
-        t_Congress.text += "<color=lime>" + senateAlignments[4] + "</color>";
+        t_Congress.text += "<color=yellow>" + senateAlignments[2] + "</color> / ";
+        t_Congress.text += "<color=magenta>" + senateAlignments[1] + "</color> / ";
+        t_Congress.text += "<color=red>" + senateAlignments[0] + "</color>";
 
         if (pollsActive) pollDisplay.Activate();
 

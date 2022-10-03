@@ -914,7 +914,7 @@ public class MapScreenController : MonoBehaviour, NationMap {
                     }
                 }
 
-                tooltipText += "House: " + CC + " C+ / " + C + " C / " + M + " M / " + L + " L / " + LL + " L+\n";
+                tooltipText += "House: " + LL + " L+ / " + L + " L / " + M + " M / " + C + " C / " + CC + " C+\n";
 
                 CC = 0;
                 C = 0;
@@ -944,7 +944,7 @@ public class MapScreenController : MonoBehaviour, NationMap {
                     }
                 }
 
-                tooltipText += "Senate: " + CC + " C+ / " + C + " C / " + M + " M / " + L + " L / " + LL + " L+\n";
+                tooltipText += "Senate: " + LL + " L+ / " + L + " L / " + M + " M / " + C + " C / " + CC + " C+\n";
             }
 
             tooltipText += "Alignment: ";
