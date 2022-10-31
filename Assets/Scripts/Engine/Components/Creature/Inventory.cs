@@ -357,6 +357,8 @@ namespace LCS.Engine.Components.Creature
                 weapon.persist();
 
             weapon.getComponent<ItemBase>().Location = owner;
+            if (weapon.getComponent<Weapon>().clip != null)
+                weapon.getComponent<Weapon>().clip.getComponent<ItemBase>().Location = owner;
 
             return true;
         }
