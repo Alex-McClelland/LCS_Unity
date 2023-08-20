@@ -131,13 +131,40 @@ namespace LCS.Engine.Components.Creature
                 joinDate = MasterController.GetMC().currentDate;
                 MasterController.GetMC().addDebugMessage("Liberal " + getComponent<CreatureInfo>().getName() + " missing join date, set to current date");
             }
-
             foreach (XmlNode node in componentData.SelectSingleNode("subordinates").ChildNodes)
-                subordinates.Add(entityList[int.Parse(node.InnerText)]);
+            {
+                try
+                {
+                    subordinates.Add(entityList[int.Parse(node.InnerText)]);
+                }
+                catch (KeyNotFoundException e)
+                {
+                    MasterController.GetMC().addDebugMessage("Missing Entity Ref: " + node.InnerText + " in entity " + owner.def + ":" + owner.guid + ":Liberal:subordinates");
+                }
+            }
             foreach (XmlNode node in componentData.SelectSingleNode("meetings").ChildNodes)
-                plannedMeetings.Add(entityList[int.Parse(node.InnerText)]);
+            {
+                try
+                {
+                    plannedMeetings.Add(entityList[int.Parse(node.InnerText)]);
+                }
+                catch (KeyNotFoundException e)
+                {
+                    MasterController.GetMC().addDebugMessage("Missing Entity Ref: " + node.InnerText + " in entity " + owner.def + ":" + owner.guid + ":Liberal:meetings");
+                }
+            }
             foreach (XmlNode node in componentData.SelectSingleNode("dates").ChildNodes)
-                plannedDates.Add(entityList[int.Parse(node.InnerText)]);
+            {
+                try
+                {
+                    plannedDates.Add(entityList[int.Parse(node.InnerText)]);
+                }
+                catch (KeyNotFoundException e)
+                {
+                    MasterController.GetMC().addDebugMessage("Missing Entity Ref: " + node.InnerText + " in entity " + owner.def + ":" + owner.guid + ":Liberal:dates");
+                }
+            }
+            
         }
 
         public override void subscribe()
