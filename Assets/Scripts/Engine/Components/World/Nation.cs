@@ -40,7 +40,15 @@ namespace LCS.Engine.Components.World
         {
             foreach (XmlNode node in componentData.SelectNodes("city"))
             {
-                cities.Add(node.Attributes["idname"].Value, entityList[int.Parse(node.InnerText)]);
+                try
+                {
+                    cities.Add(node.Attributes["idname"].Value, entityList[int.Parse(node.InnerText)]);
+                }
+                //This should DEFINITELY never happen
+                catch (KeyNotFoundException)
+                {
+                    MasterController.GetMC().addErrorMessage("Entity reference " + int.Parse(node.InnerText) + " not found on object " + owner.def + ":" + componentData.ParentNode.Attributes["guid"].Value + ":" + componentData.Name + ":city");
+                }
             }
         }
 

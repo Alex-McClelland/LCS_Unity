@@ -75,7 +75,14 @@ namespace LCS.Engine.Components.Creature
 
             foreach(XmlNode node in componentData.SelectSingleNode("rapport").ChildNodes)
             {
-                rapport.Add(entityList[int.Parse(node.InnerText)], float.Parse(node.Attributes["amt"].Value));
+                try
+                {
+                    rapport.Add(entityList[int.Parse(node.InnerText)], float.Parse(node.Attributes["amt"].Value));
+                }
+                catch (KeyNotFoundException)
+                {
+                    MasterController.GetMC().addErrorMessage("Entity reference " + int.Parse(node.InnerText) + " not found on object " + owner.def + ":" + componentData.ParentNode.Attributes["guid"].Value + ":" + componentData.Name + ":rapport");
+                }
             }
         }
 

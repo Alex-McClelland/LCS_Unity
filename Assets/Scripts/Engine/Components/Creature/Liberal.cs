@@ -137,9 +137,9 @@ namespace LCS.Engine.Components.Creature
                 {
                     subordinates.Add(entityList[int.Parse(node.InnerText)]);
                 }
-                catch (KeyNotFoundException e)
+                catch (KeyNotFoundException)
                 {
-                    MasterController.GetMC().addDebugMessage("Missing Entity Ref: " + node.InnerText + " in entity " + owner.def + ":" + owner.guid + ":Liberal:subordinates");
+                    MasterController.GetMC().addErrorMessage("Entity reference " + int.Parse(node.InnerText) + " not found on object " + owner.def + ":" + componentData.ParentNode.Attributes["guid"].Value + ":" + componentData.Name + ":subordinates");
                 }
             }
             foreach (XmlNode node in componentData.SelectSingleNode("meetings").ChildNodes)
@@ -148,9 +148,9 @@ namespace LCS.Engine.Components.Creature
                 {
                     plannedMeetings.Add(entityList[int.Parse(node.InnerText)]);
                 }
-                catch (KeyNotFoundException e)
+                catch (KeyNotFoundException)
                 {
-                    MasterController.GetMC().addDebugMessage("Missing Entity Ref: " + node.InnerText + " in entity " + owner.def + ":" + owner.guid + ":Liberal:meetings");
+                    MasterController.GetMC().addErrorMessage("Entity reference " + int.Parse(node.InnerText) + " not found on object " + owner.def + ":" + componentData.ParentNode.Attributes["guid"].Value + ":" + componentData.Name + ":meetings");
                 }
             }
             foreach (XmlNode node in componentData.SelectSingleNode("dates").ChildNodes)
@@ -159,9 +159,9 @@ namespace LCS.Engine.Components.Creature
                 {
                     plannedDates.Add(entityList[int.Parse(node.InnerText)]);
                 }
-                catch (KeyNotFoundException e)
+                catch (KeyNotFoundException)
                 {
-                    MasterController.GetMC().addDebugMessage("Missing Entity Ref: " + node.InnerText + " in entity " + owner.def + ":" + owner.guid + ":Liberal:dates");
+                    MasterController.GetMC().addErrorMessage("Entity reference " + int.Parse(node.InnerText) + " not found on object " + owner.def + ":" + componentData.ParentNode.Attributes["guid"].Value + ":" + componentData.Name + ":dates");
                 }
             }
             

@@ -59,7 +59,15 @@ namespace LCS.Engine.Components.World
                 locations.Add(node.Attributes["name"].Value, new List<Entity>());
                 foreach(XmlNode innerNode in node.SelectNodes("location"))
                 {
-                    locations[node.Attributes["name"].Value].Add(entityList[int.Parse(innerNode.InnerText)]);
+                    try
+                    {
+                        locations[node.Attributes["name"].Value].Add(entityList[int.Parse(innerNode.InnerText)]);
+                    }
+                    //Should never happen, locations are not added or removed during gameplay so refs should never become stale
+                    catch (KeyNotFoundException)
+                    {
+                        MasterController.GetMC().addErrorMessage("Entity reference " + int.Parse(innerNode.InnerText) + " not found on object " + owner.def + ":" + componentData.ParentNode.Attributes["guid"].Value + ":" + componentData.Name + ":district:location");
+                    }
                 }
             }
         }

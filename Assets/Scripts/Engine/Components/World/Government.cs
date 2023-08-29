@@ -120,8 +120,17 @@ namespace LCS.Engine.Components.World
         {
             loadSimpleFields(componentData, entityList);
 
-            foreach(XmlNode node in componentData.SelectSingleNode("supremeCourt").ChildNodes)
-                supremeCourt.Add(entityList[int.Parse(node.InnerText)]);
+            foreach (XmlNode node in componentData.SelectSingleNode("supremeCourt").ChildNodes)
+            {
+                try
+                {
+                    supremeCourt.Add(entityList[int.Parse(node.InnerText)]);
+                }
+                catch (KeyNotFoundException)
+                {
+                    MasterController.GetMC().addErrorMessage("Entity reference " + int.Parse(node.InnerText) + " not found on object " + owner.def + ":" + componentData.ParentNode.Attributes["guid"].Value + ":" + componentData.Name + ":supremeCourt");
+                }
+            }
             foreach (XmlNode node in componentData.SelectNodes("Law"))
                 laws.Add(node.Attributes["type"].Value, new Law(node.Attributes["type"].Value, (Alignment)Enum.Parse(typeof(Alignment), node.Attributes["alignment"].Value)));
             foreach(XmlNode node in componentData.SelectNodes("state"))

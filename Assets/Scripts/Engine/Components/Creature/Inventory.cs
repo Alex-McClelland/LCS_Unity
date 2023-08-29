@@ -67,8 +67,17 @@ namespace LCS.Engine.Components.Creature
 
             if(componentData.SelectSingleNode("clips") != null)
             {
-                foreach(XmlNode node in componentData.SelectSingleNode("clips").ChildNodes)
-                    clips.Enqueue(entityList[int.Parse(node.InnerText)]);
+                foreach (XmlNode node in componentData.SelectSingleNode("clips").ChildNodes)
+                {
+                    try
+                    {
+                        clips.Enqueue(entityList[int.Parse(node.InnerText)]);
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        MasterController.GetMC().addErrorMessage("Entity reference " + int.Parse(node.InnerText) + " not found on object " + owner.def + ":" + componentData.ParentNode.Attributes["guid"].Value + ":" + componentData.Name + ":clips");
+                    }
+                }
             }
         }
 

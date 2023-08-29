@@ -184,7 +184,7 @@ namespace LCS.Engine
                         }
                         catch (KeyNotFoundException)
                         {
-                            MasterController.GetMC().addErrorMessage("Entity reference " + int.Parse(componentData.SelectSingleNode(field.Name).InnerText) + " not found on object " + component.owner.def + ":" + componentData.ParentNode.Attributes["guid"].Value);
+                            MasterController.GetMC().addErrorMessage("Entity reference " + int.Parse(componentData.SelectSingleNode(field.Name).InnerText) + " not found on object " + component.owner.def + ":" + componentData.ParentNode.Attributes["guid"].Value + ":" + componentData.Name + ":" + field.Name);
                         }
                     }
                     else

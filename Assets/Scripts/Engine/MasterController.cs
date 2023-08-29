@@ -1021,6 +1021,7 @@ namespace LCS.Engine
                 uiController.showPopup(text, () =>
                 {
                     debugLog.Add(new LogMessage(text, true));
+                    uiController.updateDebugLog();
                     doNextAction();
                 });
             }, "Error Interrupt Popup");
