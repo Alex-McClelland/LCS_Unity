@@ -1885,6 +1885,37 @@ namespace LCS.Engine
                 //Remove dead Liberals from the LCS and handle subordinate promotions/leaving the LCS
                 if (!e.getComponent<Body>().Alive)
                     e.getComponent<Liberal>().leaveLCS();
+
+                //Ensure that all Liberal equipment is being saved correctly
+                if (e.persistent)
+                {
+                    Inventory inv = e.getComponent<Inventory>();
+
+                    if (inv.getArmor() != null)
+                    {
+                        if (!inv.getArmor().persistent)
+                        {
+                            addErrorMessage("Inventory Armor Ref: " + inv.getArmor().guid + " was NOT persistent on Entity " + e.def + ":" + e.guid + ", fixed in " + currentDate + " daily cleanup");
+                            inv.getArmor().persist();
+                        }
+                    }
+                    if (inv.getWeapon() != null)
+                    {
+                        if (!inv.getWeapon().persistent)
+                        {
+                            addErrorMessage("Inventory Weapon Ref: " + inv.getArmor().guid + " was NOT persistent on Entity " + e.def + ":" + e.guid + ", fixed in " + currentDate + " daily cleanup");
+                            inv.getWeapon().persist();
+                        }
+                    }
+                    foreach (Entity c in inv.clips)
+                    {
+                        if (!c.persistent)
+                        {
+                            addErrorMessage("Inventory Clip Ref: " + inv.getArmor().guid + " was NOT persistent on Entity " + e.def + ":" + e.guid + ", fixed in " + currentDate + " daily cleanup");
+                            c.persist();
+                        }
+                    }
+                }
             }
 
             List<Entity> entities = new List<Entity>(PersistentEntityList.Values);
@@ -1893,14 +1924,70 @@ namespace LCS.Engine
             {
                 if(e.hasComponent<ItemBase>() && e.getComponent<ItemBase>().Location == null)
                 {
-                    addErrorMessage("Item " + e.def + ":" + e.guid + " had null location and was destroyed");
-                    e.depersist();
+                    //check if this item is equipped by someone or in a safehouse inventory, fix its location to match if so
+                    bool foundmatch = false;
+                    foreach(Entity e2 in entities)
+                    {
+                        if (e2.hasComponent<Inventory>())
+                        {
+                            if (e2.getComponent<Inventory>().getWeapon() == e)
+                            {
+                                addErrorMessage("Item " + e.def + ":" + e.guid + " had null location but was equipped by " + e2.def + ":" + e2.guid + ", fixed in " + currentDate + " daily cleanup");
+                                e.getComponent<ItemBase>().Location = e2;
+                                foundmatch = true;
+                            }
+                            if (e2.getComponent<Inventory>().getArmor() == e)
+                            {
+                                addErrorMessage("Item " + e.def + ":" + e.guid + " had null location but was equipped by " + e2.def + ":" + e2.guid + ", fixed in " + currentDate + " daily cleanup");
+                                e.getComponent<ItemBase>().Location = e2;
+                                foundmatch = true;
+                            }
+                            if (e2.getComponent<Inventory>().clips.Contains(e))
+                            {
+                                addErrorMessage("Item " + e.def + ":" + e.guid + " had null location but was equipped by " + e2.def + ":" + e2.guid + ", fixed in " + currentDate + " daily cleanup");
+                                e.getComponent<ItemBase>().Location = e2;
+                                foundmatch = true;
+                            }
+                        }
+
+                        if (e2.hasComponent<Weapon>())
+                        {
+                            if(e2.getComponent<Weapon>().clip == e)
+                            {
+                                addErrorMessage("Item " + e.def + ":" + e.guid + " had null location but was stored by " + e2.def + ":" + e2.guid + ", fixed in " + currentDate + " daily cleanup");
+                                e.getComponent<ItemBase>().Location = e2;
+                                foundmatch = true;
+                            }
+                        }
+                    }
+
+                    if (!foundmatch)
+                    {
+                        addErrorMessage("Item " + e.def + ":" + e.guid + " had null location and was destroyed in " + currentDate + " daily cleanup");
+                        e.depersist();
+                    }
                 }
 
                 if(e.hasComponent<CreatureBase>() && !e.hasComponent<Politician>() && e.getComponent<CreatureBase>().Location == null)
                 {
-                    addErrorMessage("Creature " + e.def + ":" + e.guid + " had null location and was destroyed");
+                    addErrorMessage("Creature " + e.def + ":" + e.guid + " had null location and was destroyed in " + currentDate + " daily cleanup");
                     e.depersist();
+
+                    //Check if this character is a subordinate of someone, clean up if so
+                    if (e.hasComponent<Liberal>())
+                    {
+                        e.getComponent<Liberal>().leaveLCS();
+                    }
+                    else
+                    {
+                        foreach(Entity e2 in entities)
+                        {
+                            if(e2.hasComponent<Liberal>() && e2.getComponent<Liberal>().subordinates.Contains(e))
+                            {
+                                e2.getComponent<Liberal>().subordinates.Remove(e);
+                            }
+                        }
+                    }
                 }
             }
 
