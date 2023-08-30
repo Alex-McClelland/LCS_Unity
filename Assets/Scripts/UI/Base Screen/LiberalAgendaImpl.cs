@@ -112,8 +112,8 @@ public class LiberalAgendaImpl : MonoBehaviour, LiberalAgenda {
             Text t_SupremeCourtName = t_SupremeCourtNames[i].GetComponent<Text>();
             MouseOverText t_SupremeCourtMouseOver = t_SupremeCourtNames[i].GetComponent<MouseOverText>();
             string justiceName = e.getComponent<CreatureInfo>().getName(true);
-            justiceName = justiceName.Substring(0, justiceName.Length < 11 ? justiceName.Length : 11);
-            t_SupremeCourtName.text = justiceColor + justiceName + "</color> (" + justiceAlign + ")";
+            justiceName = justiceName.Substring(0, justiceName.Length < 9 ? justiceName.Length : 9);
+            t_SupremeCourtName.text = justiceColor + justiceName + "</color>(" + justiceAlign + ")";
             t_SupremeCourtMouseOver.mouseOverText = e.getComponent<CreatureInfo>().encounterName + "\nAge: " + e.getComponent<Age>().getAge() + "\n" + "Health: " + e.getComponent<CreatureBase>().BaseAttributes[Constants.ATTRIBUTE_HEALTH].Level;
 
             switch (e.getComponent<Politician>().alignment)

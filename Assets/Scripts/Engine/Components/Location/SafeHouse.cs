@@ -1284,6 +1284,7 @@ namespace LCS.Engine.Components.Location
             {
                 if (!e.hasComponent<Clip>()) continue;
                 else if (e.getComponent<Clip>().isFull()) continue;
+                else if (e.hasComponent<Weapon>() && (e.getComponent<Weapon>().getFlags() & ItemDef.WeaponFlags.THROWN) != 0) continue;
 
                 if (!allClips.ContainsKey(e.getComponent<Clip>().getAmmoType()))
                 {
