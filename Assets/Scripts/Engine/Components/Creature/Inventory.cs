@@ -545,7 +545,6 @@ namespace LCS.Engine.Components.Creature
                 else if(clips.Peek().hasComponent<Weapon>() && (clips.Peek().getComponent<Weapon>().getFlags() & ItemDef.WeaponFlags.THROWN) != 0)
                 {
                     weapon = clips.Dequeue();
-                    weapon.getComponent<Weapon>().clip = weapon;
                 }
                 else
                 {

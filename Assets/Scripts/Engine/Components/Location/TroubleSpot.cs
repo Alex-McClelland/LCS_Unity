@@ -522,7 +522,10 @@ namespace LCS.Engine.Components.Location
             {
                 if(item.getComponent<Weapon>().getAmmoType() != "NONE" && (MasterController.GetMC().LCSRandom(2) == 0 || (item.getComponent<Weapon>().getFlags() & ItemDef.WeaponFlags.ALWAYS_LOADED) != 0))
                 {
-                    item.getComponent<Weapon>().clip = Factories.ItemFactory.create(item.getComponent<Weapon>().getDefaultClip().type);
+                    if ((item.getComponent<Weapon>().getFlags() & ItemDef.WeaponFlags.THROWN) == 0)
+                    {
+                        item.getComponent<Weapon>().clip = Factories.ItemFactory.create(item.getComponent<Weapon>().getDefaultClip().type);
+                    }
                 }
             }
 
