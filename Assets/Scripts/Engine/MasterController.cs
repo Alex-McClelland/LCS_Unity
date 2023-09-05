@@ -1802,6 +1802,67 @@ namespace LCS.Engine
                         doNextAction();
                     }
                 }, "checkLost");
+
+                //Speed up the endgame by adding an ELITE LIBERAL amendment to toss out non L+ SCOTUS judges
+                addAction(() => 
+                {
+                    if (government.getHouseCount(Alignment.ELITE_LIBERAL) >= government.houseNum * (2f / 3f) &&
+                    government.getSenateCount(Alignment.ELITE_LIBERAL) >= government.senateNum * (2f / 3f) &&
+                    government.president.getComponent<Politician>().alignment == Alignment.ELITE_LIBERAL)
+                    {
+                        int removalCount = 0;
+                        foreach(Entity e in government.supremeCourt)
+                        {
+                            if (e.getComponent<Politician>().alignment != Alignment.ELITE_LIBERAL) removalCount++;
+                        }
+
+                        if (removalCount != 0)
+                        {
+                            string judgeNames = "";
+
+                            foreach (Entity e in government.supremeCourt)
+                            {
+                                if (e.getComponent<Politician>().alignment != Alignment.ELITE_LIBERAL)
+                                {
+                                    judgeNames += e.getComponent<CreatureInfo>().getName() + ", ";
+                                }
+                            }
+
+                            judgeNames = judgeNames.Trim();
+                            judgeNames = judgeNames.Trim(',');
+
+                            string descriptionString = "The following Former Citizen" + (removalCount==1?" is":"s are");
+                            descriptionString += " branded Arch-Conservative: ";
+                            descriptionString += judgeNames + ".\nIn particular, the aforementioned former citizen" + (removalCount == 1 ? "" : "s");
+                            descriptionString += " may not serve on the Supreme Court. Said former citizen" + (removalCount == 1 ? " is" : "s are");
+                            descriptionString += " to be deported to a Conservative country of the President's choosing and to be replaced by " + (removalCount == 1 ? "a Proper Justice" : "Proper Justices");
+                            descriptionString += " also of the President's choosing and with the advice and consent of the Senate.";
+                            Containers.AmendmentResult result = government.ratify(Alignment.ELITE_LIBERAL, true);
+                            uiController.nationMap.showAmendmentVote(result, "The Elite Liberal Congress is proposing an <color=lime>ELITE LIBERAL AMENDMENT</color>!", descriptionString, true);
+                            if (result.ratified)
+                            {
+                                List<Entity> oldCourt = new List<Entity>(government.supremeCourt);
+
+                                foreach (Entity e in oldCourt)
+                                {
+                                    if (e.getComponent<Politician>().alignment != Alignment.ELITE_LIBERAL)
+                                    {
+                                        government.removeJustice(e);
+                                        government.forceNewJustice(Alignment.ELITE_LIBERAL);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            doNextAction();
+                        }
+                    }
+                    else
+                    {
+                        doNextAction();
+                    }
+                }, "tossJustices");
             }
 
             if((currentDate.Month == 3 && currentDate.Day == 1) || (currentDate.Month == 9 && currentDate.Day == 1))

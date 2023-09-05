@@ -715,8 +715,7 @@ namespace LCS.Engine.Components.World
                 }
 
                 retiree = mc.WeightedRandom(retirementOdds);
-                supremeCourt.Remove(retiree);
-                retiree.depersist();
+                removeJustice(retiree);
             }
 
             float senateConsensus = 0;
@@ -777,6 +776,29 @@ namespace LCS.Engine.Components.World
 
             messageText += "After much debate and televised testimony, a new justice, " + color +"the Honorable " + newJustice.getComponent<CreatureInfo>().getName() + "</color>, is appointed to the bench.";
             mc.addMessage(messageText, true);
+        }
+
+        public void removeJustice(Entity justice)
+        {
+            supremeCourt.Remove(justice);
+            justice.depersist();
+        }
+
+        public void forceNewJustice(Alignment newJusticeAlign)
+        {
+            Entity newJustice;
+
+            if (newJusticeAlign == Alignment.ARCHCONSERVATIVE || newJusticeAlign == Alignment.CONSERVATIVE) newJustice = Factories.CreatureFactory.create("SUPREME_COURT_CONSERVATIVE");
+            else if (newJusticeAlign == Alignment.MODERATE) newJustice = Factories.CreatureFactory.create("SUPREME_COURT_MODERATE");
+            else newJustice = Factories.CreatureFactory.create("SUPREME_COURT_LIBERAL");
+
+            Politician politicianComponent = new Politician();
+            politicianComponent.position = "SUPREME_COURT";
+            politicianComponent.alignment = newJusticeAlign;
+            newJustice.setComponent(politicianComponent);
+            newJustice.getComponent<CreatureInfo>().encounterName = "Justice " + newJustice.getComponent<CreatureInfo>().surname;
+            newJustice.persist();
+            supremeCourt.Add(newJustice);
         }
 
         public int getHouseCount(Alignment align)
@@ -1248,7 +1270,7 @@ namespace LCS.Engine.Components.World
                 if (judge.getComponent<Politician>().alignment == Alignment.ELITE_LIBERAL) judgeCount++;
             }
 
-            if (judgeCount < 5 || !haveHouse || !haveSenate) return false;
+            if (!(judgeCount > supremeCourt.Count / 2) || !haveHouse || !haveSenate) return false;
 
             return true;
         }
@@ -1330,14 +1352,9 @@ namespace LCS.Engine.Components.World
                 {
                     if ((state.flags & NationDef.stateFlags.NONSTATE) != 0) continue;
 
-                    int multiplier = 5 + mc.LCSRandom(3);
-                    int mood = MasterController.generalPublic.PublicMood + state.alignment * multiplier;
+                    int bias = getStateBias(state);
 
-                    Alignment vote = Alignment.ARCHCONSERVATIVE;
-                    for(int i=0;i<4;i++) if (mc.LCSRandom(100) < mood) vote++;
-
-                    if (vote == Alignment.LIBERAL && mc.LCSRandom(2) == 2) vote = Alignment.ELITE_LIBERAL;
-                    if (vote == Alignment.CONSERVATIVE && mc.LCSRandom(2) == 2) vote = Alignment.ARCHCONSERVATIVE;
+                    Alignment vote = MasterController.generalPublic.getSwingVoter(bias);
 
                     if (vote == align)
                     {
