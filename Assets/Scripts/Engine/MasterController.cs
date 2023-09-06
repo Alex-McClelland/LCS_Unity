@@ -1790,7 +1790,7 @@ namespace LCS.Engine
                     government.getSenateCount(Alignment.ARCHCONSERVATIVE) >= government.senateNum * (2f / 3f))
                     {
                         string descriptionString = "In recognition of the fact that society is degenerating under the pressure of the elite liberal threat, WE THE PEOPLE HEREBY REPEAL THE CONSTITUTION. The former United States are to be reorganized into the CONFEDERATED STATES OF AMERICA, with new boundaries to be determined by leading theologians. Ronald Reagan is to be King, forever, even after death. People may petition Jesus for a redress of grievances, as He will be the only one listening.\nHave a nice day.";
-                        Containers.AmendmentResult result = government.ratify(Alignment.ARCHCONSERVATIVE, true);
+                        Containers.AmendmentResult result = government.ratify(Alignment.ARCHCONSERVATIVE, null, true);
                         uiController.nationMap.showAmendmentVote(result, "The Arch-Conservative Congress is proposing an <color=red>ARCH-CONSERVATIVE AMENDMENT</color>!", descriptionString, true);
                         if (result.ratified)
                         {
@@ -1837,7 +1837,7 @@ namespace LCS.Engine
                             descriptionString += " may not serve on the Supreme Court. Said former citizen" + (removalCount == 1 ? " is" : "s are");
                             descriptionString += " to be deported to a Conservative country of the President's choosing and to be replaced by " + (removalCount == 1 ? "a Proper Justice" : "Proper Justices");
                             descriptionString += " also of the President's choosing and with the advice and consent of the Senate.";
-                            Containers.AmendmentResult result = government.ratify(Alignment.ELITE_LIBERAL, true);
+                            Containers.AmendmentResult result = government.ratify(Alignment.ELITE_LIBERAL, Constants.VIEW_JUSTICES, true);
                             uiController.nationMap.showAmendmentVote(result, "The Elite Liberal Congress is proposing an <color=lime>ELITE LIBERAL AMENDMENT</color>!", descriptionString, true);
                             if (result.ratified)
                             {

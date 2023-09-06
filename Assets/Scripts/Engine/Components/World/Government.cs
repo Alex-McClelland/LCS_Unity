@@ -1295,7 +1295,7 @@ namespace LCS.Engine.Components.World
             return false;
         }
 
-        public AmendmentResult ratify(Alignment align, bool congressNeeded = true)
+        public AmendmentResult ratify(Alignment align, string issue, bool congressNeeded = true)
         {
             bool ratified = false;
             bool congressRatified = false;
@@ -1352,9 +1352,11 @@ namespace LCS.Engine.Components.World
                 {
                     if ((state.flags & NationDef.stateFlags.NONSTATE) != 0) continue;
 
-                    int bias = getStateBias(state);
+                    int bias = getStateBias(state, issue);
 
-                    Alignment vote = MasterController.generalPublic.getSwingVoter(bias);
+                    Alignment vote;
+                    if(issue == null)  vote = MasterController.generalPublic.getSwingVoter(bias);
+                    else vote = MasterController.generalPublic.getSwingVoter(bias, issue);
 
                     if (vote == align)
                     {
@@ -1589,11 +1591,13 @@ namespace LCS.Engine.Components.World
             return ceo;
         }
 
-        public int getStateBias(NationDef.StateDef state)
+        public int getStateBias(NationDef.StateDef state, string issue = null)
         {
             //Red states are always going to be more conservative than the average public mood - the opposite for blue states.
             MasterController mc = MasterController.GetMC();
-            double adjustedPublicMood = ((double)MasterController.generalPublic.PublicMood) / 100;
+            double adjustedPublicMood;
+            if (issue == null) adjustedPublicMood = ((double)MasterController.generalPublic.PublicMood) / 100;
+            else adjustedPublicMood = ((double)MasterController.generalPublic.PublicOpinion[issue]) / 100;
             double basePublicMood = adjustedPublicMood;
             double stateCoefficient = 0.1;
 

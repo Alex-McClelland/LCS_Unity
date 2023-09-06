@@ -187,7 +187,7 @@ namespace LCS.Engine.Components.World
             return getSwingVoter(bias);
         }
 
-        public Alignment getSwingVoter(int bias)
+        public Alignment getSwingVoter(int bias, string issue)
         {
             if (bias > 25) bias = 25;
             if (bias < -25) bias = -25;
@@ -196,10 +196,15 @@ namespace LCS.Engine.Components.World
 
             for (int i = 0; i < 4; i++)
             {
-                if (25 + MasterController.GetMC().LCSRandom(50) - bias < PublicOpinion[randomissue(true)]) alignment++;
+                if (25 + MasterController.GetMC().LCSRandom(50) - bias < PublicOpinion[issue]) alignment++;
             }
 
             return alignment;
+        }
+
+        public Alignment getSwingVoter(int bias)
+        {
+            return getSwingVoter(bias, randomissue(true));
         }
 
         public Alignment getSimpleVoter(Alignment leaning)
