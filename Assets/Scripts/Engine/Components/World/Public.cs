@@ -204,7 +204,17 @@ namespace LCS.Engine.Components.World
 
         public Alignment getSwingVoter(int bias)
         {
-            return getSwingVoter(bias, randomissue(true));
+            if (bias > 25) bias = 25;
+            if (bias < -25) bias = -25;
+
+            Alignment alignment = Alignment.ARCHCONSERVATIVE;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (25 + MasterController.GetMC().LCSRandom(50) - bias < PublicOpinion[randomissue(true)]) alignment++;
+            }
+
+            return alignment;
         }
 
         public Alignment getSimpleVoter(Alignment leaning)
