@@ -682,7 +682,7 @@ namespace LCS.Engine.Components.Creature
                         mc.currentSiteModeScene.getSquadTile().getComponent<TileBase>().fireState = TileBase.FireState.START;
                         mc.currentSiteModeScene.siteCrime += 3;
                         juiceMe(5, 500);
-                        MasterController.news.currentStory.addCrime(Constants.CRIME_ARSON);
+                        if(MasterController.news.currentStory != null) MasterController.news.currentStory.addCrime(Constants.CRIME_ARSON);
                         if (hasComponent<Liberal>())
                         {
                             foreach (Entity e in getComponent<Liberal>().squad)

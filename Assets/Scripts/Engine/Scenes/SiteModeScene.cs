@@ -2863,7 +2863,7 @@ namespace LCS.Engine.Scenes
                     {
                         e.getComponent<CreatureBase>().juiceMe(1, 200);
                     }
-                    MasterController.news.currentStory.addCrime("STOLEGROUND");
+                    if (MasterController.news.currentStory != null) MasterController.news.currentStory.addCrime("STOLEGROUND");
                     siteCrime++;
                     mc.doNextAction();
 
@@ -2879,7 +2879,11 @@ namespace LCS.Engine.Scenes
                 if (suspicionTimer > time || suspicionTimer == -1) suspicionTimer = time;
 
                 siteCrime++;
-                MasterController.news.currentStory.addCrime("TAGGING");
+                if (MasterController.news.currentStory != null)
+                {
+                    MasterController.news.currentStory.addCrime("TAGGING");
+                    MasterController.news.currentStory.claimed = true;
+                }
                 foreach(Entity e in squad)
                 {
                     e.getComponent<CreatureBase>().juiceMe(1, 50);
@@ -2889,7 +2893,6 @@ namespace LCS.Engine.Scenes
                 getSquadTile().getComponent<TileBase>().graffiti = TileBase.Graffiti.LCS;
 
                 mc.addCombatMessage("The squad sprays Liberal graffiti!");
-                MasterController.news.currentStory.claimed = true;                
                 sceneRoot.Add(() => { noticeCheck(false, Difficulty.HARD); }, "noticeCheck");
                 sceneRoot.Add(disguiseCheck, "disguiseCheck");
             }
@@ -4258,12 +4261,15 @@ namespace LCS.Engine.Scenes
                         e.getComponent<CreatureBase>().juiceMe(5, 100);
                         e.getComponent<CriminalRecord>().addCrime(Constants.CRIME_VANDALISM);
                     }
-                    if(location.def == "INDUSTRY_SWEATSHOP")
-                        MasterController.news.currentStory.addCrime("BREAK_SWEATSHOP");
-                    else if (location.def == "INDUSTRY_POLLUTER")
-                        MasterController.news.currentStory.addCrime("BREAK_FACTORY");
-                    else
-                        MasterController.news.currentStory.addCrime("VANDALISM");
+                    if (MasterController.news.currentStory != null)
+                    {
+                        if (location.def == "INDUSTRY_SWEATSHOP")
+                            MasterController.news.currentStory.addCrime("BREAK_SWEATSHOP");
+                        else if (location.def == "INDUSTRY_POLLUTER")
+                            MasterController.news.currentStory.addCrime("BREAK_FACTORY");
+                        else
+                            MasterController.news.currentStory.addCrime("VANDALISM");
+                    }
                     MasterController.GetMC().doNextAction();
                 }, "Smash");
                 sceneRoot.Add(() => { noticeCheck(false, Difficulty.HEROIC); }, "noticeCheck");

@@ -545,6 +545,7 @@ namespace LCS.Engine.Scenes
             foreach (Entity a in liberals)
             {
                 if (a == null) continue;
+                if (a == haulee) continue;
                 if (a.getComponent<Body>().Alive &&
                     (a.getComponent<Body>().canWalk() || (a.getComponent<CreatureInfo>().flags & CreatureInfo.CreatureFlag.WHEELCHAIR) != 0) &&
                     a.getComponent<Liberal>().hauledUnit == null)

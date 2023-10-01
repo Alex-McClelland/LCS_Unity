@@ -33,7 +33,7 @@ namespace LCS.Engine.Components.Location
                     e.getComponent<CreatureBase>().Skills["SECURITY"].addExperience((int)difficulty - e.getComponent<CreatureBase>().Skills["SECURITY"].level);
                 }
 
-                MasterController.news.currentStory.addCrime("UNLOCKEDDOOR");
+                if(MasterController.news.currentStory != null) MasterController.news.currentStory.addCrime("UNLOCKEDDOOR");
                 if(MasterController.GetMC().currentSiteModeScene.suspicionTimer > 50 || MasterController.GetMC().currentSiteModeScene.suspicionTimer < 0)
                     MasterController.GetMC().currentSiteModeScene.suspicionTimer = 50;
             }
@@ -154,7 +154,7 @@ namespace LCS.Engine.Components.Location
 
                 open = true;
                 MasterController.GetMC().currentSiteModeScene.siteCrime++;
-                MasterController.news.currentStory.addCrime("BROKEDOWNDOOR");
+                if (MasterController.news.currentStory != null) MasterController.news.currentStory.addCrime("BROKEDOWNDOOR");
                 foreach(Entity e in squad)
                 {
                     e.getComponent<CriminalRecord>().addCrime(Constants.CRIME_BREAKING);
