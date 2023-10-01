@@ -536,11 +536,8 @@ namespace LCS.Engine.Scenes
             MasterController.GetMC().addCombatMessage("##DEBUG## Entering tryHaulLib");
             List<Entity> validHaulers = new List<Entity>();
 
-            if (!haulee.getComponent<Body>().Alive)
-            {
-                if(haulee.getComponent<Liberal>().squad != null)
-                    haulee.getComponent<Liberal>().squad.Remove(haulee);
-            }
+            if(haulee.getComponent<Liberal>().squad != null)
+                haulee.getComponent<Liberal>().squad.Remove(haulee);
 
             foreach (Entity a in liberals)
             {
