@@ -79,6 +79,11 @@ public class PortraitImage : MonoBehaviour {
         GameData data = GameData.getData();
         Portrait p = character.getComponent<Portrait>();
 
+        foreach (Image i in GetComponentsInChildren<Image>())
+        {
+            i.color = Color.white;
+        }
+
         if (p.fixedPortrait != null && p.fixedPortrait != "")
         {
             fixedPortrait.sprite = data.portraitGraphicList[p.fixedPortrait];
@@ -109,6 +114,11 @@ public class PortraitImage : MonoBehaviour {
     {
         GameData data = GameData.getData();
 
+        foreach (Image i in GetComponentsInChildren<Image>())
+        {
+            i.color = Color.white;
+        }
+
         if (p.fixedPortrait != null && p.fixedPortrait != "")
         {
             fixedPortrait.sprite = data.portraitGraphicList[p.fixedPortrait];
@@ -131,11 +141,6 @@ public class PortraitImage : MonoBehaviour {
         {
             foreach (GameObject g in ageLines)
                 g.SetActive(false);
-        }
-
-        foreach (Image i in GetComponentsInChildren<Image>())
-        {
-            i.color = Color.white;
         }
 
         faceBase.color = new Color32(p.skinColor.r, p.skinColor.g, p.skinColor.b, p.skinColor.a);
