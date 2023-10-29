@@ -2329,7 +2329,8 @@ namespace LCS.Engine
                     {
                         if (currentSiteModeScene == null)
                         {
-                            GetMC().addErrorMessage("SPEC condition: " + condition + " missing site mode scene to test.");
+                            //Removed the error message as ignoring this check is an intended case for sleeper recruitment
+                            //GetMC().addErrorMessage("SPEC condition: " + condition + " missing site mode scene to test.");
                             return true;
                         }
                         else
