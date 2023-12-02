@@ -1549,9 +1549,14 @@ namespace LCS.Engine.Components.Creature
                                 (getSpecies().type == "DOG" &&
                                 MasterController.government.laws[Constants.LAW_ANIMAL_RESEARCH].alignment == Alignment.ELITE_LIBERAL)))
                     {
-                        foreach (Entity a in lastAttacker.getComponent<Liberal>().squad)
+                        //This has a bit of a bug in siege escapes where a Lib can be removed from the squad but trigger this check later.
+                        //The only solution currently is to just not apply the murder charge to members of the active squad, even though it really should
+                        if (lastAttacker.getComponent<Liberal>().squad != null)
                         {
-                            a.getComponent<CriminalRecord>().addCrime(Constants.CRIME_MURDER);
+                            foreach (Entity a in lastAttacker.getComponent<Liberal>().squad)
+                            {
+                                a.getComponent<CriminalRecord>().addCrime(Constants.CRIME_MURDER);
+                            }
                         }
                     }
                     MasterController.GetMC().addCombatMessage(getDeathMessage());

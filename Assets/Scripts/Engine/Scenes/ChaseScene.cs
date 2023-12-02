@@ -1549,6 +1549,8 @@ namespace LCS.Engine.Scenes
                     siegeLocation.getComponent<SafeHouse>().escalation++;
                     siegeLocation.getComponent<SafeHouse>().timeUntilLocated = 4 + mc.LCSRandom(4);
                 }
+
+                mc.doNextAction();
             }
             else if((liberals.Count(i => i != null) > 0 && chasePhase == ChasePhase.RUN) || escapedLibs > 0)
             {
