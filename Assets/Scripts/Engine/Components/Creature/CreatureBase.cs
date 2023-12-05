@@ -85,6 +85,10 @@ namespace LCS.Engine.Components.Creature
             {
                 Skill s = new Skill(skillNode.SelectSingleNode("type").InnerText, BaseAttributes[GameData.getData().skillList[skillNode.SelectSingleNode("type").InnerText].associatedAttribute.type]);
                 s.level = int.Parse(skillNode.SelectSingleNode("level").InnerText);
+
+                int attributeCap = int.Parse(GameData.getData().globalVarsList["MAXATTRIBUTE"]);
+                if (s.level > attributeCap) s.level = attributeCap;
+
                 s.experience = int.Parse(skillNode.SelectSingleNode("experience").InnerText);
                 Skills.Add(s.type, s);
             }
