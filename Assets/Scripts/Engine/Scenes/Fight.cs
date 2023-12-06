@@ -402,6 +402,7 @@ namespace LCS.Engine.Scenes
                 burnDamage = (int) (burnDamage * (1f - (3f / denom)));
             }
 
+            if (burnDamage < 0) burnDamage = 0;
             e.getComponent<Body>().Blood -= burnDamage;
 
             if(e.getComponent<Body>().Blood <= 0)
