@@ -1977,13 +1977,6 @@ namespace LCS.Engine
                         }
                     }
                 }
-
-                //Sanity check for blood values being over 100. I have no idea how this happens but apparently it can
-                if (e.getComponent<Body>().Blood > 100)
-                {
-                    addErrorMessage(e.getComponent<CreatureInfo>().getName() + " had too much blood, fixed in " + currentDate + " daily cleanup");
-                    e.getComponent<Body>().Blood = 100;
-                }
             }
 
             List<Entity> entities = new List<Entity>(PersistentEntityList.Values);

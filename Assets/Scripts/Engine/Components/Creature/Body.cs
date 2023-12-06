@@ -304,6 +304,7 @@ namespace LCS.Engine.Components.Creature
                 getComponent<Liberal>().homeBase.getComponent<SafeHouse>().underSiege && 
                 getComponent<Liberal>().homeBase.getComponent<SafeHouse>().food == 0)
             {
+                if (Blood > 100) Blood = 100;
                 return;
             }
 
@@ -361,7 +362,6 @@ namespace LCS.Engine.Components.Creature
                 {
                     Blood += 1 + MasterController.GetMC().LCSRandom(healPower / 3);
                     if (Blood > 100 - (getClinicTime() - 1) * 20) Blood = 100 - (getClinicTime() - 1) * 20;
-                    if (Blood > 100) Blood = 100;
                 }
 
                 if (getClinicTime() - 1 > healPower && hasComponent<Liberal>() && getComponent<Liberal>().status == Liberal.Status.ACTIVE && Alive)
@@ -393,6 +393,9 @@ namespace LCS.Engine.Components.Creature
                     }
                 }
             }
+
+            //Final sanity check to avoid overhealing
+            if (Blood > 100) Blood = 100;
         }
 
         private void doRot(object sender, EventArgs args)
