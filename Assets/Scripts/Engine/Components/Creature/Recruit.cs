@@ -204,7 +204,7 @@ namespace LCS.Engine.Components.Creature
                 }
                 else
                 {
-                    string text1 = "\n<color=magenta>" + getComponent<CreatureInfo>().getName() + " comes off as slightly insane.</color>";
+                    string text1 = "\n<color=magenta>" + recruiter.getComponent<CreatureInfo>().getName() + " comes off as slightly insane.</color>";
                     actionRoot.Add(() => { MasterController.GetMC().uiController.meeting.printText(text1); }, "Print Text");
                     string text2 = "\n<color=magenta>This whole thing was a mistake. There won't be another meeting.</color>";
                     actionRoot.Add(() => { MasterController.GetMC().uiController.meeting.printText(text2); }, "Print Text");
