@@ -1262,7 +1262,7 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
             if (selectedChar.hasComponent<Hostage>())
                 b_Activity.GetComponentInChildren<Text>().text = "(A) Interrogation Tactics";
             else
-                b_Activity.GetComponentInChildren<Text>().text = "Mindless Consermerism";
+                b_Activity.GetComponentInChildren<Text>().text = "Mindless Consumerism";
 
             if (selectedChar.getComponent<CreatureInfo>().alignment != Alignment.LIBERAL)
             {
