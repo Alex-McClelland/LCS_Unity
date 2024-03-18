@@ -1850,7 +1850,16 @@ namespace LCS.Engine.Components.Creature
             for(int i = 0; i < numberOfItems; i++)
             {
                 Entity stolenItem = homeBase.getComponent<TroubleSpot>().getLootItem();
-                getComponent<CreatureBase>().Location.getComponent<SiteBase>().city.getComponent<City>().getLocation("RESIDENTIAL_SHELTER").getComponent<SafeHouse>().addItemToInventory(stolenItem);
+                if (stolenItem != null)
+                {
+                    getComponent<CreatureBase>().Location.getComponent<SiteBase>().city.getComponent<City>().getLocation("RESIDENTIAL_SHELTER").getComponent<SafeHouse>().addItemToInventory(stolenItem);
+                }
+                else
+                {
+                    MasterController.GetMC().addMessage("Sleeper " + getComponent<CreatureInfo>().getName() + " couldn't find anything to steal.");
+                    setActivity("SLEEPER_NONE");
+                    return;
+                }
             }
 
             MasterController.GetMC().addMessage("Sleeper " + getComponent<CreatureInfo>().getName() + " has dropped a package off at the Homeless Shelter.");
