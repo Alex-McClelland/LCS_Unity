@@ -2159,20 +2159,37 @@ namespace LCS.Engine
         public event EventHandler nextDay;
         private void doNextDay()
         {
-            nextDay(this, null);
+            if (nextDay != null)
+            {
+                foreach (EventHandler subscriber in nextDay.GetInvocationList())
+                {
+                    subscriber.Invoke(this, null);
+                }
+            }
         }
 
         public event EventHandler nextMonth;
         private void doNextMonth()
         {
-            nextMonth(this, null);
+            if(nextMonth != null)
+            {
+                foreach (EventHandler subscriber in nextMonth.GetInvocationList())
+                {
+                    subscriber.Invoke(this, null);
+                }
+            }
         }
 
         public event EventHandler someoneDied;
         public void doSomeoneDied(Entity sender)
         {
-            if(someoneDied != null)
-                someoneDied(sender, null);
+            if (someoneDied != null)
+            {
+                foreach (EventHandler subscriber in someoneDied.GetInvocationList())
+                {
+                    subscriber.Invoke(sender, null);
+                }
+            }
         }
         #endregion
 
