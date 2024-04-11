@@ -92916,7 +92916,7 @@ PrefabInstance:
     - target: {fileID: 114109453595243344, guid: e9b14f99e2506c047afb325f11787341,
         type: 3}
       propertyPath: mouseOverText
-      value: Learn Pesuasion
+      value: Learn Persuasion
       objectReference: {fileID: 0}
     - target: {fileID: 114109453595243344, guid: e9b14f99e2506c047afb325f11787341,
         type: 3}

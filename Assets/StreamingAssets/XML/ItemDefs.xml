@@ -2208,7 +2208,7 @@ But put a man six feet in a hole</description>
   <!-- LOOT -->
   <item idname="LOOT_CHEAPJEWELERY">
     <icon>loot_cheapjewelery.png</icon>
-    <name>Cheap Jewelery</name>
+    <name>Cheap Jewelry</name>
     <loot>
       <fencevalue>50</fencevalue>
       <flags>
