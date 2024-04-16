@@ -37,7 +37,7 @@ vehicles are not removed from a safehouse inventory when they are equipped, whil
   <armor>
     make_difficulty: how hard it is to make this armor by hand. 0 means it cannot be created by libs (default 0)
     make_price: How much it costs to make this armor by hand (default 0)
-    stealth_value: Bonus applied to stealth checks while wearing this armor (default 0)
+    stealth_value: Used in stealth checks while wearing this armor. Should be set to an integer between 0-3, 0 means stealth is not possible (default 0)
     professionalism: Bonus to income when worn during the "solicit donations" fundraising activity (default 2)
     conceal_weapon_size: How large a weapon this armor can conceal (default 5)
     qualitylevels: How many quality levels this armor can lose before it is destroyed (default 4)
