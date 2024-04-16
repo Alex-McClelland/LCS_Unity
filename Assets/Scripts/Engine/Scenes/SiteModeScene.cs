@@ -3036,7 +3036,7 @@ namespace LCS.Engine.Scenes
             foreach(Entity e in squad)
             {
                 if (topE == null) topE = e;
-                if (e.getComponent<CreatureBase>().Skills["STEALTH"].level > topE.getComponent<CreatureBase>().Skills["STEALTH"].level)
+                if (e.getComponent<CreatureBase>().Skills[Constants.SKILL_STEALTH].level > topE.getComponent<CreatureBase>().Skills[Constants.SKILL_STEALTH].level)
                     topE = e;
             }
 
@@ -3044,7 +3044,10 @@ namespace LCS.Engine.Scenes
             {  //Prisoners shouldn't shout for help.
                 if (e == null) continue;
 
-                if (e.getComponent<CreatureInfo>().encounterName == "Prisoner" || topE.getComponent<CreatureBase>().Skills["STEALTH"].check(difficulty)) continue;
+                double stealthBonus = e.getComponent<Inventory>().getArmor().getComponent<Armor>().getStealthBonus();
+
+                if (e.getComponent<CreatureInfo>().encounterName == "Prisoner" || 
+                    (Math.Floor(topE.getComponent<CreatureBase>().Skills[Constants.SKILL_STEALTH].roll() * stealthBonus) >= (int) difficulty)) continue;
                 else
                 {
                     string messageText = e.getComponent<CreatureInfo>().getName() + " observes your Liberal activity ";
@@ -4877,8 +4880,11 @@ namespace LCS.Engine.Scenes
                     {
                         if (!spotted)
                         {
+                            double stealthBonus = e.getComponent<Inventory>().getArmor().getComponent<Armor>().getStealthBonus();
                             int result = e.getComponent<CreatureBase>().Skills[Constants.SKILL_STEALTH].roll();
+                            result = (int) Math.Floor(result * stealthBonus);
                             result -= timer;
+                            
                             if (result < (int) stealth_difficulty)
                                 spotted = true;
                         }

@@ -73,6 +73,20 @@ namespace LCS.Engine.Components.Item
         public int getStealthValue()
         { return ((ItemDef.ArmorDef)GameData.getData().itemList[owner.def].components["armor"]).stealth_value; }
 
+        public double getStealthBonus()
+        {
+            double stealthBonus = getStealthValue();
+            for(int i = 1; i < quality; i++)
+            {
+                stealthBonus *= 0.8;
+            }
+
+            if (damaged) stealthBonus *= 0.5;
+            if (quality > getQualityLevels()) stealthBonus = 0;
+
+            return stealthBonus / 2;
+        }
+
         public int getInterrogationBasePower()
         { return ((ItemDef.ArmorDef)GameData.getData().itemList[owner.def].components["armor"]).basePower; }
 

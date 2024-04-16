@@ -723,7 +723,9 @@ namespace LCS.Engine.Components.Creature
                 //Conservatives that are suspicious will be more wary of attack.
                 if (suspisciousTarget)
                     dodgeRoll *= 2;
-                attackRoll += Skills[Constants.SKILL_STEALTH].roll();
+
+                int stealthBonus = getComponent<Inventory>().getArmor().getComponent<Armor>().getStealthValue();
+                attackRoll += Skills[Constants.SKILL_STEALTH].roll(stealthBonus);
             }
 
             logText = name + " " + (mistake ? "MISTAKENLY " : "");
