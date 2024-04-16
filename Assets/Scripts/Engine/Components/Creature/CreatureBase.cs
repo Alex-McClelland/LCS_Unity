@@ -724,8 +724,8 @@ namespace LCS.Engine.Components.Creature
                 if (suspisciousTarget)
                     dodgeRoll *= 2;
 
-                int stealthBonus = getComponent<Inventory>().getArmor().getComponent<Armor>().getStealthValue();
-                attackRoll += Skills[Constants.SKILL_STEALTH].roll(stealthBonus);
+                double stealthBonus = getComponent<Inventory>().getArmor().getComponent<Armor>().getStealthBonus();
+                attackRoll += (int) Math.Floor(Skills[Constants.SKILL_STEALTH].roll() * stealthBonus);
             }
 
             logText = name + " " + (mistake ? "MISTAKENLY " : "");
