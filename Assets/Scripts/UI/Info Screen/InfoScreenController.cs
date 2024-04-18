@@ -805,7 +805,9 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
         {
             FollowerBox.SetActive(true);
             EnlightenedBox.SetActive(false);
-            FollowerBox.GetComponentInChildren<Text>().text = lib.getNormalSubordinateCount() + "/" + lib.getSubordinateLimit();
+            int meetingCount = lib.plannedMeetings.Count;
+
+            FollowerBox.GetComponentInChildren<Text>().text = lib.getNormalSubordinateCount() + (meetingCount > 0 ? "(" + meetingCount + ")":"") + "/" + lib.getSubordinateLimit();
 
             FollowerBox.GetComponent<MouseOverText>().mouseOverText = "Followers" + (lib.subordinates.Count > 0 ? ":" : "");
 
@@ -817,15 +819,15 @@ public class InfoScreenController : MonoBehaviour, CharInfo {
                     FollowerBox.GetComponent<MouseOverText>().mouseOverText += " (Enlightened)";
             }
         }
-
-        if (lib.getLoverCount() == 0)
+        int dateCount = lib.plannedDates.Count;
+        if (lib.getLoverCount() == 0 && dateCount == 0)
         {
             LoverBox.SetActive(false);
         }
         else
         {
             LoverBox.SetActive(true);
-            LoverBox.GetComponentInChildren<Text>().text = "" + lib.getLoverCount();
+            LoverBox.GetComponentInChildren<Text>().text = "" + lib.getLoverCount() + (dateCount > 0 ? "(" + dateCount + ")" : "");
 
             LoverBox.GetComponent<MouseOverText>().mouseOverText = "Lovers:";
 
