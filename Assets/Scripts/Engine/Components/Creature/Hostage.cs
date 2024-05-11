@@ -846,9 +846,9 @@ namespace LCS.Engine.Components.Creature
                     interrogationText += "\n<color=magenta>";
                     switch (mc.LCSRandom(4))
                     {
-                        case 0: interrogationText += tempLeadInterrogator.getComponent<CreatureInfo>().getName() + " will never be moved by " + getComponent<CreatureInfo>().getName() + "'s pathetic economic ideals."; break;
+                        case 0: interrogationText += getComponent<CreatureInfo>().getName() + " will never be moved by " + tempLeadInterrogator.getComponent<CreatureInfo>().getName() + "'s pathetic economic ideals."; break;
                         case 1: interrogationText += getComponent<CreatureInfo>().getName() + " wishes a big company would just buy the LCS and shut it down."; break;
-                        case 2: interrogationText += tempLeadInterrogator.getComponent<CreatureInfo>().getName() + " explains to " + getComponent<CreatureInfo>().getName() + " why communism failed."; break;
+                        case 2: interrogationText += getComponent<CreatureInfo>().getName() + " explains to " + tempLeadInterrogator.getComponent<CreatureInfo>().getName() + " why communism failed."; break;
                         case 3: interrogationText += getComponent<CreatureInfo>().getName() + " mumbles incoherently about Reaganomics."; break;
                     }
                     interrogationText += "</color>";
@@ -861,10 +861,10 @@ namespace LCS.Engine.Components.Creature
                     interrogationText += "\n<color=magenta>";
                     switch (mc.LCSRandom(4))
                     {
-                        case 0: interrogationText += tempLeadInterrogator.getComponent<CreatureInfo>().getName() + " wonders what mental disease has possessed " + getComponent<CreatureInfo>().getName() + "."; break;
+                        case 0: interrogationText += getComponent<CreatureInfo>().getName() + " wonders what mental disease has possessed " + tempLeadInterrogator.getComponent<CreatureInfo>().getName() + "."; break;
                         case 1: interrogationText += getComponent<CreatureInfo>().getName() + " explains why nuclear energy is safe."; break;
-                        case 2: interrogationText += tempLeadInterrogator.getComponent<CreatureInfo>().getName() + " makes Albert Einstein faces at " + getComponent<CreatureInfo>().getName() + "."; break;
-                        case 3: interrogationText += tempLeadInterrogator.getComponent<CreatureInfo>().getName() + " pities " + getComponent<CreatureInfo>().getName() + " blind ignorance of science."; break;
+                        case 2: interrogationText += getComponent<CreatureInfo>().getName() + " makes Albert Einstein faces at " + tempLeadInterrogator.getComponent<CreatureInfo>().getName() + "."; break;
+                        case 3: interrogationText += getComponent<CreatureInfo>().getName() + " pities " + tempLeadInterrogator.getComponent<CreatureInfo>().getName() + " blind ignorance of science."; break;
                     }
                     interrogationText += "</color>";
                     tempLeadInterrogator.getComponent<CreatureBase>().Skills[Constants.SKILL_RELIGION].addExperience(getComponent<CreatureBase>().Skills[Constants.SKILL_SCIENCE].level * 4);
