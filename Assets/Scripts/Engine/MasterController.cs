@@ -65,7 +65,7 @@ namespace LCS.Engine
         }
 
         public const int MAX_LOG_SIZE = 200;
-        public const string CURRENT_VERSION = "1.0.0";
+        public const string CURRENT_VERSION = "1.0.1";
         private static MasterController mc = null;
 
         private Random rand;
@@ -2149,7 +2149,7 @@ namespace LCS.Engine
                 case 3:
                     return preamble + "the light of Liberalism burns bright in the darkness.";
                 case 4:
-                    return preamble + "the revolution tuns.";
+                    return preamble + "the revolution turns.";
             }
 
             return preamble + "and I apparently forgot how to count.";
