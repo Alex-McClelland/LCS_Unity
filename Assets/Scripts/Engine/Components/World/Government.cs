@@ -890,11 +890,11 @@ namespace LCS.Engine.Components.World
                                 break;
                             // 1/5 chance of incumbent winning regardless of public mood.
                             case Alignment.LIBERAL:
-                                if (MasterController.GetMC().LCSRandom(5) == 0) senate[state.name][i] = vote;
+                                if (MasterController.GetMC().LCSRandom(5) != 0) senate[state.name][i] = vote;
                                 break;
                             // 1/8 chance of incumbent winning regardless of public mood.
                             case Alignment.ELITE_LIBERAL:
-                                if (MasterController.GetMC().LCSRandom(8) == 0) senate[state.name][i] = vote;
+                                if (MasterController.GetMC().LCSRandom(8) != 0) senate[state.name][i] = vote;
                                 break;
                         }
                     }
@@ -937,11 +937,11 @@ namespace LCS.Engine.Components.World
                                 break;
                             // 1/5 chance of incumbent winning regardless of public mood.
                             case Alignment.LIBERAL:
-                                if (MasterController.GetMC().LCSRandom(5) == 0) house[state.name][i] = vote;
+                                if (MasterController.GetMC().LCSRandom(5) != 0) house[state.name][i] = vote;
                                 break;
                             // 1/8 chance of incumbent winning regardless of public mood.
                             case Alignment.ELITE_LIBERAL:
-                                if (MasterController.GetMC().LCSRandom(8) == 0) house[state.name][i] = vote;
+                                if (MasterController.GetMC().LCSRandom(8) != 0) house[state.name][i] = vote;
                                 break;
                         }
                     }
