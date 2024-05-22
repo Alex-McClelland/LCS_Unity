@@ -57,6 +57,14 @@ public class FounderQuestionsImpl : MonoBehaviour, FounderQuestions {
         setNameText();
         i_portrait.buildPortrait(founder);
 
+        //Reset custom game options
+        nightmare = false;
+        b_nightmare.image.color = uiController.buttonColorOff;
+        strongCCS = false;
+        b_strongCCS.image.color = uiController.buttonColorOff;
+        noCCS = false;
+        b_noCCS.image.color = uiController.buttonColorOff;
+
         //Start on -1 so the nextQuestion method rolls it up to 0
         questionNum = -1;
         nextQuestion();
@@ -301,6 +309,7 @@ public class FounderQuestionsImpl : MonoBehaviour, FounderQuestions {
                 break;
             case 10:
                 close();
+                MasterController.GetMC().gameFlags = MasterController.GameFlags.NORMAL;
                 if (nightmare) MasterController.GetMC().gameFlags |= MasterController.GameFlags.NIGHTMARE;
                 if (strongCCS) MasterController.GetMC().gameFlags |= MasterController.GameFlags.ACTIVE_CCS;
                 if (noCCS) MasterController.GetMC().gameFlags |= MasterController.GameFlags.NO_CCS;
