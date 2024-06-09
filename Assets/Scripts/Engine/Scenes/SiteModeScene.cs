@@ -4653,8 +4653,25 @@ namespace LCS.Engine.Scenes
                     while (squad.Count < 6 && siegeBuffer.Count > 0)
                     {
                         Entity newLib = siegeBuffer[0];
+                        siegeBuffer.RemoveAt(0);
+
+                        bool isHauled = false;
+                        foreach(Entity e in squad)
+                        {
+                            if (e.getComponent<Liberal>().hauledUnit == newLib)
+                            {
+                                isHauled = true;
+                                break;
+                            }
+                        }
+
+                        //Skip people who somehow ended up in the buffer that shouldn't be
+                        if (!newLib.getComponent<Body>().Alive || isHauled || squad.Contains(newLib))
+                        {
+                            continue;
+                        }
+
                         squad.Add(newLib);
-                        siegeBuffer.Remove(newLib);
                         MasterController.GetMC().addCombatMessage(newLib.getComponent<CreatureInfo>().getName() + " joins the fight");
                     }
                 }

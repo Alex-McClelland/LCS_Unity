@@ -576,6 +576,12 @@ namespace LCS.Engine.Scenes
 
         private static bool withdrawlCheck(Entity actor, List<Entity> liberals)
         {
+            //Dead people can't run away
+            if (!actor.getComponent<Body>().Alive)
+            {
+                return false;
+            }
+
             int fire = 0;
 
             if(MasterController.GetMC().currentSiteModeScene != null)
