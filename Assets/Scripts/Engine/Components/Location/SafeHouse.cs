@@ -805,7 +805,7 @@ namespace LCS.Engine.Components.Location
             }
             else if(getBodies().Count > 1)
             {
-                text += "\nMultiple corpses are recovered.";
+                text += "\n" + MasterController.NumberToWords(getBodies().Count) + " corpses are recovered.";
             }
 
             foreach (Entity e in getBodies())
@@ -1180,11 +1180,22 @@ namespace LCS.Engine.Components.Location
             }
 
             string siegeString = typeString + " have raided the " + getComponent<SiteBase>().getCurrentName() + ", an unoccupied safehouse.";
+
+            int bodyCount = getBodies().Count;
+
+            if(bodyCount >= 6)
+            {
+                siegeString += "\n" + MasterController.NumberToWords(bodyCount) + " corpses are recovered.";
+            }
             foreach (Entity e in getBodies())
             {
-                siegeString += "\n" + e.getComponent<CreatureInfo>().getName() + "'s corpse has been recovered.";
+                if (bodyCount < 6)
+                {
+                    siegeString += "\n" + e.getComponent<CreatureInfo>().getName() + "'s corpse has been recovered.";
+                }
                 e.depersist();
             }
+
             foreach (Entity e in getHostages())
             {
                 siegeString += "\n" + e.getComponent<CreatureInfo>().getName() + " has been rescued.";
