@@ -273,6 +273,12 @@ namespace LCS.Engine.Scenes
                     }
                 }
             }
+            else
+            {
+                //Committing crimes at your own safehouses will generate heat there
+                location.getComponent<SafeHouse>().heat += siteCrime;
+                location.getComponent<SafeHouse>().floatingHeat += siteCrime;
+            }
 
             foreach(Entity e in squad)
             {
