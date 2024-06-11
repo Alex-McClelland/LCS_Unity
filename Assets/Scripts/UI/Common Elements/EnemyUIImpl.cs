@@ -77,9 +77,7 @@ public class EnemyUIImpl : MonoBehaviour, Squad {
                 selectedChar = e;
                 break;
             case SelectionMode.CHOOSE_KIDNAP_TARGET:
-                if (((e.getComponent<Inventory>().getWeapon().getComponent<Weapon>().getFlags() & ItemDef.WeaponFlags.THREATENING) != 0 &&
-                    e.getComponent<Body>().Blood > 20) ||
-                    e.getComponent<CreatureInfo>().alignment != Alignment.CONSERVATIVE)
+                if (!isValidKidnapTarget(e))
                     break;
                 clearSelection();
                 enemyList[squad.IndexOf(e)].i_SelectionBorder.gameObject.SetActive(true);
@@ -258,9 +256,7 @@ public class EnemyUIImpl : MonoBehaviour, Squad {
             case SelectionMode.CHOOSE_KIDNAP_TARGET:
                 foreach(EnemyInfo info in enemyList)
                 {
-                    if (((info.character.getComponent<Inventory>().getWeapon().getComponent<Weapon>().getFlags() & ItemDef.WeaponFlags.THREATENING) != 0 &&
-                    info.character.getComponent<Body>().Blood > 20) &&
-                    info.character.getComponent<CreatureInfo>().alignment == Alignment.CONSERVATIVE)
+                    if (!isValidKidnapTarget(info.character) && info.character.getComponent<CreatureInfo>().alignment == Alignment.CONSERVATIVE)
                         info.GetComponent<MouseOverText>().mouseOverText = "This person is too dangerous.";
                 }
                 break;
@@ -292,9 +288,7 @@ public class EnemyUIImpl : MonoBehaviour, Squad {
         foreach (Entity e in squad)
         {
             if (e == null) continue;
-            if (((e.getComponent<Inventory>().getWeapon().getComponent<Weapon>().getFlags() & ItemDef.WeaponFlags.THREATENING) == 0 ||
-                    e.getComponent<Body>().Blood <= 20) &&
-                    e.getComponent<CreatureInfo>().alignment == Alignment.CONSERVATIVE)
+            if (isValidKidnapTarget(e))
                 return false;
         }
 
@@ -332,5 +326,17 @@ public class EnemyUIImpl : MonoBehaviour, Squad {
         TalkBubble talkBubble = Instantiate(p_TalkBubble);
         talkBubble.transform.SetParent(transform.GetComponentInParent<Canvas>().transform, false);
         talkBubble.showText(args.text, enemyList[i].bubbleRoot.position, Direction.RIGHT, args.duration);
+    }
+
+    private bool isValidKidnapTarget(Entity e)
+    {
+        if (e.getComponent<CreatureInfo>().alignment != Alignment.CONSERVATIVE) return false;
+
+        if (e.def == "TANK") return false;
+
+        if (((e.getComponent<Inventory>().getWeapon().getComponent<Weapon>().getFlags() & ItemDef.WeaponFlags.THREATENING) != 0) &&
+                e.getComponent<Body>().Blood > 20) return false;
+
+        return true;
     }
 }
