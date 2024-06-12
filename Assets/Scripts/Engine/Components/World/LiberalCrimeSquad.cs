@@ -873,6 +873,10 @@ namespace LCS.Engine.Components.World
 
             new public void Add(Entity e)
             {
+                if(Contains(e)){
+                    return;
+                }
+
                 if (Count < 6)
                 {
                     e.getComponent<Liberal>().squad = this;
@@ -884,6 +888,11 @@ namespace LCS.Engine.Components.World
 
             new public void Insert(int i, Entity e)
             {
+                if (Contains(e))
+                {
+                    return;
+                }
+
                 if (Count < 6)
                 {
                     e.getComponent<Liberal>().squad = this;
