@@ -1117,7 +1117,8 @@ namespace LCS.Engine.Components.Creature
             string arrestMessage = "";
             string storyType = "";
 
-            if(getComponent<Inventory>().armor == null && MasterController.GetMC().LCSRandom(2) == 0)
+            if(getComponent<Body>().getSpecies().type == "HUMAN" &&
+                getComponent<Inventory>().armor == null && MasterController.GetMC().LCSRandom(2) == 0)
             {
                 getComponent<CriminalRecord>().addCrime(Constants.CRIME_NUDITY);
 
