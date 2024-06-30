@@ -1907,6 +1907,9 @@ namespace LCS.Engine.Components.Creature
                     continue;
                 else if (creature.getComponent<CreatureInfo>().workLocation.hasComponent<TroubleSpot>())
                     creature.getComponent<CreatureInfo>().workLocation.getComponent<TroubleSpot>().mapped = true;
+
+                //Reset this recruit's juice so you can't chain sleepers into more sleepers immediately.
+                creature.getComponent<CreatureBase>().Juice = 0;
                 
                 recruit(creature);
                 creature.getComponent<Liberal>().sleeperize();
