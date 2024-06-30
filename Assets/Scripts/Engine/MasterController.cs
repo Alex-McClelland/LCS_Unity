@@ -65,7 +65,7 @@ namespace LCS.Engine
         }
 
         public const int MAX_LOG_SIZE = 200;
-        public const string CURRENT_VERSION = "1.0.2";
+        public const string CURRENT_VERSION = "1.0.3";
         private static MasterController mc = null;
 
         private Random rand;
