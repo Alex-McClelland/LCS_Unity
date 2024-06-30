@@ -45,6 +45,7 @@ public class LiberalManagementBoard : MonoBehaviour, OrganizationManagement {
     public Color buttonIllegalUnselected;
 
     public bool expanded = false;
+    private bool zoomed = true;
     public GameObject squadActivityButtons;
 
     private OrganizationManagementActions actions;
@@ -71,6 +72,8 @@ public class LiberalManagementBoard : MonoBehaviour, OrganizationManagement {
 
     public void show()
     {
+        zoomIn();
+
         if (lcsMembers == null) lcsMembers = new Dictionary<Entity, OrgPortrait>();
 
         uiController.addCurrentScreen(this);
@@ -198,6 +201,30 @@ public class LiberalManagementBoard : MonoBehaviour, OrganizationManagement {
                 unselectButtons();
                 break;
         }
+    }
+
+    public void toggleZoom()
+    {
+        if (zoomed)
+        {
+            zoomOut();
+        }
+        else
+        {
+            zoomIn();
+        }
+    }
+
+    private void zoomIn()
+    {
+        zoomed = true;
+        content.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    private void zoomOut()
+    {
+        zoomed = false;
+        content.transform.localScale = new Vector3(0.5f, 0.5f, 1);
     }
 
     private void unselectButtons()
