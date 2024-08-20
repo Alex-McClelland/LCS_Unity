@@ -1261,6 +1261,11 @@ namespace LCS.Engine.Components.World
                 if (law.alignment < Alignment.ELITE_LIBERAL) return false;
             }
 
+            if (president.getComponent<Politician>().alignment < Alignment.ELITE_LIBERAL) return false;
+            if (vicePresident.getComponent<Politician>().alignment < Alignment.ELITE_LIBERAL) return false;
+            if (secretaryOfState.getComponent<Politician>().alignment < Alignment.ELITE_LIBERAL) return false;
+            if (attorneyGeneral.getComponent<Politician>().alignment < Alignment.ELITE_LIBERAL) return false;
+
             bool haveHouse = houseWinCheck();
             bool haveSenate = senateWinCheck();
 
