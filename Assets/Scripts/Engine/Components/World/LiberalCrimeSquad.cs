@@ -152,7 +152,11 @@ namespace LCS.Engine.Components.World
                 squad.travelAction = (Squad.TravelAction)Enum.Parse(typeof(Squad.TravelAction), node.SelectSingleNode("travelAction").InnerText);
                 foreach (XmlNode innerNode in node.SelectSingleNode("members").ChildNodes)
                 {
-                    squad.Add(entityList[int.Parse(innerNode.InnerText)]);
+                    int id = int.Parse(innerNode.InnerText);
+                    if (entityList.ContainsKey(id))
+                    {
+                        squad.Add(entityList[id]);
+                    }
                 }
 
                 squads.Add(squad);
