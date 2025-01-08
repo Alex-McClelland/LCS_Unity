@@ -47236,6 +47236,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114163976575385992, guid: e9b14f99e2506c047afb325f11787341,
         type: 3}
+      propertyPath: inputFields.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114163976575385992, guid: e9b14f99e2506c047afb325f11787341,
+        type: 3}
       propertyPath: key
       value: 121
       objectReference: {fileID: 0}
@@ -47264,6 +47269,11 @@ PrefabInstance:
       propertyPath: blockers.Array.data[4]
       value: 
       objectReference: {fileID: 1128407862}
+    - target: {fileID: 114163976575385992, guid: e9b14f99e2506c047afb325f11787341,
+        type: 3}
+      propertyPath: inputFields.Array.data[0]
+      value: 
+      objectReference: {fileID: 1522214235}
     - target: {fileID: 114392742800047682, guid: e9b14f99e2506c047afb325f11787341,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
