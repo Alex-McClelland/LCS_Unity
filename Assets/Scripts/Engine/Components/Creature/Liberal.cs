@@ -378,7 +378,10 @@ namespace LCS.Engine.Components.Creature
                     mc.uiController.showPopup(text, mc.doNextAction);
                 }, "Show Date Popup");
             }
-            foreach(Entity e in plannedDates)
+
+            List<Entity> plannedDatesSafeList = new List<Entity>(plannedDates);
+
+            foreach(Entity e in plannedDatesSafeList)
             {
                 e.getComponent<Dating>().doStartDate();
             }

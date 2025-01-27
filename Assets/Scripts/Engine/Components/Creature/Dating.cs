@@ -50,7 +50,7 @@ namespace LCS.Engine.Components.Creature
         private void doDaily(object sender, EventArgs arg)
         {
             MasterController mc = MasterController.GetMC();
-            if (timeleft > 0)
+            if (timeleft >= 0)
             {
                 timeleft--;
                 if(timeleft == 0)
@@ -70,20 +70,7 @@ namespace LCS.Engine.Components.Creature
 
         public void doStartDate()
         {
-            MasterController mc = MasterController.GetMC();
-
-            //If this date has been cleared from the Liberal's schedule (due to selecting the vacation option on a previous date), skip it
-            if (!partner.getComponent<Liberal>().plannedDates.Contains(owner))
-            {
-                mc.doNextAction();
-                return;
-            }
-            //Also skip if they are currently away on a vacation
-            if(timeleft > 0)
-            {
-                mc.doNextAction();
-                return;
-            }
+            MasterController mc = MasterController.GetMC();            
             
             //If the liberal finds themselves in jail for whatever reason, then the relationship ends
             if(partner.getComponent<Liberal>().status == Liberal.Status.JAIL_COURT ||
@@ -91,7 +78,6 @@ namespace LCS.Engine.Components.Creature
                 partner.getComponent<Liberal>().status == Liberal.Status.JAIL_PRISON)
             {
                 breakUp();
-                mc.doNextAction();
                 return;
             }
 
@@ -111,6 +97,19 @@ namespace LCS.Engine.Components.Creature
         private void startDate()
         {
             MasterController mc = MasterController.GetMC();
+
+            //If this date has been cleared from the Liberal's schedule (due to selecting the vacation option on a previous date), skip it
+            if (!partner.getComponent<Liberal>().plannedDates.Contains(owner))
+            {
+                mc.doNextAction();
+                return;
+            }
+            //Also skip if they are currently away on a vacation
+            if (timeleft >= 0)
+            {
+                mc.doNextAction();
+                return;
+            }
 
             mc.uiController.meeting.showDate(owner);
             string text = partner.getComponent<CreatureInfo>().getName();
@@ -247,7 +246,15 @@ namespace LCS.Engine.Components.Creature
                     }));
                     string sleeperPrompt = "Should " + getComponent<CreatureInfo>().getName() + " stay at " + getComponent<CreatureInfo>().workLocation.getComponent<SiteBase>().getCurrentName() + " as a sleeper agent or join the LCS as a regular member?";
 
-                    actionRoot.Add(() => { MasterController.GetMC().uiController.showOptionPopup(sleeperPrompt, options); }, "Sleeper Prompt");
+                    //actionRoot will be null if we're returning from vacation as there was no date prompt screen to create it
+                    if (actionRoot != null)
+                    {
+                        actionRoot.Add(() => { MasterController.GetMC().uiController.showOptionPopup(sleeperPrompt, options); }, "Sleeper Prompt");
+                    }
+                    else
+                    {
+                        mc.addAction(() => { MasterController.GetMC().uiController.showOptionPopup(sleeperPrompt, options); }, "Sleeper Prompt");
+                    }
                     mc.uiController.showPopup(text, mc.doNextAction);
                     return DateResult.JOINED;
                 }
@@ -540,7 +547,7 @@ namespace LCS.Engine.Components.Creature
         public void initDating(Entity partner)
         {
             this.partner = partner;
-            timeleft = 0;
+            timeleft = -1;
 
             //People don't go to dates armed and wearing work clothes.
             //TODO: Hold on to weapon/armor so they'll bring them to the LCS if they get recruited?
