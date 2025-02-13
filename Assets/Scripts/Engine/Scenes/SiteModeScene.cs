@@ -4866,7 +4866,7 @@ namespace LCS.Engine.Scenes
 
             bool spotted = false;
             bool noticed = false;
-            Entity blewit = null;
+            List<Entity> blewit = new List<Entity>();
             Entity n = null;
 
             if (noticer.Count > 0)
@@ -4916,8 +4916,8 @@ namespace LCS.Engine.Scenes
                         {
                             if(e.getComponent<Inventory>().checkWeaponDisguise() == 0)
                             {
+                                blewit.Add(e);
                                 noticed = true;
-                                break;
                             }
                             else
                             {
@@ -4934,10 +4934,8 @@ namespace LCS.Engine.Scenes
 
                                 if(result < (int) disguise_difficulty)
                                 {
-                                    blewit = e;
-
+                                    blewit.Add(e);
                                     noticed = true;
-                                    break;
                                 }
                             }
                         }
@@ -4964,18 +4962,23 @@ namespace LCS.Engine.Scenes
                 }
                 else
                 {
-                    if(blewit == null)
+                    foreach (Entity e in squad)
                     {
-                        foreach (Entity e in squad)
+                        if (!blewit.Contains(e))
                         {
                             e.getComponent<CreatureBase>().Skills[Constants.SKILL_DISGUISE].addExperience(10);
                         }
+                        else
+                        {
+                            //u tried
+                            e.getComponent<CreatureBase>().Skills[Constants.SKILL_DISGUISE].addExperience(2);
+                        }
                     }
 
-                    if(blewit != null && mc.LCSRandom(2) == 0)
+                    if(blewit.Count > 0 && mc.LCSRandom(2) == 0)
                     {
                         string resultText = "<color=yellow>";
-                        resultText += blewit.getComponent<CreatureInfo>().getName();
+                        resultText += mc.pickRandom(blewit).getComponent<CreatureInfo>().getName();
                         resultText += blew_stealth_check[mc.LCSRandom(blew_stealth_check.Length)] + "</color>";
                         mc.addCombatMessage(resultText);
                     }
