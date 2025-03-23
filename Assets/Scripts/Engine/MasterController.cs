@@ -2050,6 +2050,18 @@ namespace LCS.Engine
                         }
                     }
                 }
+
+                //Clean non-persistent entities out of hostage rapport list (libs who may have died might still be in here and cause errors on save loading)
+                if (e.hasComponent<Hostage>())
+                {
+                    List<Entity> rapportList = new List<Entity>(e.getComponent<Hostage>().rapport.Keys);
+
+                    foreach(Entity lib in rapportList)
+                    {
+                        if (!lib.persistent)
+                            e.getComponent<Hostage>().rapport.Remove(lib);
+                    }
+                }
             }
 
             news.stories.Clear();
