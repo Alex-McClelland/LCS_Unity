@@ -110,10 +110,11 @@ namespace LCS.Engine.Components.Location
                 }
                 else
                 {
-                    value += item.getComponent<Loot>().getFenceValue();
+                    int itemValue = item.getComponent<Loot>().getFenceValue();
                     //Stolen cars are worth SIGNIFICANTLY less
                     if (item.hasComponent<Vehicle>() && item.getComponent<Vehicle>().heat > 0)
-                        value /= 10;
+                        itemValue /= 10;
+                    value += itemValue;
                 }                
             }
 
