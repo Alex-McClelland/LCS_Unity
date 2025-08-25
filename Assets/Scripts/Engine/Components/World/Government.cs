@@ -1209,8 +1209,8 @@ namespace LCS.Engine.Components.World
 
             if (result.senateYesVotes == senateNum / 2)
             {
-                if (direction == Alignment.CONSERVATIVE && laws[law].alignment >= VPVote) result.vpVote = true;
-                else if (direction == Alignment.LIBERAL && laws[law].alignment <= VPVote) result.vpVote = true;
+                if (direction == Alignment.CONSERVATIVE && laws[law].alignment > VPVote) result.vpVote = true;
+                else if (direction == Alignment.LIBERAL && laws[law].alignment < VPVote) result.vpVote = true;
             }
 
             //If the bill passes, will the president veto?
