@@ -324,14 +324,22 @@ namespace LCS.Engine.Components.Creature
             }
         }
 
-        public void imprison()
+        public void imprison(bool additionalCrimesAquitted = false)
         {
             Heat = 0;
             Confessions = 0;
             List<string> crimeList = new List<string>(CrimesWanted.Keys);
             foreach (string crime in crimeList)
             {
-                CrimesPunished[crime] += CrimesWanted[crime];
+                //If someone was re-imprisoned due to being caught after escaping prison, they may have been acquitted of additional crimes and shouldn't count them
+                if (!additionalCrimesAquitted)
+                {
+                    CrimesPunished[crime] += CrimesWanted[crime];
+                }
+                else
+                {
+                    CrimesAcquitted[crime] += CrimesWanted[crime];
+                }
                 CrimesWanted[crime] = 0;
             }
 
@@ -1381,6 +1389,7 @@ namespace LCS.Engine.Components.Creature
                             CurrentSentence = 3;
                             prisonText += " The Execution is scheduled to occur three months from now.";
                         }
+                        imprison(true);
 
                         trialActionQueue.Add(() => { trial.printText(prisonText); }, "print trial text");
                     }
@@ -1413,6 +1422,8 @@ namespace LCS.Engine.Components.Creature
                         CurrentSentence = 3;
                         prisonText += " The Execution is scheduled to occur three months from now.";
                     }
+
+                    imprison(true);
 
                     trialActionQueue.Add(() => { trial.printText(prisonText); }, "print trial text");
                 }
